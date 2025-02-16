@@ -101,7 +101,7 @@ export default function Page2() {
         </Box>
         <CustomText style={{
           transition: 'all .2s ease',
-          height: changeDefinitionGridLayout ? '15%' : '50%',
+          height: changeDefinitionGridLayout ? '15%' : '40%',
           color: 'white',
           fontSize: getByBreakPoint<string>('.9rem','.9rem','1.1rem','1.6rem','1.6rem'),
           textAlign: 'center'
