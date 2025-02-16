@@ -42,8 +42,8 @@ const data: data = {
 export default function Page2() {
   const { getByBreakPoint, isXS, isSM, isMD } = useBreakPointHandler()
 
-  const titleSize: string = getByBreakPoint<string>('1.2rem','1.3rem','1.5rem','2rem','2.2rem')
-  const definitionSize: string = getByBreakPoint<string>('.8rem','.8rem','.9rem','1.1rem','1.4rem')
+  const titleSize: string = getByBreakPoint<string>('1.2rem','1.3rem','1.5rem','2rem','2rem')
+  const definitionSize: string = getByBreakPoint<string>('.8rem','.8rem','.9rem','1.1rem','1rem')
   const changeDefinitionGridLayout: boolean = !!(isXS || isSM || isMD)
   
   return (
@@ -144,7 +144,7 @@ export default function Page2() {
             fontStyle:'italic',
             textAlign: 'center',
             color: TEXT_COLOR_GRAY,
-            fontSize: getByBreakPoint<string>('1.4rem','1.5rem','1.7rem','1.8rem','2rem'),
+            fontSize: getByBreakPoint<string>('1.4rem','1.5rem','1.7rem','1.8rem','1.8rem'),
           }}>
             {data.text}
           </CustomText>
