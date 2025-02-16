@@ -33,7 +33,7 @@ export default function Page6() {
             style={{ height: '100%', zIndex: -1 }}  
           />
           <Box style={{ backgroundColor: 'red' }}>
-
+           {""}
           </Box>
         </Box>
         <Box style={{ height:'12.5%'}}>
