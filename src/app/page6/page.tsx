@@ -2,15 +2,15 @@
 import bgImg from '@/../public/page6/Background_contact_form.png';
 import { BackgroundImage, Box, Container } from '@mantine/core';
 
-interface data {
+// interface data {
 
-}
+// }
 
-const data: data[] = [
-  {
+// const data: data[] = [
+//   {
 
-  },
-]
+//   },
+// ]
 
 export default function Page6() {
   return (
