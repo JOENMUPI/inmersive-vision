@@ -110,7 +110,7 @@ export default function Page2() {
         </CustomText>
         <Grid style={{ 
           display: 'flex',
-          height: changeDefinitionGridLayout ? '45%' : '20%',
+          height: changeDefinitionGridLayout ? '45%' : '30%',
           transition: 'all .2s ease',
           justifyContent: 'space-between',
           width:'100%',
