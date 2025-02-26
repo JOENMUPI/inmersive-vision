@@ -14,9 +14,9 @@ import CompanyLogoFloridaHousePLan from '@/../public/page5/logo_Florida_house_pl
 import CompanyLogoH2Group from '@/../public/page5/logo_h2_group.png';
 import CompanyLogoMVI from '@/../public/page5/logo_mvi.png';
 import rosAvatar from '@/../public/page5/Ros_Photo.png';
-import gotitasImg from '@/../public/page5/gotitas.png'
-import joseColoAvatar from '@/../public/page5/Jose_colo_Photo.png';
-import davidAvatar from '@/../public/page5/David_Photo.png';
+// import gotitasImg from '@/../public/page5/gotitas.png'
+// import joseColoAvatar from '@/../public/page5/Jose_colo_Photo.png';
+// import davidAvatar from '@/../public/page5/David_Photo.png';
 
 
 interface IComments {
@@ -61,11 +61,19 @@ export default function Page5() {
   const marginVideo = '5%'
 
   const nextFn = () => {
-
+    setIsVisible(false)
+    setTimeout(() => {
+      setIndexComment(indexComment === data.comments.length - 1 ? 0 : indexComment + 1)
+      setIsVisible(true)
+    }, DELAY_ANIMATION)
   }
 
   const previusFn = () => {
-
+    setIsVisible(false)
+    setTimeout(() => {
+      setIndexComment(indexComment === 0 ? data.comments.length - 1 : indexComment - 1)
+      setIsVisible(true)
+    }, DELAY_ANIMATION)
   }
 
   return (
@@ -105,7 +113,7 @@ export default function Page5() {
                   </CustomTooltip>
                 </Box>
                 <iframe
-                  style={{ border: `1px solid ${TEXT_COLOR_GRAY}`, borderRadius: '1rem' }}
+                  style={{ ...transitionStyle, border: `1px solid ${TEXT_COLOR_GRAY}`, borderRadius: '1rem' }}
                   width="90%"
                   height="100%"
                   src={data.comments[indexComment].url}
