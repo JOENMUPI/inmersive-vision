@@ -54,7 +54,7 @@ const data: data[] = [
 export default function Page3() {
   const [isVisible, setIsVisible] = useState<boolean>(true)
   const [indexData, setIndexData] = useState<number>(0)
-  const { getByBreakPoint } = useBreakPointHandler()
+  const { getByBreakPoint, isXS } = useBreakPointHandler()
 
   const indexHandler = (index: number) => {
     if (index === indexData) return
@@ -99,7 +99,8 @@ export default function Page3() {
           }}>
             <Box style={{
               display: 'flex',
-              justifyContent: 'end',
+              alignItems: isXS ? 'end' : 'start',
+              justifyContent: isXS ? 'center' : 'end',
               gap: '.3rem',
               width: '100%',
               height: '70%',

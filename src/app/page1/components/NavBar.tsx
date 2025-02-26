@@ -1,6 +1,7 @@
 import { CustomText } from "@/components/customText";
+import { CustomTooltip } from "@/components/customTooltip";
 import { useBreakPointHandler } from "@/hooks/breakpointHandler";
-import { ActionIcon, Box, Progress, Tooltip } from "@mantine/core";
+import { ActionIcon, Box, Progress } from "@mantine/core";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 
 interface NavBarI {
@@ -38,44 +39,28 @@ export function NavBar({ nextFn, prevFn, length, position}: NavBarI) {
       <CustomText style={{ fontSize: fontSize }}>
         {length < 10 ? '0' : ''}{length}.
       </CustomText>
-      <Tooltip
-        label="Previous"
-        position="top"
-        openDelay={200} 
-        withArrow
-        transitionProps={{
-          duration: 200,
-          transition: 'pop'
-        }}
-      >
+      <CustomTooltip label="Previous">
         <ActionIcon
           variant="transparent"
           color="gray"
           aria-label="leftArrow"
           onClick={prevFn}
+          size={iconSize}
           >
           <IconChevronLeft style={{ transition: 'all .2s ease' }} size={iconSize} /> 
         </ActionIcon>
-      </Tooltip>
-      <Tooltip
-        label="Next"
-        position="top"
-        openDelay={200}
-        withArrow
-        transitionProps={{
-          duration: 200,
-          transition: 'pop'
-        }} 
-      >
+      </CustomTooltip>
+      <CustomTooltip label="Next">
         <ActionIcon
           variant="transparent"
           color="gray"
           aria-label="rightArrow"
           onClick={nextFn}
+          size={iconSize}
           >
           <IconChevronRight style={{ transition: 'all .2s ease' }} size={iconSize} /> 
         </ActionIcon>
-      </Tooltip>
+      </CustomTooltip>
     </Box>
   )
 }

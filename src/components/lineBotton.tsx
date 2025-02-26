@@ -1,9 +1,9 @@
 import { Box } from "@mantine/core";
 import { PRIMARY_COLOR_HEX_2, PRIMARY_COLOR_RGB } from "@/utils/conts";
 
-export function LineBottom({ children }: { children: React.ReactNode }) {
+export function LineBottom({ style, children }: { style?: React.CSSProperties, children: React.ReactNode }) {
   return (
-    <Box>
+    <Box style={style}>
       {children}
       <Box style={{
         width: '100%',

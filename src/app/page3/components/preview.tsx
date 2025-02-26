@@ -17,15 +17,16 @@ export function Preview({
   isSelected,
   onClick
 }: previewI) {
-  const { getByBreakPoint } = useBreakPointHandler()
+  const { getByBreakPoint, isXS } = useBreakPointHandler()
 
   return (
     <Box style={{
       width: getByBreakPoint<string>('30%', '30%', '20%', '17%', '14%'),
-      height: '80%',
+      height:  isXS ? '40%' : '80%',
       transition: 'all .2s ease',
       display: 'flex',
       alignItems: 'center',
+
       flexDirection: 'column',
     }}>
     <Box
