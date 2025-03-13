@@ -1,7 +1,5 @@
 'use client';
-import { IconChevronDown } from '@tabler/icons-react';
-import { Box, Burger, Center, Container, Group, Menu, Image } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Box, Image } from '@mantine/core';
 import { ScrollDirection, useScrollTracker } from '@/hooks/scrollTracker';
 import logoComppany from '@/../public/page6/LOGO_IMVI.png';
 import { TextSelect } from '@/components/TextSelect';
@@ -37,23 +35,23 @@ export function HeaderMenu() {
   const sections: string[] = [PAGE_1_ID, PAGE_3_ID, PAGE_4_ID, PAGE_5_ID]
 
   useEffect(() => {
+    const checkVisibility = () => {
+      sections.forEach((section) => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top >= 0 && rect.top < window.innerHeight) {
+            setActiveSection(section);
+          }
+        }
+      })
+    }
+
     window.addEventListener('scroll', checkVisibility)
     return () => {
       window.removeEventListener('scroll', checkVisibility)
     };
   }, [])
-
-  const checkVisibility = () => {
-    sections.forEach((section) => {
-      const element = document.getElementById(section);
-      if (element) {
-        const rect = element.getBoundingClientRect();
-        if (rect.top >= 0 && rect.top < window.innerHeight) {
-          setActiveSection(section);
-        }
-      }
-    })
-  }
 
   const scrollToElement = (id: string) => {
     const element = document.getElementById(id);
