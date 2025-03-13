@@ -89,7 +89,7 @@ export function HeaderMenu() {
           return (
             <TextSelect
               key={index}
-              textStyle={{ fontSize: getByBreakPoint<string>('1.1rem','1.2rem', '1.3rem', '1.4rem', '1.4rem') }}
+              textStyle={{ fontSize: getByBreakPoint<string>('1.1rem','1.1rem', '1.2rem', '1.3rem', '1.4rem') }}
               condition={activeSection === el.idPoint}
               onClick={() => { scrollToElement(el.idPoint) }}
               title={el.label}
