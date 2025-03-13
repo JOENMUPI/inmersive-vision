@@ -52,7 +52,7 @@ export const ThemeMantine = createTheme({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" {...mantineHtmlProps} style={{ fontSize: '10px' }}>
+    <html lang="en" {...mantineHtmlProps} style={{ fontSize: '16px' }}>
       <head>
         <ColorSchemeScript />
       </head>
