@@ -1,14 +1,14 @@
 'use client'
 import { useState } from 'react';
 import { BackgroundImage, Box, Container, Transition } from '@mantine/core';
-import { indxeListI, useIndexList } from '@/app/page1/hooks/indexList';
+import { indxeListI, useIndexList } from '@/hooks/indexList';
 import { NavBar } from '@/app/page1/components/NavBar';
 import img1 from '@/../public/page1/Foto_web_portada_01.png';
 import img2 from '@/../public/page1/Foto_web_portada_02.png';
 import img3 from '@/../public/page1/Foto_web_portada_03.png';
 import { CustomText } from '@/components/customText';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
-import { DELAY_ANIMATION, TEXT_COLOR_GRAY } from '@/utils/conts';
+import { DELAY_ANIMATION, PAGE_1_ID, TEXT_COLOR_GRAY } from '@/utils/conts';
 
 interface data {
   img: string,
@@ -76,7 +76,7 @@ export default function Page1() {
       timingFunction='ease'
     >
       {(transitionStyle) => (
-        <Container style={{
+        <Container id={PAGE_1_ID} style={{
           minWidth:'100%',
           height: '100vh',
           padding: 0,

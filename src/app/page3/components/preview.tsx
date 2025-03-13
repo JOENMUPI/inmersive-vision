@@ -26,7 +26,6 @@ export function Preview({
       transition: 'all .2s ease',
       display: 'flex',
       alignItems: 'center',
-
       flexDirection: 'column',
     }}>
     <Box

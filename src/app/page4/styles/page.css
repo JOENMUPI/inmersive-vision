@@ -1,0 +1,11 @@
+.hover-img {
+  width: 25%;
+  height: 100%;
+  cursor: pointer;
+  transition: filter 1s ease-in-out, width 1s ease-in-out; 
+  filter: sepia(100%) hue-rotate(197deg) saturate(130%) brightness(48%);
+}
+.hover-img:hover {
+  width: 35%;
+  filter: hue-rotate(0deg);
+}

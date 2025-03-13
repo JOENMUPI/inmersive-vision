@@ -1,7 +1,7 @@
 'use client'
 import { BackgroundImage, Box, Container, Grid } from '@mantine/core';
 import { CustomText } from '@/components/customText';
-import { PRIMARY_COLOR_HEX, TEXT_COLOR_GRAY } from '@/utils/conts';
+import { PAGE_2_ID, PRIMARY_COLOR_HEX, TEXT_COLOR_GRAY } from '@/utils/conts';
 import bgImg from '@/../public/page2/background_CLIENT_PAIN.png';
 import { QuotIcon } from '@/../public/Iconos/icons';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
@@ -47,7 +47,7 @@ export default function Page2() {
   const changeDefinitionGridLayout: boolean = !!(isXS || isSM || isMD)
   
   return (
-    <Container style={{
+    <Container id={PAGE_2_ID} style={{
       minWidth:'100%',
       height: '100vh',
       padding: 0,

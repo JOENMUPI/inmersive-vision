@@ -10,7 +10,7 @@ import bgImg3 from '@/../public/page3/marketing_FP_BACKGROUND_FINAL.png';
 import { Tour360Icon, RenderIcon, FloorPlanIcon } from '@/../public/Iconos/icons'
 import { Preview } from "@/app/page3/components/preview";
 import { CustomText } from "@/components/customText";
-import { DELAY_ANIMATION } from "@/utils/conts";
+import { DELAY_ANIMATION, PAGE_3_ID } from "@/utils/conts";
 import { useBreakPointHandler } from "@/hooks/breakpointHandler";
 
 interface data {
@@ -73,7 +73,7 @@ export default function Page3() {
       timingFunction='ease'
     >
       {(transitionStyle) => (
-        <Container style={{
+        <Container id={PAGE_3_ID} style={{
           minWidth:'100%',
           height: '100vh',
           padding: 0,

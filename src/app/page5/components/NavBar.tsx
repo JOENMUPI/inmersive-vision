@@ -16,7 +16,7 @@ export function NavBar({ length, position, style }: NavBarI) {
   return (
     <Box style={{
       display: 'flex',
-      width: getByBreakPoint<string>('40%','35%','35%','30%','30%'),
+      width: getByBreakPoint<string>('60%','40%','35%','30%','30%'),
       transition: 'all .2s ease',
       gap: getByBreakPoint<string>('1.5rem','1.5rem','1.5rem','2rem','2rem'),
       alignItems: 'center',

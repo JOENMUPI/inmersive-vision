@@ -1,6 +1,6 @@
 import { TextInput, NumberInput, FileInput } from "@mantine/core";
 import { CustomTooltip } from "./customTooltip";
-import { IconClipboard } from "@tabler/icons-react";
+import { IconPaperclip } from "@tabler/icons-react";
 
 interface CustomInputI<T> {
   errorText?: string,
@@ -121,7 +121,7 @@ export function CustomFileInput({
   const borderColor = isError ? 'red' : TEXT_BORDER_BOTTOM
 
   return <FileInput
-    leftSection={<IconClipboard />}
+    leftSection={<IconPaperclip />}
     label={label}
     aria-label={label}
     error={isError ? errorText : undefined}

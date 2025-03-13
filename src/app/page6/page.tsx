@@ -5,7 +5,7 @@ import { CustomFileInput, CustomTextInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
 import { LineBottom } from '@/components/lineBotton';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
-import { TEXT_COLOR_GRAY } from '@/utils/conts';
+import { PAGE_6_ID, TEXT_COLOR_GRAY } from '@/utils/conts';
 import { BackgroundImage, Box, Container, Image } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
@@ -52,7 +52,7 @@ export default function Page6() {
   const titleSize = getByBreakPoint('1.5rem', '2rem', '2.5rem', '3rem', '3rem')
 
   return (
-    <Container style={{
+    <Container id={PAGE_6_ID} style={{
       minWidth:'100%',
       height: '100vh',
       padding: 0,

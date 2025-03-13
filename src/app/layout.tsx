@@ -9,11 +9,12 @@ import {
 } from "@mantine/core";
 import { Metadata, Viewport } from 'next';
 import { Montserrat } from 'next/font/google';
+import { HeaderMenu } from '@/components/header';
 
 export const metadata: Metadata = {
   title: "Imersive Vision",
   description: "LandingPage for Imersive Vision",
-  icons: '@/../public/favicon.ico',
+  icons: '/favicon.ico',
 };
 
 export const viewport: Viewport = {
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={montserrat.className} >
         <MantineProvider theme={ThemeMantine} defaultColorScheme='dark' forceColorScheme='dark'>
+          <HeaderMenu />
           {children}
         </MantineProvider>
       </body>
