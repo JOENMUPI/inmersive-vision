@@ -48,9 +48,9 @@ export function HeaderMenu() {
     }
 
     window.addEventListener('scroll', checkVisibility)
-    return () => {
-      window.removeEventListener('scroll', checkVisibility)
-    };
+    // return () => {
+    //   window.removeEventListener('scroll', checkVisibility)
+    // };
   }, [])
 
   const scrollToElement = (id: string) => {

@@ -1,7 +1,7 @@
 'use client';
 import bgImg from '@/../public/page6/Background_contact_form.png';
 import logoImg from '@/../public/page6/LOGO_IMVI.png';
-import { CustomFileInput, CustomNumberInput, CustomTextInput } from '@/components/customInput';
+import { CustomTextInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
 import { LineBottom } from '@/components/lineBotton';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';

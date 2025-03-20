@@ -21,7 +21,7 @@ export function ViewFrame({ project, backAction }: viewFrameProps) {
 
   useEffect(()=> {
     setDataIndex(initIndex)
-  }, [project])
+  }, [project, setDataIndex])
 
   if (project.useImgs) return (
     <BackgroundImage
