@@ -69,10 +69,10 @@ const GRAY_COLOR_BTN = '#302c2c'
 export default function Page5() {
   const [isVisible, setIsVisible] = useState<boolean>(true)
   const [indexComment, setIndexComment] = useState<number>(0)
-  const { getByBreakPoint } = useBreakPointHandler()
+  const { getByBreakPoint, isXS } = useBreakPointHandler()
   const iconSize = getByBreakPoint<string>('1.5rem','1.5  rem','2rem','2.5rem','3rem')
   const comanyLogoSize = getByBreakPoint<string>('30%','60%','70%','70%','70%')
-  const marginVideo = '5%'
+  const marginVideo = isXS ? '0%' : '5%'
   const paperTextSize = getByBreakPoint<string>('.4rem','.5rem','.6rem','.7rem','.9rem')
 
   const changeHandler = <T,>(caseA: T, caseB: T) => getByBreakPoint<T>(caseA, caseA, caseA, caseB, caseB)
@@ -107,9 +107,20 @@ export default function Page5() {
           padding: 0,
         }}>
           <Box style={{ width: '100%', height: '100%', padding: '2% 3%', paddingBottom: 0 }}>
-            <Box style={{ display: changeHandler('block','flex'), width: '100%', height: '70%' }}>
-              <Box style={{ width: changeHandler<string>('100%', '20%'), height: changeHandler<string>('15%', '100%'), }}>
-                <CustomText style={{ fontSize: '2.5rem', fontStyle: 'italic', marginBottom: '30%' }}>
+            <Box style={{
+              display: 'flex',
+              flexDirection: changeHandler('column', 'row'),
+              justifyContent: isXS ? 'end' : 'start',
+              width: '100%',
+              height: '70%',
+            }}>
+              <Box style={{ width: changeHandler<string>('100%', '20%'), height: isXS ? '10%' : changeHandler<string>('15%', '100%'), }}>
+                <CustomText style={{
+                  fontSize: '2.5rem',
+                  fontStyle: 'italic',
+                  marginBottom: '30%',
+                  textAlign: isXS ? 'center' : 'left',
+                }}>
                   {data.title}
                 </CustomText>
                 <Paper style={{
@@ -154,8 +165,18 @@ export default function Page5() {
 
                 </Paper>
               </Box>             
-              <Box style={{ width: changeHandler('100%','80%'), height: changeHandler<string>('85%', '100%'), display: 'flex' }}>
-                <Box style={{ width: marginVideo, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Box style={{
+                width: changeHandler('100%','80%'),
+                height: isXS ? '35%' : changeHandler<string>('85%', '100%'),
+                display: 'flex'
+              }}>
+                <Box style={{
+                  width: marginVideo,
+                  height: '100%',
+                  display: isXS ? 'none' : 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
                   <CustomTooltip label="Previous">
                     <ActionIcon
                       variant="transparent"
@@ -169,8 +190,8 @@ export default function Page5() {
                   </CustomTooltip>
                 </Box>
                 <iframe
-                  style={{ border: `1px solid ${TEXT_COLOR_GRAY}`, borderRadius: '1rem' }}
-                  width="90%"
+                  style={{ border: `1px solid ${TEXT_COLOR_GRAY}`, borderRadius: isXS ? 0 : '1rem' }}
+                  width={isXS ? '100%' : "90%"}
                   height="100%"
                   src={data.comments[indexComment].url}
                   title="YouTube video player"
@@ -179,7 +200,13 @@ export default function Page5() {
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
                 />
-                <Box style={{ width: marginVideo, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Box style={{
+                  width: marginVideo,
+                  height: '100%',
+                  display: isXS ? 'none' : 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
                   <CustomTooltip label="Next">
                     <ActionIcon
                       variant="transparent"
@@ -204,7 +231,51 @@ export default function Page5() {
                 justifyContent: 'center',
                 alignItems: 'end'
               }}>
-                <NavBar length={data.comments.length} position={indexComment} style={{ height:'68%', marginRight: '2.5%' }} />
+                {isXS
+                  ? <Box style={{
+                    display:'flex',
+                    width: '100%',
+                    justifyContent: 'space-between',
+                  }}>
+                    <Box style={transitionStyle}>
+                      <CustomText style={{ color: 'white', fontSize: '1.2rem', fontWeight: '600' }}>
+                        {data.comments[indexComment].name}
+                      </CustomText>
+                      <CustomText >
+                        {data.comments[indexComment].company}
+                      </CustomText>
+                    </Box>
+                    <Box style={{
+                      display:'flex',
+                      justifyContent: 'end',
+                      gap: '.5rem'
+                    }}>
+                      <ActionIcon
+                        size='xl'
+                        variant='light'
+                        color='white'
+                        onClick={previusFn}
+                        style={{ backgroundColor: 'rgba(48,48,48,255)', borderRadius: '100rem' }}
+                      >
+                        <IconChevronLeft/>
+                      </ActionIcon>
+                      <ActionIcon
+                        size='xl'
+                        color='white'
+                        onClick={nextFn}
+                        style={{ backgroundColor: 'rgba(48,48,48,255)', borderRadius: '100rem' }}
+                        variant='light'
+                      >
+                        <IconChevronRight/>
+                      </ActionIcon>
+                    </Box>
+                  </Box>
+                  : <NavBar
+                    length={data.comments.length}
+                    position={indexComment}
+                    style={{ display: isXS ? 'none' : ' block', height:'68%', marginRight: '2.5%' }}
+                  />
+                }
                 <Button
                   color={GRAY_COLOR_BTN}
                   size='xl'
@@ -219,7 +290,7 @@ export default function Page5() {
                   {data.googleReviewBtnText}
                 </Button>                
               </Box>
-              <Box style={{ width: '100%', height: '35%', display: 'flex', justifyContent: 'center', alignItems: 'end' }}>
+              <Box style={{ width: '100%', height: '35%', display: 'flex', justifyContent: 'center', alignItems: isXS ? 'center' : 'end' }}>
                 <Image 
                   src={CompanyLogo360.src}
                   alt='360 Pros'

@@ -1,12 +1,12 @@
 'use client';
 import bgImg from '@/../public/page6/Background_contact_form.png';
 import logoImg from '@/../public/page6/LOGO_IMVI.png';
-import { CustomFileInput, CustomTextInput } from '@/components/customInput';
+import { CustomFileInput, CustomNumberInput, CustomTextInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
 import { LineBottom } from '@/components/lineBotton';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
-import { PAGE_6_ID, TEXT_COLOR_GRAY } from '@/utils/conts';
-import { BackgroundImage, Box, Container, Image } from '@mantine/core';
+import { PAGE_6_ID, TEXT_COLOR_GRAY, TEXT_COLOR_GRAY_2 } from '@/utils/conts';
+import { BackgroundImage, Box, Button, Container, Image } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 interface data {
@@ -29,14 +29,14 @@ interface formI {
   name: string,
   email: string,
   description: string,
-  files: File[],
+  phone: string,
 }
 
 const INIT_FORM_VALUES: formI = {
   name: '',
   email: '',
   description: '',
-  files: [],
+  phone: '',
 }
 
 export default function Page6() {
@@ -109,11 +109,10 @@ export default function Page6() {
             }}>
               <CustomTextInput value={form.getValues().name} onChange={(data => form.setFieldValue('name', data))} label='Name' />
               <CustomTextInput value={form.getValues().email} onChange={(data => form.setFieldValue('email', data))} label='Email' />
-              <CustomFileInput
-                value={form.getValues()?.files[0] ?? ''}
-                onChange={(data => form.setFieldValue('files', data ? [data] : []))}
-                label='Files'
-              />
+              <CustomTextInput value={form.getValues().phone} onChange={(data => form.setFieldValue('phone', data.toString()))} label='Phone' />
+              <Button color={TEXT_COLOR_GRAY_2}>
+                Send
+              </Button>
             </Box>
           </Box>
         </Box>

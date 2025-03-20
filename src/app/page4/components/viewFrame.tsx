@@ -1,5 +1,5 @@
 import { ActionIcon, BackgroundImage, Box, Image } from "@mantine/core"
-import { IconArrowLeft, IconChevronLeft, IconChevronRight, IconX } from "@tabler/icons-react"
+import { IconChevronLeft, IconChevronRight, IconX } from "@tabler/icons-react"
 import { projectI } from "@/app/page4/page"
 import { TitleLine } from "@/app/page4/components/titelLine"
 import { CustomTooltip } from "@/components/customTooltip"
@@ -31,27 +31,31 @@ export function ViewFrame({ project, backAction }: viewFrameProps) {
         width: '100%',
         height: '100%',
         display: 'flex',
-        justifyContent: isXS ? '' : 'end',
+        flexDirection: isXS ? 'column' : 'row',
+        justifyContent: isXS ? 'space-between' : 'end',
         alignItems: isXS ? 'end' : ''
       }}
     >
+      <ActionIcon variant="light" onClick={backAction}>
+        <IconX color="white" />
+      </ActionIcon>
       <Box style={{
         width: isXS ? '100%' : '20%',
         heigth: isXS ? '20%' : '100%',
         display: 'flex',
         justifyContent: 'end',
-        alignItems: isXS ? 'start' : 'center',
+        alignItems: 'center',
         backgroundColor: 'rgba(9, 9, 9, .7)',
-        padding: '1%'
+        padding: isXS ? '0%' : '1%'
       }}>
         <Box style={{
-          width: isXS ? '90%' : '80%',
+          width: isXS ? '100%' : '80%',
           height: isXS ? '100%' : '90%',
           display: 'flex',
           flexDirection: isXS ? 'row' : 'column'
         }}>
           <Box style={{
-            width: isXS ? '80%' : '100%',
+            width: '100%',
             height: isXS ? '100%' : '90%',
             display: 'flex',
             flexDirection: isXS ? 'row' : 'column',
@@ -61,6 +65,7 @@ export function ViewFrame({ project, backAction }: viewFrameProps) {
                 onClick={() => { setDataIndex(index) }}
                 key={index}
                 src={img}
+                h={'7rem'}
                 alt={`img-list-${index}`}
                 style={{
                   transition: 'all .2s ease',
@@ -72,31 +77,30 @@ export function ViewFrame({ project, backAction }: viewFrameProps) {
               />
             ))}
           </Box>
-          <Box style={{
-            width: isXS ? '10%' : '100%',
-            height: isXS ? '100%' : '100%',
-            display:'flex',
-            alignItems:'end',
-            justifyContent: 'space-between'
-          }}>
-            <CustomTooltip label="Previus" >
-              <ActionIcon variant="transparent" onClick={prevIndex} >
-                <IconChevronLeft />
-              </ActionIcon>
-            </CustomTooltip>
-            <CustomTooltip  label="Next">
-              <ActionIcon variant="transparent" onClick={nextIndex} >
-                <IconChevronRight />
-              </ActionIcon>
-            </CustomTooltip>
-          </Box>
-        </Box>
-        { isXS
-          ? <Box style={{ width:'10%', height: '100%', display:'flex', justifyContent: 'end' }} >
-              <ActionIcon variant="transparent" onClick={backAction}>
-                <IconX />
-              </ActionIcon> 
+          {isXS
+            ? <></>
+            : <Box style={{
+              width: '100%',
+              height: '100%',
+              display:'flex',
+              alignItems:'end',
+              justifyContent: 'space-between'
+            }}>
+              <CustomTooltip label="Previus" >
+                <ActionIcon variant="transparent" onClick={prevIndex} >
+                  <IconChevronLeft color="white" />
+                </ActionIcon>
+              </CustomTooltip>
+              <CustomTooltip  label="Next">
+                <ActionIcon variant="transparent" onClick={nextIndex} >
+                  <IconChevronRight color="white" />
+                </ActionIcon>
+              </CustomTooltip>
             </Box>
+          }
+        </Box>
+        {isXS
+          ? <></>
           : <Box style={{
             display: 'flex',
             justifyContent: 'center',
@@ -107,7 +111,7 @@ export function ViewFrame({ project, backAction }: viewFrameProps) {
             flexDirection: 'column'
           }}>
             <ActionIcon variant="transparent" onClick={backAction}>
-              <IconX />
+              <IconX color="white" />
             </ActionIcon>
             <TitleLine text="" style={{ gap:'.5rem' }} />
           </Box>
@@ -117,8 +121,8 @@ export function ViewFrame({ project, backAction }: viewFrameProps) {
   )
   else if (project.url) return (
     <Box style={{ width:'100%', heigth: '100%', display:'flex', justifyContent:'end' }}>
-      <ActionIcon style={{ position:'absolute' }} variant="light" onClick={backAction}>
-        <IconArrowLeft />
+      <ActionIcon style={{ position:'absolute' }} size='xl' variant={isXS ? 'transparent' : "light"} onClick={backAction}>
+        <IconX color="white" />
       </ActionIcon>
       <iframe
         src={project.url}
@@ -132,9 +136,9 @@ export function ViewFrame({ project, backAction }: viewFrameProps) {
       />
     </Box>
   )
-  else return  <Box style={{ width:'100%', heigth: '100%', display:'flex', justifyContent:'end' }}>
-    <ActionIcon style={{ position:'absolute' }} variant="light" onClick={backAction}>
-      <IconArrowLeft />
+  else return <Box style={{ width:'100%', heigth: '100%', display:'flex', justifyContent:'end' }}>
+    <ActionIcon style={{ position:'absolute' }} size='xl' variant={isXS ? 'transparent' : "light"} onClick={backAction}>
+      <IconX color="white" />
     </ActionIcon>
     <BackgroundImage
       src={project.imgPreview}

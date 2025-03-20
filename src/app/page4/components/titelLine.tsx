@@ -16,6 +16,7 @@ export const TitleLine = ({ style, text }: titleLineI) =>{
     alignItems: 'center',
     gap: '1rem',
     height: '100%',
+    overflow: 'hidden',
     ...style
   }}>
     <IconPlus size={'1rem'} color={PRIMARY_COLOR_HEX} />

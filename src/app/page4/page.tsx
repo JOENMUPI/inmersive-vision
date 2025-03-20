@@ -1,8 +1,8 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomText } from "@/components/customText";
 import { DELAY_ANIMATION, PAGE_4_ID, TEXT_COLOR_GRAY_2 } from "@/utils/conts";
-import { Box, Container, Transition } from "@mantine/core";
+import { ActionIcon, Box, Button, Container, Transition } from "@mantine/core";
 import { PreviewFrame } from "./components/previewFrame";
 import { ViewFrame } from "./components/viewFrame";
 import cfdPreview from '@/../public/page4/renders/cdf/CDF_BK_OPEN.png';
@@ -39,9 +39,15 @@ import apgChapelPreview from '@/../public/page4/virtual_tour/SCROLL_APG_CHAPEL_B
 import ernaPreview from '@/../public/page4/virtual_tour/SCROLL_ERNA_BACKGROUND_PJ.png';
 import rosaPreview from '@/../public/page4/virtual_tour/SCROLL_LA_ROSA_BACKGROUND_PJ.png';
 import renacerTourPreview from '@/../public/page4/virtual_tour/SCROLL_RENACER_BACKGROUND_PJ.png';
-import '@/app/page4/styles/page.css'
 import { TextSelect } from "@/components/TextSelect";
 import { useBreakPointHandler } from "@/hooks/breakpointHandler";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { useIndexList } from "@/hooks/indexList";
+
+enum directionActionList {
+  NEXT,
+  PREV
+}
 
 interface servicesI {
   title: string,
@@ -62,7 +68,7 @@ export interface dataI {
   services: servicesI[]
 }
 
-const data: dataI = {
+const data_base: dataI = {
   title: 'Projects',
   services: [
     {
@@ -79,12 +85,6 @@ const data: dataI = {
           title: 'Renacer',
           useImgs: true,
           imgs: [renacerImg1.src, renacerImg2.src, renacerImg3.src, renacerImg4.src, renacerImg5.src]
-        },
-        {
-          imgPreview: cfdPreview.src,
-          title: 'Combat diver Fundation',
-          useImgs: true,
-          imgs: [cfdImg1.src, cfdImg2.src, cfdImg3.src, cfdImg4.src, cfdImg5.src]
         },
         {
           imgPreview: clarkePreview.src,
@@ -118,13 +118,6 @@ const data: dataI = {
           subtitle: 'Immersive Pro',
           url: 'https://cloud.3dvista.com//hosting/7379150/67/index.htm',
         },
-        {
-          useImgs: false,
-          imgPreview: rosaPreview.src,
-          title: 'La Rosa',
-          subtitle: 'Immersive Pro',
-          url: 'https://cloud.3dvista.com//hosting/7379150/34/index.htm',
-        }
       ]
     },
     {
@@ -145,50 +138,104 @@ const data: dataI = {
           imgPreview: luminousPreview.src,
           title: 'Luminous Edition',
         },
-        {
-          useImgs: false,
-          imgPreview: TimelessPreview.src,
-          title: 'Timeless Line',
-        }
       ]
     }
   ]
 }
 
+const data_extended: dataI = JSON.parse(JSON.stringify(data_base))
+data_extended.services[0].projects.push({
+  imgPreview: cfdPreview.src,
+  title: 'Combat diver Fundation',
+  useImgs: true,
+  imgs: [cfdImg1.src, cfdImg2.src, cfdImg3.src, cfdImg4.src, cfdImg5.src]
+})
+data_extended.services[1].projects.push({
+  useImgs: false,
+  imgPreview: rosaPreview.src,
+  title: 'La Rosa',
+  subtitle: 'Immersive Pro',
+  url: 'https://cloud.3dvista.com//hosting/7379150/34/index.htm',
+})
+data_extended.services[2].projects.push({
+    useImgs: false,
+    imgPreview: TimelessPreview.src,
+    title: 'Timeless Line',
+})
+
 export default function Page4() {
-  const { getByBreakPoint } = useBreakPointHandler()
+  const { getByBreakPoint, isXS } = useBreakPointHandler()
   const [isVisible, setIsVisible] = useState<boolean>(true)
   const [changePreviewFlag, setChangePreviewFlag] = useState<boolean>(true)
   const [previewMode, setPreviewMode] = useState<boolean>(true)
-  const [indexService, setIndexService] = useState<number>(0)
-  const [indexProject, setIndexProject] = useState<number>(0)
+  const [data, setData] = useState<dataI>(data_base)
+  const {
+    nextIndex: serviceNextIndex,
+    prevIndex: servicePrevIndex,
+    dataIndex: serviceDataIndex,
+    setDataIndex:  setServiceDataIndex
+  } = useIndexList({ length: data.services.length, initIndex: 0 })
+  const {
+    nextIndex: projectNextIndex,
+    prevIndex: projectPrevIndex,
+    dataIndex: projectDataIndex,
+    setDataIndex: setProjectDataIndex
+  } = useIndexList({ length: data.services[serviceDataIndex].projects.length, initIndex: 0 })
+  
+  useEffect(() => {
+    if (isXS) setData({ ...data_base })
+    else setData({ ...data_extended })
+  }, [isXS])
 
   const previewFlagHandler = () => {
     setChangePreviewFlag(prev => !prev)
     setTimeout(() => {
       setChangePreviewFlag(prev => !prev)
     }, DELAY_ANIMATION)
-  }
+  }  
 
-  const changeServiceHandler = (index: number) => {
-    if (index === indexService && previewMode) return
+  const serviceHandler = (dir: directionActionList) => {
     setIsVisible(prev => !prev)
     if (!previewMode) previewFlagHandler()
     setTimeout(() => {
       setPreviewMode(true)
-      setIndexService(index)
-      setIndexProject(0)
+      if (dir === directionActionList.NEXT) serviceNextIndex()
+      else servicePrevIndex()
+      setProjectDataIndex(0)
+      setIsVisible(prev => !prev)
+    }, DELAY_ANIMATION)
+  }
+
+  const projectHandler = (dir: directionActionList) => {
+    setIsVisible(prev => !prev)
+    if (!previewMode) previewFlagHandler()
+    setTimeout(() => {
+      setPreviewMode(false)
+      if (dir === directionActionList.NEXT) projectNextIndex()
+      else projectPrevIndex()
+      setIsVisible(prev => !prev)
+    }, DELAY_ANIMATION)
+  }
+
+  const changeServiceHandler = (index: number) => {
+    if (index === serviceDataIndex && previewMode) return
+    setIsVisible(prev => !prev)
+    if (!previewMode) previewFlagHandler()
+    setTimeout(() => {
+      setPreviewMode(true)
+      setServiceDataIndex(index)
+      setProjectDataIndex(0)
       setIsVisible(prev => !prev)
     }, DELAY_ANIMATION)
   }
 
   const changeProjectHandler = (index: number) => {
-    if (index === indexProject && !previewMode) return
+    if (index === projectDataIndex && !previewMode) return
     setIsVisible(prev => !prev)
     if (previewMode) previewFlagHandler()
     setTimeout(() => {
       setPreviewMode(false)
-      setIndexProject(index)
+      setProjectDataIndex(index)
       setIsVisible(prev => !prev)
     }, DELAY_ANIMATION)
   }
@@ -225,50 +272,93 @@ export default function Page4() {
               display: 'flex',
               flexDirection: 'column'
             }}>
-              <Box style={{ ...transitionStyle, width: '100%', height: '85%', display: 'flex' }}>
+              <Box style={{ ...transitionStyle, width: '100%', height: isXS ? '75%' : '65%', display: 'flex' }}>
                 { previewMode
                   ? <PreviewFrame
                     changeProjectHandler={changeProjectHandler}
-                    indexService={indexService}
+                    indexService={serviceDataIndex}
                     data={data}
                   />
                   : <ViewFrame
                     backAction={restartPreviewMode}
-                    project={data.services[indexService].projects[indexProject]}
+                    project={data.services[serviceDataIndex].projects[projectDataIndex]}
                   />
                 }
               </Box>
               <Transition
-                mounted={changePreviewFlag}
-                transition='fade'
-                duration={DELAY_ANIMATION}
-                timingFunction='ease'
-              >
-                {(transitionStyleByPreviewMode) => (
-                  <Box style={{
-                    ...transitionStyleByPreviewMode,
-                    width: previewMode
-                      ? getByBreakPoint<string>('95%', '85%', '75%', '65%', '55%')
-                      : getByBreakPoint<string>('100%', '100%', '95%', '85%', '75%'),
-                    height: '15%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}>
-                    {(previewMode ? data.services : data.services[indexService].projects).map((item, index) => (
-                      <TextSelect
-                        textStyle={{
-                          fontSize: getByBreakPoint<string>('.9rem', '1rem', '1.1rem', '1.2rem', '1.5rem'),
-                          transition:'all .2s ease'
-                        }}
-                        key={index}
-                        condition={(previewMode ? indexService : indexProject)  === index}
-                        onClick={() => previewMode ? changeServiceHandler(index) : changeProjectHandler(index)}
-                        title={item.title}
-                      />
-                    ))}
-                  </Box>
-                )}
+                  mounted={changePreviewFlag}
+                  transition='fade'
+                  duration={DELAY_ANIMATION}
+                  timingFunction='ease'
+                >
+                  {(transitionStyleByPreviewMode) => {
+                    if (isXS) return <Box style={{ height: '20%', width: '100%' }}>
+                      <Box style={{ width: '100%', height: '50%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <ActionIcon
+                          size='xl'
+                          variant='transparent'
+                          color="white"
+                          onClick={() => previewMode ? serviceHandler(directionActionList.PREV) : projectHandler(directionActionList.PREV)}
+                        >
+                          <IconChevronLeft />
+                        </ActionIcon>
+                        <CustomText style={{ ...transitionStyleByPreviewMode, fontWeight: 600, fontSize:'1.2rem', color: 'white' }}>
+                          {previewMode ? data.services[serviceDataIndex].title : data.services[serviceDataIndex].projects[projectDataIndex].title}
+                        </CustomText>
+                        <ActionIcon
+                          size='xl'
+                          variant='transparent'
+                          color="white"
+                          onClick={() => previewMode ? serviceHandler(directionActionList.NEXT) : projectHandler(directionActionList.NEXT)}
+                        >
+                          <IconChevronRight />
+                        </ActionIcon>
+                      </Box>
+                      <Box style={{
+                        width: '100%',
+                        height: '50%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: '.1rem'
+                      }}>
+                        <Button
+                          onClick={restartPreviewMode}
+                          leftSection={<IconChevronLeft/>}
+                          variant="transparent"
+                          color="white"
+                          style={{ display:'flex', alignItems:'center' }}
+                        >
+                          <CustomText style={{ color:'white' }}>
+                            Go Back
+                          </CustomText>
+                        </Button>
+                      </Box>
+                    </Box>
+                    else return <Box style={{
+                      ...transitionStyleByPreviewMode,
+                      width: previewMode
+                        ? getByBreakPoint<string>('95%', '85%', '75%', '65%', '55%')
+                        : getByBreakPoint<string>('100%', '100%', '95%', '85%', '75%'),
+                      height: '15%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}>
+                      {(previewMode ? data.services : data.services[serviceDataIndex].projects).map((item, index) => (
+                        <TextSelect
+                          textStyle={{
+                            fontSize: getByBreakPoint<string>('.9rem', '1rem', '1.1rem', '1.2rem', '1.5rem'),
+                            transition:'all .2s ease'
+                          }}
+                          key={index}
+                          condition={(previewMode ? serviceDataIndex : projectDataIndex)  === index}
+                          onClick={() => previewMode ? changeServiceHandler(index) : changeProjectHandler(index)}
+                          title={item.title}
+                        />
+                      ))}
+                    </Box>
+                  }}
               </Transition>
             </Box>
             <Box style={{
@@ -286,15 +376,15 @@ export default function Page4() {
                 writingMode: 'vertical-lr',
                 transform:'rotate(180deg)'
               }}>
-                {data.title}
+                {data_base.title}
               </CustomText>
               <CustomText style={{
                   fontSize: '1.5rem',
                   height: '20%',
                   marginTop: '40%',
-                  opacity: data.services[indexService].projects[indexProject].subtitle && !previewMode ? 1 : 0
+                  opacity: data_base.services[serviceDataIndex].projects[projectDataIndex].subtitle && !previewMode ? 1 : 0
                 }}>
-                {data.services[indexService].projects[indexProject].subtitle}
+                {data_base.services[serviceDataIndex].projects[projectDataIndex].subtitle}
               </CustomText>
             </Box>
           </Box>

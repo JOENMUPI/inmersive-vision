@@ -1,6 +1,6 @@
 import { useBreakPointHandler } from "@/hooks/breakpointHandler";
 import { PRIMARY_COLOR_HEX, PRIMARY_COLOR_RGB } from "@/utils/conts";
-import { Box, Image, Text } from "@mantine/core";
+import { ActionIcon, Box, Image, Text } from "@mantine/core";
 
 interface previewI {
   image: string,
@@ -20,7 +20,39 @@ export function Preview({
   const { getByBreakPoint, isXS } = useBreakPointHandler()
 
   return (
-    <Box style={{
+    isXS 
+    ? <Box style={{
+      display: 'flex',
+      width:'100%',
+      height: '100%',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+
+    }}>
+      <ActionIcon
+        size='xl'
+        variant="transparent"
+        style={{
+          height: '100%',
+          width: '100%',
+        }}
+      >
+        <Box onClick={onClick} style={{
+          backgroundColor: isSelected ? PRIMARY_COLOR_RGB(.4) : '',
+          borderRadius: '1rem',
+          height: '5rem',
+          width: '5rem',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          boxShadow: isSelected ? '0 0 4rem 0 rgba(0, 0, 0, .5)' : 'none',
+          transition: 'all .2s ease',
+        }}>
+          {icon}
+        </Box>
+      </ActionIcon>
+    </Box>
+    : <Box style={{
       width: getByBreakPoint<string>('30%', '30%', '20%', '17%', '14%'),
       height:  isXS ? '40%' : '80%',
       transition: 'all .2s ease',
