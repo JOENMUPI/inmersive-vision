@@ -293,7 +293,7 @@ export default function Page4() {
                 >
                   {(transitionStyleByPreviewMode) => {
                     if (isXS) return <Box style={{ height: '20%', width: '100%' }}>
-                      <Box style={{ width: '100%', height: '50%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Box style={{ width: '100%', height: '25%', display: 'flex', justifyContent: 'space-between', alignItems: 'end' }}>
                         <ActionIcon
                           size='xl'
                           variant='transparent'
@@ -321,7 +321,8 @@ export default function Page4() {
                         width: '100%',
                         transition:'all .2s ease',
                         opacity: previewMode ? 0 : 1,
-                        height: '50%',
+                        paddingTop: '2%',
+                        height: '75%',
                         display: 'flex',
                         justifyContent: 'center',
                         gap: '.1rem'
