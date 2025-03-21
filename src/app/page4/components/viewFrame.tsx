@@ -140,9 +140,6 @@ export function ViewFrame({ project, backAction }: viewFrameProps) {
     <ActionIcon style={{ position:'absolute' }} size='xl' variant={isXS ? 'transparent' : "light"} onClick={backAction}>
       <IconX color="white" />
     </ActionIcon>
-    <BackgroundImage
-      src={project.imgPreview}
-      style={{ width: '100%', height: '100%', /*backgroundSize:'contain', backgroundRepeat: 'no-repeat'*/ }}
-    />
+    <BackgroundImage src={project.imgPreview} style={{ width: '100%', height: '100%', }} />
   </Box>
 }
