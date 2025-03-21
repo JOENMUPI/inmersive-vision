@@ -6,9 +6,10 @@ import { IconPlus } from "@tabler/icons-react"
 interface titleLineI {
   text: string
   style?: MantineStyleProp
+  styleLine?: MantineStyleProp
 }
 
-export const TitleLine = ({ style, text }: titleLineI) =>{
+export const TitleLine = ({ style, styleLine, text }: titleLineI) => {
   return (<Box style={{
     writingMode: 'vertical-lr',
     transform:'rotate(180deg)',
@@ -23,6 +24,6 @@ export const TitleLine = ({ style, text }: titleLineI) =>{
     <CustomText style={{ fontSize: '1rem' }}>
       {text}
     </CustomText>
-    <Box style={{ backgroundColor: TEXT_COLOR, width: '.1rem', flexGrow: 1 }} />
+    <Box style={{ backgroundColor: TEXT_COLOR, width: '.1rem', flexGrow: 1, ...styleLine }} />
   </Box>)
 }

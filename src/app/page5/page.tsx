@@ -204,6 +204,7 @@ export default function Page5() {
                   width: marginVideo,
                   height: '100%',
                   display: isXS ? 'none' : 'flex',
+                  flexDirection: 'row',
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}>
@@ -273,7 +274,7 @@ export default function Page5() {
                   : <NavBar
                     length={data.comments.length}
                     position={indexComment}
-                    style={{ display: isXS ? 'none' : ' block', height:'68%', marginRight: '2.5%' }}
+                    style={{ height:'68%', marginRight: '2.5%' }}
                   />
                 }
                 <Button

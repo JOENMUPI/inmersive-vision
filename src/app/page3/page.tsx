@@ -1,9 +1,10 @@
 'use client';
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { BackgroundImage, Box, Container, Transition } from "@mantine/core";
 import bgImg1 from '@/../public/page3/Rendering_BACKGROUND_FINAL.png';
 import previewImg1 from '@/../public/page3/Rendering_SMALL_FINAL.png';
 import bgImg2 from '@/../public/page3/Virtual_tour_BACKGROUND_FINAL.png';
+import bgImg2Mobile from '@/../public/page3/Virtual_tour_BACKGROUND_FINAL_movil.png';
 import previewImg2 from '@/../public/page3/Virtual_tour_SMALL_FINAL.png';
 import previewImg3 from '@/../public/page3/marketing_FP_SMALL_FINAL.png';
 import bgImg3 from '@/../public/page3/marketing_FP_BACKGROUND_FINAL.png';
@@ -23,7 +24,7 @@ interface data {
   icon: ReactNode,
 }
 
-const data: data[] = [
+const data_base: data[] = [
   {
     img: bgImg1.src,
     imgPreview: previewImg1.src,
@@ -51,10 +52,22 @@ const data: data[] = [
   },
 ]
 
+const data_mod: data[] = JSON.parse(JSON.stringify(data_base))
+data_mod[0].icon = <RenderIcon color="white" height="2.5rem" /> // al crear un nuevo objj se re asignan los icons ya q se corrompen
+data_mod[1].icon = <Tour360Icon color="white" height="2.5rem" />
+data_mod[2].icon = <FloorPlanIcon color="white" height="2.5rem" />
+data_mod[1].img = bgImg2Mobile.src
+
 export default function Page3() {
   const [isVisible, setIsVisible] = useState<boolean>(true)
   const [indexData, setIndexData] = useState<number>(1)
   const { getByBreakPoint, isXS } = useBreakPointHandler()
+  const [data, setData] = useState<data[]>(data_base)
+
+  useEffect(() => {
+    if (isXS) setData(data_mod)
+    else setData(data_base)
+  }, [isXS])
 
   const indexHandler = (index: number) => {
     if (index === indexData) return
@@ -78,16 +91,15 @@ export default function Page3() {
           height: '100vh',
           padding: 0,
         }}>
-          <BackgroundImage
-            src={data[indexData].img}
-            style={{
-              ...transitionStyle,
-              zIndex: -1,
-              minHeight: isXS ? '80vh' :'100vh',
-              position: 'absolute',
-            }}
-          />
-          <Box style={{ backgroundColor: '#131313', zIndex: -2, height: '100%', width: '100%', position: 'absolute' }} />
+          <Box style={{ backgroundColor: '#131313', zIndex: -1, height: '100vh', width: '100%', position: 'absolute' }} >
+            <BackgroundImage
+              src={data[indexData].img}
+              style={{
+                ...transitionStyle,
+                minHeight: isXS ? '80vh' :'100vh',
+              }}
+            />
+          </Box>
           <Box style={{
             width: '100%',
             height: '100%',

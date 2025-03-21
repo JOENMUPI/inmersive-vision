@@ -139,7 +139,7 @@ export default function Page2() {
           {data.definitions.map((definition, index) => (
             <Box key={index} style={{
               marginTop: changeDefinitionGridLayout ? '2rem' : '3rem',
-              width: changeDefinitionGridLayout ? '100%' : '33%',
+              width: changeDefinitionGridLayout ? '100%' : '32%',
               display:'flex',
               flexDirection: 'column',
               justifyContent: 'center',

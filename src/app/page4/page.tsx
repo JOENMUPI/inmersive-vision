@@ -272,7 +272,7 @@ export default function Page4() {
               display: 'flex',
               flexDirection: 'column'
             }}>
-              <Box style={{ ...transitionStyle, width: '100%', height: isXS ? '75%' : '65%', display: 'flex' }}>
+              <Box style={{ ...transitionStyle, width: '100%', height: isXS ? '75%' : '85%', display: 'flex' }}>
                 { previewMode
                   ? <PreviewFrame
                     changeProjectHandler={changeProjectHandler}
@@ -303,7 +303,10 @@ export default function Page4() {
                           <IconChevronLeft />
                         </ActionIcon>
                         <CustomText style={{ ...transitionStyleByPreviewMode, fontWeight: 600, fontSize:'1.2rem', color: 'white' }}>
-                          {previewMode ? data.services[serviceDataIndex].title : data.services[serviceDataIndex].projects[projectDataIndex].title}
+                          {previewMode
+                            ? data.services[serviceDataIndex].title
+                            : data.services[serviceDataIndex].projects[projectDataIndex].title
+                          }
                         </CustomText>
                         <ActionIcon
                           size='xl'
@@ -316,6 +319,8 @@ export default function Page4() {
                       </Box>
                       <Box style={{
                         width: '100%',
+                        transition:'all .2s ease',
+                        opacity: previewMode ? 0 : 1,
                         height: '50%',
                         display: 'flex',
                         justifyContent: 'center',

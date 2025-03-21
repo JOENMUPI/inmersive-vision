@@ -20,7 +20,7 @@ export function NavBar({ length, position, style }: NavBarI) {
       transition: 'all .2s ease',
       gap: getByBreakPoint<string>('1.5rem','1.5rem','1.5rem','2rem','2rem'),
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
       marginTop: '-1rem',
       ...style
       }}> 

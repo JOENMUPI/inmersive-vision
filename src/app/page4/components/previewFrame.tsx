@@ -30,7 +30,7 @@ export function PreviewFrame({ data, indexService, changeProjectHandler }: previ
       <CustomText style={{ fontSize: '2.2rem' }}>
         {index < 10 ? '0' : '' }{index+1}
       </CustomText>
-      <TitleLine text={item.title} />
+      <TitleLine text={item.title} styleLine={isXS ? { backgroundColor: 'transparent' } : {}} />
     </BackgroundImage>
   ))
 }

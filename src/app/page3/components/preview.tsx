@@ -1,6 +1,7 @@
 import { useBreakPointHandler } from "@/hooks/breakpointHandler";
 import { PRIMARY_COLOR_HEX, PRIMARY_COLOR_RGB } from "@/utils/conts";
 import { ActionIcon, Box, Image, Text } from "@mantine/core";
+import React from "react";
 
 interface previewI {
   image: string,
@@ -18,7 +19,7 @@ export function Preview({
   onClick
 }: previewI) {
   const { getByBreakPoint, isXS } = useBreakPointHandler()
-
+  
   return (
     isXS 
     ? <Box style={{
@@ -48,7 +49,8 @@ export function Preview({
           boxShadow: isSelected ? '0 0 4rem 0 rgba(0, 0, 0, .5)' : 'none',
           transition: 'all .2s ease',
         }}>
-          {icon}
+          {React.isValidElement(icon) ? icon : null}
+          {/* {icon} */}
         </Box>
       </ActionIcon>
     </Box>

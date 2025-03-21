@@ -36,7 +36,7 @@ export function ViewFrame({ project, backAction }: viewFrameProps) {
         alignItems: isXS ? 'end' : ''
       }}
     >
-      <ActionIcon variant="light" onClick={backAction}>
+      <ActionIcon variant="transparent" onClick={backAction}>
         <IconX color="white" />
       </ActionIcon>
       <Box style={{
@@ -65,7 +65,7 @@ export function ViewFrame({ project, backAction }: viewFrameProps) {
                 onClick={() => { setDataIndex(index) }}
                 key={index}
                 src={img}
-                h={'7rem'}
+                h={isXS ? '7rem' : undefined}
                 alt={`img-list-${index}`}
                 style={{
                   transition: 'all .2s ease',
@@ -121,7 +121,7 @@ export function ViewFrame({ project, backAction }: viewFrameProps) {
   )
   else if (project.url) return (
     <Box style={{ width:'100%', heigth: '100%', display:'flex', justifyContent:'end' }}>
-      <ActionIcon style={{ position:'absolute' }} size='xl' variant={isXS ? 'transparent' : "light"} onClick={backAction}>
+      <ActionIcon style={{ position:'absolute' }} size='xl' variant='transparent' onClick={backAction}>
         <IconX color="white" />
       </ActionIcon>
       <iframe
