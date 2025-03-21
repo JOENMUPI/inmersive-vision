@@ -1,7 +1,7 @@
 'use client';
 import { CustomText } from '@/components/customText';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
-import { DELAY_ANIMATION, PAGE_5_ID, PRIMARY_COLOR_HEX_3, TEXT_COLOR_GRAY } from '@/utils/conts';
+import { BG_COLOR, DELAY_ANIMATION, PAGE_5_ID, PRIMARY_COLOR_HEX_3, TEXT_COLOR_GRAY } from '@/utils/conts';
 import { ActionIcon, Avatar, Box, Button, Container, Image, Paper, Rating, Transition } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -106,7 +106,7 @@ export default function Page5() {
           height: '100vh',
           padding: 0,
         }}>
-          <Box style={{ width: '100%', height: '100%', padding: '2% 3%', paddingBottom: 0 }}>
+          <Box style={{ width: '100%', height: '100%', padding: '2% 3%', backgroundColor: BG_COLOR, paddingBottom: 0 }}>
             <Box style={{
               display: 'flex',
               flexDirection: changeHandler('column', 'row'),

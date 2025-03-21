@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from "react";
 import { CustomText } from "@/components/customText";
-import { DELAY_ANIMATION, PAGE_4_ID, TEXT_COLOR_GRAY_2 } from "@/utils/conts";
+import { BG_COLOR, DELAY_ANIMATION, PAGE_4_ID, TEXT_COLOR_GRAY_2 } from "@/utils/conts";
 import { ActionIcon, Box, Button, Container, Transition } from "@mantine/core";
 import { PreviewFrame } from "./components/previewFrame";
 import { ViewFrame } from "./components/viewFrame";
@@ -261,7 +261,7 @@ export default function Page4() {
         <Container id={PAGE_4_ID} style={{
           minWidth:'100%',
           height: '100vh',
-          background: 'linear-gradient(180deg, #131313 0% 70%, #0a0a0a 70% 100%)',
+          background: `linear-gradient(180deg, #131313 0% 70%, ${BG_COLOR} 70% 100%)`,
           padding: 0,
         }}>
           <Box style={{ width: '100%', height: '100%', display: 'flex', padding: '6% 5% 1% 6%' }}>
