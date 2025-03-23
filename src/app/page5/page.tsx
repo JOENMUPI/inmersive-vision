@@ -42,7 +42,7 @@ const data: data = {
     {
       name: 'Ros Halle',
       company: 'Avalon Park Group',
-      ratings: 4,
+      ratings: 5,
       img: rosAvatar.src,
       comment: 'They brought the vision of Avalon Park to reality in a technological way, showing what Avalon Park Wesley Chapel is all about. Totally gratefull.',
       url: 'https://www.youtube.com/embed/jyznBJswDZc?si=HoRPijf6m0Tvslwu',
@@ -133,7 +133,7 @@ export default function Page5() {
                   backgroundColor: GRAY_COLOR_BTN
                 }}>
                   <Box style={{ position: 'relative', top: '-15%' }}>
-                    <QuotIcon color={PRIMARY_COLOR_HEX_3} height='4rem' />
+                    <QuotIcon color={PRIMARY_COLOR_HEX_3} height={getByBreakPoint('4rem', '4rem', '4rem', '5rem', '6rem')} />
                   </Box>
                   <CustomText style={{
                       width: '100%',
@@ -159,7 +159,7 @@ export default function Page5() {
                       <CustomText style={{ fontSize: paperTextSize, color: TEXT_COLOR_GRAY }}>
                         {data.comments[indexComment].company}
                       </CustomText>
-                      <Rating color={PRIMARY_COLOR_HEX_3}  defaultValue={data.comments[indexComment].ratings} />
+                      <Rating color={PRIMARY_COLOR_HEX_3} value={data.comments[indexComment].ratings} defaultValue={data.comments[indexComment].ratings} />
                     </Box>
                   </Box>
 
