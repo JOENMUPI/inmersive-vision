@@ -4,6 +4,6 @@
  */
 
 export const envConfig = {
-  MAILER_USER: process.env.NEXT_PUBLIC_MAILER_USER || 'MAILER_USER',
-  MAILER_PASS: process.env.NEXT_PUBLIC_MAILER_PASS || 'MAILER_PASS',
+  MAILER_USER: process.env.MAILER_USER || 'MAILER_USER',
+  MAILER_PASS: process.env.MAILER_PASS || 'MAILER_PASS',
 }

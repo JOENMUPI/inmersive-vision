@@ -3,7 +3,7 @@ import { useState } from 'react'
 const eviroment = process.env.NODE_ENV
 const url = (eviroment === 'development')
   ? 'http://localhost:3000/api/'
-  : process.env.NEXT_PUBLIC_SERVER_URL
+  : process.env.SERVER_URL
 
 export enum fetchMethod {
   POST='POST',

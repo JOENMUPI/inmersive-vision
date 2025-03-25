@@ -57,8 +57,7 @@ export default function Page6() {
 
   const titleSize = getByBreakPoint('1.5rem', '2rem', '2.5rem', '3rem', '3rem')
   const sendForm = async () => {
-    form.validate()
-    if (form.errors) return
+    if (form.validate().hasErrors) return
     notifyShowBase({
       id: 'test',
       title: 'Sending form',

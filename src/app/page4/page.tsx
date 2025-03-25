@@ -187,11 +187,6 @@ export default function Page4() {
     else setData({ ...data_extended })
   }, [isXS])
 
-  console.log(isXS ? 'xs:' : 'xl:', data)
-  console.log(projectDataIndex)
-  // console.log('base: ', data_base)
-  // console.log('ext: ', data_extended)
-
   const previewFlagHandler = () => {
     setChangePreviewFlag(prev => !prev)
     setTimeout(() => {
