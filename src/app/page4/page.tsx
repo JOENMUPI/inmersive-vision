@@ -187,6 +187,11 @@ export default function Page4() {
     else setData({ ...data_extended })
   }, [isXS])
 
+  console.log(isXS ? 'xs:' : 'xl:', data)
+  console.log(projectDataIndex)
+  // console.log('base: ', data_base)
+  // console.log('ext: ', data_extended)
+
   const previewFlagHandler = () => {
     setChangePreviewFlag(prev => !prev)
     setTimeout(() => {
@@ -387,9 +392,9 @@ export default function Page4() {
                   fontSize: '1.5rem',
                   height: '20%',
                   marginTop: '40%',
-                  opacity: data_base.services[serviceDataIndex].projects[projectDataIndex].subtitle && !previewMode ? 1 : 0
+                  opacity: data.services[serviceDataIndex].projects[projectDataIndex].subtitle && !previewMode ? 1 : 0
                 }}>
-                {data_base.services[serviceDataIndex].projects[projectDataIndex].subtitle}
+                {data.services[serviceDataIndex].projects[projectDataIndex].subtitle}
               </CustomText>
             </Box>
           </Box>

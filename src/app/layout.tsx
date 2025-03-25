@@ -1,4 +1,5 @@
 import '@mantine/core/styles.css'
+import '@mantine/notifications/styles.css';
 import '@/styles/globals.css'
 import React from "react";
 import {
@@ -10,6 +11,7 @@ import {
 import { Metadata, Viewport } from 'next';
 import { Montserrat } from 'next/font/google';
 import { HeaderMenu } from '@/components/header';
+import { Notifications } from '@mantine/notifications';
 
 export const metadata: Metadata = {
   title: "Imersive Vision",
@@ -58,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={montserrat.className} >
         <MantineProvider theme={ThemeMantine} defaultColorScheme='dark' forceColorScheme='dark'>
+          <Notifications position='top-center' />
           <HeaderMenu />
           {children}
         </MantineProvider>

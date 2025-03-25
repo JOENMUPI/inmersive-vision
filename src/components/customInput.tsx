@@ -1,6 +1,7 @@
 import { TextInput, NumberInput, FileInput } from "@mantine/core";
 import { CustomTooltip } from "./customTooltip";
 import { IconPaperclip } from "@tabler/icons-react";
+import { IMaskInput } from 'react-imask';
 
 interface CustomInputI<T> {
   errorText?: string,
@@ -9,6 +10,8 @@ interface CustomInputI<T> {
   style?: React.CSSProperties,
   onChange: (event: T) => void,
   placeholder?: string
+  component?: unknown
+  extprops?: object
   value: T
 }
 
@@ -79,14 +82,17 @@ export function CustomTextInput({
   label,
   value,
   style,
+  component,
   onChange,
-  placeholder = label
+  extprops,
+  placeholder = label,
 }: CustomInputI<string>) {
   const borderColor = isError ? 'red' : TEXT_BORDER_BOTTOM
-
+  
   return (
     <CustomTooltip position='top-start' label={label}>
       <TextInput
+        component={component}
         variant="unstyled"
         placeholder={placeholder}
         aria-label={label}
@@ -104,9 +110,33 @@ export function CustomTextInput({
             ...style,
           }
         }}
+        {...extprops}
       />
     </CustomTooltip>
   )
+}
+
+export function CustomPhoneInput({
+  label,
+  onChange,
+  value,
+  errorText,
+  isError,
+  style,
+}: CustomInputI<string>) {
+  return CustomTextInput({
+    label,
+    component: IMaskInput,
+    extprops: {
+      mask: [{ mask: '+0000000000' }, { mask: '+00000000000' }, { mask: '+000000000000' }],
+    },
+    onChange,
+    value,
+    errorText,
+    isError,
+    placeholder: label + ' (optional)',
+    style,
+  })
 }
 
 export function CustomFileInput({

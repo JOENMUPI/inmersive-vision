@@ -77,6 +77,10 @@ export default function Page5() {
 
   const changeHandler = <T,>(caseA: T, caseB: T) => getByBreakPoint<T>(caseA, caseA, caseA, caseB, caseB)
   
+  const gotoLink = (link: string) => {
+    window.open(link, '_blank');
+  }
+
   const nextFn = () => {
     setIsVisible(false)
     setTimeout(() => {
@@ -280,11 +284,12 @@ export default function Page5() {
                 <Button
                   color={GRAY_COLOR_BTN}
                   size='xl'
+                  onClick={() => gotoLink('https://g.co/kgs/xegKkmB')}
                   style={{
-                    opacity: 0, // hidden
                     transition:'all .2s ease',
-                    width: getByBreakPoint('60%', '40%', '30%', '25%', '20%'),
-                    height:'32%',
+                    width: getByBreakPoint('50%', '40%', '30%', '25%', '20%'),
+                    height:getByBreakPoint('20%', '32%', '32%', '32%', '32%'),
+                    fontSize: getByBreakPoint('1rem', '1.2rem', '1.2rem', '1.2rem', '1.2rem'),
                     borderRadius: '.7rem'
                   }}
                 >

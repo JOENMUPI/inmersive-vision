@@ -1,11 +1,13 @@
 'use client';
 import bgImg from '@/../public/page6/Background_contact_form.png';
 import logoImg from '@/../public/page6/LOGO_IMVI.png';
-import { CustomTextInput } from '@/components/customInput';
+import { CustomPhoneInput, CustomTextInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
 import { LineBottom } from '@/components/lineBotton';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
+import { fetchMethod, useFetch } from '@/hooks/useFetch';
 import { PAGE_6_ID, TEXT_COLOR_GRAY, TEXT_COLOR_GRAY_2 } from '@/utils/conts';
+import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
 import { BackgroundImage, Box, Button, Container, Image } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
@@ -28,28 +30,49 @@ const data: data = {
 interface formI {
   name: string,
   email: string,
-  description: string,
   phone: string,
 }
 
 const INIT_FORM_VALUES: formI = {
   name: '',
   email: '',
-  description: '',
   phone: '',
 }
 
 export default function Page6() {
   const { getByBreakPoint, isXS } = useBreakPointHandler()
+  const { sendF } = useFetch()
   const form = useForm({
     mode: 'controlled',
     initialValues: INIT_FORM_VALUES,
     validate: {
-      // email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      name: (val) => (val ? null : 'Name is empty'),
+      phone: (val) => (val ? /^\+([1-9]{1}[0-9]{0,2})\s?([0-9]{8,14})$/.test(val) ? null: 'Invalid phone' : null),
+      email: (val) => (/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(val)
+        ? null
+        : 'Invalid email'
+      ),
     },
   });
 
   const titleSize = getByBreakPoint('1.5rem', '2rem', '2.5rem', '3rem', '3rem')
+  const sendForm = async () => {
+    form.validate()
+    if (form.errors) return
+    notifyShowBase({
+      id: 'test',
+      title: 'Sending form',
+      message: 'Wait a momment..',
+      loading: true
+    })
+    const responseServer = await sendF({ endpoint: 'form', body: form.values, method: fetchMethod.POST })
+    notifyUpdateBase({
+      id: 'test',
+      title: responseServer.status !== 200 ? 'Error' : 'Form sent',
+      message: responseServer ? responseServer.body.message : 'Oh no! try later..',
+      loading: false
+    })
+  }
 
   return (
     <Container id={PAGE_6_ID} style={{
@@ -107,10 +130,28 @@ export default function Page6() {
               height: '50%',
               width: getByBreakPoint<string>('60%', '50%', '40%', '30%', '20%')
             }}>
-              <CustomTextInput value={form.getValues().name} onChange={(data => form.setFieldValue('name', data))} label='Name' />
-              <CustomTextInput value={form.getValues().email} onChange={(data => form.setFieldValue('email', data))} label='Email' />
-              <CustomTextInput value={form.getValues().phone} onChange={(data => form.setFieldValue('phone', data.toString()))} label='Phone' />
-              <Button color={TEXT_COLOR_GRAY_2}>
+              <CustomTextInput
+                value={form.getValues().name}
+                onChange={(data => form.setFieldValue('name', data))}
+                label='Name'
+                errorText={form.errors?.name ? String(form.errors?.name) : undefined}
+                isError={!!form.errors?.name}
+              />
+              <CustomTextInput
+                value={form.getValues().email}
+                onChange={(data => form.setFieldValue('email', data))}
+                label='Email'
+                errorText={form.errors?.email ? String(form.errors?.email) : undefined}
+                isError={!!form.errors?.email}
+              />
+              <CustomPhoneInput
+                label='Phone'
+                value={form.getValues().phone}
+                onChange={(data => form.setFieldValue('phone', data.toString()))}
+                errorText={form.errors?.phone ? String(form.errors?.phone) : undefined}
+                isError={!!form.errors?.phone}
+              />
+              <Button color={TEXT_COLOR_GRAY_2} onClick={sendForm}>
                 Send
               </Button>
             </Box>

@@ -36,9 +36,12 @@ export function ViewFrame({ project, backAction }: viewFrameProps) {
         alignItems: isXS ? 'end' : ''
       }}
     >
-      <ActionIcon variant="transparent" onClick={backAction}>
-        <IconX color="white" />
-      </ActionIcon>
+      {!isXS
+        ? <></>
+        : <ActionIcon variant="transparent" onClick={backAction}>
+          <IconX color="white" />
+        </ActionIcon>
+      }
       <Box style={{
         width: isXS ? '100%' : '20%',
         heigth: isXS ? '20%' : '100%',
