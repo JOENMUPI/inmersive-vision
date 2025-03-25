@@ -1,0 +1,40 @@
+"filename", "language", "TypeScript JSX", "CSS", "TypeScript", "comment", "blank", "total"
+"c:\dev\imersive vision\client\src\app\layout.tsx", "TypeScript JSX", 64, 0, 0, 0, 6, 70
+"c:\dev\imersive vision\client\src\app\page.tsx", "TypeScript JSX", 25, 0, 0, 0, 4, 29
+"c:\dev\imersive vision\client\src\app\page1\components\NavBar.tsx", "TypeScript JSX", 62, 0, 0, 0, 4, 66
+"c:\dev\imersive vision\client\src\app\page1\page.tsx", "TypeScript JSX", 156, 0, 0, 0, 8, 164
+"c:\dev\imersive vision\client\src\app\page2\page.tsx", "TypeScript JSX", 165, 0, 0, 0, 6, 171
+"c:\dev\imersive vision\client\src\app\page3\components\preview.tsx", "TypeScript JSX", 118, 0, 0, 1, 4, 123
+"c:\dev\imersive vision\client\src\app\page3\page.tsx", "TypeScript JSX", 181, 0, 0, 0, 7, 188
+"c:\dev\imersive vision\client\src\app\page4\components\previewFrame.tsx", "TypeScript JSX", 34, 0, 0, 0, 2, 36
+"c:\dev\imersive vision\client\src\app\page4\components\titelLine.tsx", "TypeScript JSX", 27, 0, 0, 0, 2, 29
+"c:\dev\imersive vision\client\src\app\page4\components\viewFrame.tsx", "TypeScript JSX", 143, 0, 0, 0, 5, 148
+"c:\dev\imersive vision\client\src\app\page4\page.tsx", "TypeScript JSX", 387, 0, 0, 2, 16, 405
+"c:\dev\imersive vision\client\src\app\page4\styles\page.css", "CSS", 0, 11, 0, 0, 0, 11
+"c:\dev\imersive vision\client\src\app\page5\components\NavBar.tsx", "TypeScript JSX", 37, 0, 0, 0, 4, 41
+"c:\dev\imersive vision\client\src\app\page5\page.tsx", "TypeScript JSX", 316, 0, 0, 8, 13, 337
+"c:\dev\imersive vision\client\src\app\page6\page.tsx", "TypeScript JSX", 186, 0, 0, 0, 7, 193
+"c:\dev\imersive vision\client\src\components\TextSelect.tsx", "TypeScript JSX", 33, 0, 0, 0, 2, 35
+"c:\dev\imersive vision\client\src\components\customInput.tsx", "TypeScript JSX", 177, 0, 0, 0, 10, 187
+"c:\dev\imersive vision\client\src\components\customText.tsx", "TypeScript JSX", 13, 0, 0, 0, 2, 15
+"c:\dev\imersive vision\client\src\components\customTooltip.tsx", "TypeScript JSX", 41, 0, 0, 0, 2, 43
+"c:\dev\imersive vision\client\src\components\header.tsx", "TypeScript JSX", 92, 0, 0, 3, 7, 102
+"c:\dev\imersive vision\client\src\components\lineBotton.tsx", "TypeScript JSX", 23, 0, 0, 0, 1, 24
+"c:\dev\imersive vision\client\src\hooks\breakpointHandler.ts", "TypeScript", 0, 0, 17, 0, 3, 20
+"c:\dev\imersive vision\client\src\hooks\indexList.ts", "TypeScript", 0, 0, 23, 0, 5, 28
+"c:\dev\imersive vision\client\src\hooks\scrollTracker.ts", "TypeScript", 0, 0, 22, 0, 7, 29
+"c:\dev\imersive vision\client\src\hooks\useFetch.ts", "TypeScript", 0, 0, 49, 0, 11, 60
+"c:\dev\imersive vision\client\src\pages\api\form.ts", "TypeScript", 0, 0, 8, 0, 2, 10
+"c:\dev\imersive vision\client\src\server\configs\env.config.ts", "TypeScript", 0, 0, 4, 4, 2, 10
+"c:\dev\imersive vision\client\src\server\configs\mailer.config.ts", "TypeScript", 0, 0, 8, 6, 3, 17
+"c:\dev\imersive vision\client\src\server\modules\form\aplication\form.usecase.ts", "TypeScript", 0, 0, 29, 5, 7, 41
+"c:\dev\imersive vision\client\src\server\modules\form\domain\interfaces.ts", "TypeScript", 0, 0, 5, 0, 1, 6
+"c:\dev\imersive vision\client\src\server\modules\form\infraestructure\form.controller.ts", "TypeScript", 0, 0, 14, 0, 3, 17
+"c:\dev\imersive vision\client\src\server\utilities\adapterRes.ts", "TypeScript", 0, 0, 7, 7, 3, 17
+"c:\dev\imersive vision\client\src\server\utilities\httpRes.ts", "TypeScript", 0, 0, 8, 8, 3, 19
+"c:\dev\imersive vision\client\src\server\utilities\mail.ts", "TypeScript", 0, 0, 43, 11, 10, 64
+"c:\dev\imersive vision\client\src\server\utilities\tryUtil.ts", "TypeScript", 0, 0, 14, 0, 1, 15
+"c:\dev\imersive vision\client\src\styles\globals.css", "CSS", 0, 36, 0, 0, 7, 43
+"c:\dev\imersive vision\client\src\utils\conts.tsx", "TypeScript JSX", 15, 0, 0, 0, 2, 17
+"c:\dev\imersive vision\client\src\utils\notifications.tsx", "TypeScript JSX", 38, 0, 0, 0, 3, 41
+"Total", "-", 2333, 47, 251, 55, 185, 2871
