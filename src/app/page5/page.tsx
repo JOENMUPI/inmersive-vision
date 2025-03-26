@@ -70,7 +70,7 @@ export default function Page5() {
   const [isVisible, setIsVisible] = useState<boolean>(true)
   const [indexComment, setIndexComment] = useState<number>(0)
   const { getByBreakPoint, isXS } = useBreakPointHandler()
-  const iconSize = getByBreakPoint<string>('1.5rem','1.5  rem','2rem','2.5rem','3rem')
+  const iconSize = getByBreakPoint<string>('1.5rem','1.5rem','2rem','2.5rem','3rem')
   const comanyLogoSize = getByBreakPoint<string>('30%','60%','70%','70%','70%')
   const marginVideo = isXS ? '0%' : '5%'
   const paperTextSize = getByBreakPoint<string>('.4rem','.5rem','.6rem','.7rem','.9rem')
