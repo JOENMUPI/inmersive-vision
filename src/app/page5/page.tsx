@@ -74,6 +74,7 @@ export default function Page5() {
   const comanyLogoSize = getByBreakPoint<string>('30%','60%','70%','70%','70%')
   const marginVideo = isXS ? '0%' : '5%'
   const paperTextSize = getByBreakPoint<string>('.4rem','.5rem','.6rem','.7rem','.9rem')
+  
 
   const changeHandler = <T,>(caseA: T, caseB: T) => getByBreakPoint<T>(caseA, caseA, caseA, caseB, caseB)
   
