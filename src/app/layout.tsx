@@ -12,6 +12,7 @@ import { Metadata, Viewport } from 'next';
 import { Montserrat } from 'next/font/google';
 import { HeaderMenu } from '@/components/header';
 import { Notifications } from '@mantine/notifications';
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata: Metadata = {
   title: "Imersive Vision",
@@ -56,6 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" {...mantineHtmlProps} style={{ fontSize: '14px' }}>
       <head>
+        <Analytics/>
         <ColorSchemeScript />
       </head>
       <body className={montserrat.className} >
