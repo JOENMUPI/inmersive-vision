@@ -2,7 +2,7 @@
 import { BackgroundImage, Box, Container } from '@mantine/core';
 import { CustomText } from '@/components/customText';
 import { PAGE_2_ID, PRIMARY_COLOR_HEX, TEXT_COLOR_GRAY } from '@/utils/conts';
-import bgImg from '@/../public/page2/background_CLIENT_PAIN.png';
+import bgImg from '@/../public/page2/background_CLIENT_PAIN.webp';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
 import { LineBottom } from '@/components/lineBotton';
 

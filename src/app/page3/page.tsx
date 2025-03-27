@@ -1,13 +1,13 @@
 'use client';
 import { ReactNode, useEffect, useState } from "react";
 import { BackgroundImage, Box, Container, Transition } from "@mantine/core";
-import bgImg1 from '@/../public/page3/Rendering_BACKGROUND_FINAL.png';
-import previewImg1 from '@/../public/page3/Rendering_SMALL_FINAL.png';
-import bgImg2 from '@/../public/page3/Virtual_tour_BACKGROUND_FINAL.png';
-import bgImg2Mobile from '@/../public/page3/Virtual_tour_BACKGROUND_FINAL_movil.png';
-import previewImg2 from '@/../public/page3/Virtual_tour_SMALL_FINAL.png';
-import previewImg3 from '@/../public/page3/marketing_FP_SMALL_FINAL.png';
-import bgImg3 from '@/../public/page3/marketing_FP_BACKGROUND_FINAL.png';
+import bgImg1 from '@/../public/page3/Rendering_BACKGROUND_FINAL.webp';
+import previewImg1 from '@/../public/page3/Rendering_SMALL_FINAL.webp';
+import bgImg2 from '@/../public/page3/Virtual_tour_BACKGROUND_FINAL.webp';
+import bgImg2Mobile from '@/../public/page3/Virtual_tour_BACKGROUND_FINAL_movil.webp';
+import previewImg2 from '@/../public/page3/Virtual_tour_SMALL_FINAL.webp';
+import previewImg3 from '@/../public/page3/marketing_FP_SMALL_FINAL.webp';
+import bgImg3 from '@/../public/page3/marketing_FP_BACKGROUND_FINAL.webp';
 import { Tour360Icon, RenderIcon, FloorPlanIcon } from '@/../public/Iconos/icons'
 import { Preview } from "@/app/page3/components/preview";
 import { CustomText } from "@/components/customText";

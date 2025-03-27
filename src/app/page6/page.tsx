@@ -1,6 +1,6 @@
 'use client';
-import bgImg from '@/../public/page6/Background_contact_form.png';
-import logoImg from '@/../public/page6/LOGO_IMVI.png';
+import bgImg from '@/../public/page6/Background_contact_form.webp';
+import logoImg from '@/../public/page6/LOGO_IMVI.webp';
 import { CustomPhoneInput, CustomTextInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
 import { LineBottom } from '@/components/lineBotton';

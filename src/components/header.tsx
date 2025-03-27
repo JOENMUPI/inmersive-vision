@@ -1,7 +1,7 @@
 'use client';
 import { Box, Image } from '@mantine/core';
 import { ScrollDirection, useScrollTracker } from '@/hooks/scrollTracker';
-import logoComppany from '@/../public/page6/LOGO_IMVI.png';
+import logoComppany from '@/../public/page6/LOGO_IMVI.webp';
 import { TextSelect } from '@/components/TextSelect';
 import { PAGE_1_ID, PAGE_3_ID, PAGE_4_ID, PAGE_5_ID } from '@/utils/conts';
 import { useEffect, useState } from 'react';

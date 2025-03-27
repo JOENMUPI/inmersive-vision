@@ -7,15 +7,15 @@ import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { useState } from 'react';
 import { CustomTooltip } from '@/components/customTooltip';
 import { NavBar } from './components/NavBar';
-import CompanyLogo360 from '@/../public/page5/logo_360_pros.png';
-import CompanyLogoAnaStudio from '@/../public/page5/logo_ana_studio.png';
-import CompanyLogoAvalonPark from '@/../public/page5/logo_avalon_park.png';
-import CompanyLogoFloridaHousePLan from '@/../public/page5/logo_Florida_house_plan.png';
-import CompanyLogoH2Group from '@/../public/page5/logo_h2_group.png';
-import CompanyLogoMVI from '@/../public/page5/logo_mvi.png';
-import rosAvatar from '@/../public/page5/Ros_Photo.png';
-// import joseColoAvatar from '@/../public/page5/Jose_colo_photo.png';
-import davidAvatar from '@/../public/page5/David_Photo.png';
+import CompanyLogo360 from '@/../public/page5/logo_360_pros.webp';
+import CompanyLogoAnaStudio from '@/../public/page5/logo_ana_studio.webp';
+import CompanyLogoAvalonPark from '@/../public/page5/logo_avalon_park.webp';
+import CompanyLogoFloridaHousePLan from '@/../public/page5/logo_Florida_house_plan.webp';
+import CompanyLogoH2Group from '@/../public/page5/logo_h2_group.webp';
+import CompanyLogoMVI from '@/../public/page5/logo_mvi.webp';
+import rosAvatar from '@/../public/page5/Ros_Photo.webp';
+// import joseColoAvatar from '@/../public/page5/Jose_colo_photo.webp';
+import davidAvatar from '@/../public/page5/David_Photo.webp';
 import { QuotIcon } from '../../../public/Iconos/icons';
 
 
