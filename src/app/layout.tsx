@@ -46,7 +46,7 @@ export const ThemeMantine = createTheme({
       '#4d4f66',
       '#34354a',
       '#2b2c3d',
-      '#151515', // background
+      '#151515', // background  
       '#0c0d21',
       '#01010a',
     ],
