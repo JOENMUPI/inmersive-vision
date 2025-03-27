@@ -58,6 +58,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" {...mantineHtmlProps} style={{ fontSize: '14px' }}>
       <head>
         <Analytics/>
+        <link rel="preconnect" href="https://www.youtube.com/embed/jyznBJswDZc?si=HoRPijf6m0Tvslwu" />
+        <link rel="preconnect" href="https://www.youtube.com/embed/bylU-_5BihU" />
         <ColorSchemeScript />
       </head>
       <body className={montserrat.className} >
