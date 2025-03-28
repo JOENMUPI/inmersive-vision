@@ -28,6 +28,7 @@ export function NavBar({ length, position, style }: NavBarI) {
         {length < 10 ? '0' : ''}{position + 1}.
       </CustomText>
       <Progress
+        aria-label="progress bar page 5"
         style={{ flex: "1", height:'.3vh' }}
         color="#999999" 
         value={length > 0 ? (position + 1) / length * 100 : 0}

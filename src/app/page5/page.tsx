@@ -138,7 +138,7 @@ export default function Page5() {
                   backgroundColor: GRAY_COLOR_BTN
                 }}>
                   <Box style={{ position: 'relative', top: '-15%' }}>
-                    <QuotIcon color={PRIMARY_COLOR_HEX_3} height={getByBreakPoint('4rem', '4rem', '4rem', '5rem', '6rem')} />
+                    <QuotIcon color={PRIMARY_COLOR_HEX_3} height={getByBreakPoint('4rem', '4rem', '4rem', '5rem', '5.5rem')} />
                   </Box>
                   <CustomText style={{
                       width: '100%',
