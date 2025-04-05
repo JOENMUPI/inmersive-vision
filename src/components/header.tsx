@@ -28,6 +28,10 @@ const links: linksProps[] = [
   },
 ];
 
+const noShowheaderlist = [
+  'tours-contact'
+]
+
 export function HeaderMenu() {
   const { scrollDirection } = useScrollTracker();
   const { getByBreakPoint } = useBreakPointHandler();
@@ -59,6 +63,7 @@ export function HeaderMenu() {
     if (element) element.scrollIntoView({ behavior: 'smooth' })
   }
 
+  if (noShowheaderlist.includes(window.location.pathname.split('/')[1])) return null
   return (<header style={{
       opacity: scrollDirection === ScrollDirection.DOWN ? 0 : 1,
       transition: 'all .2s ease',

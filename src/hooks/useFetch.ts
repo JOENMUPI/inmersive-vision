@@ -1,16 +1,7 @@
+import { fetchMethod } from '@/utils/enums'
 import { useState } from 'react'
 
-const eviroment = process.env.NODE_ENV
-const url = (eviroment === 'development')
-  ? 'http://localhost:3000/api/'
-  : process.env.SERVER_URL
-
-export enum fetchMethod {
-  POST='POST',
-  GET='GET',
-  PUT='PUT',
-  DELETE='DELETE'
-}
+const url = process.env.NEXT_PUBLIC_SERVER_URL
 
 interface fetchI {
   method: fetchMethod

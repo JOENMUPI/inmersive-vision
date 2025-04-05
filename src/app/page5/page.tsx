@@ -54,7 +54,7 @@ const data: data = {
     //   comment: 'Brighing our desings to life before contruction was a game-changer. The immersive toour elevated our presentation, giving clients a true sense of space and exclusivity.',
     //   url: 'https://www.youtube.com/embed/bylU-_5BihU',
     }, {
-      name: 'Davis Rodriguez',
+      name: 'David Rodriguez',
       company: 'Total Building Desing',
       ratings: 5,
       img: davidAvatar.src,
@@ -164,7 +164,7 @@ export default function Page5() {
                       <CustomText style={{ fontSize: paperTextSize, color: TEXT_COLOR_GRAY }}>
                         {data.comments[indexComment].company}
                       </CustomText>
-                      <Rating color={PRIMARY_COLOR_HEX_3} value={data.comments[indexComment].ratings} defaultValue={data.comments[indexComment].ratings} />
+                      <Rating readOnly color={PRIMARY_COLOR_HEX_3} value={data.comments[indexComment].ratings} defaultValue={data.comments[indexComment].ratings} />
                     </Box>
                   </Box>
 

@@ -1,4 +1,4 @@
-import { TextInput, NumberInput, FileInput } from "@mantine/core";
+import { TextInput, NumberInput, FileInput, Textarea } from "@mantine/core";
 import { CustomTooltip } from "./customTooltip";
 import { IconPaperclip } from "@tabler/icons-react";
 import { IMaskInput } from 'react-imask';
@@ -184,4 +184,44 @@ export function CustomFileInput({
     placeholder={placeholder}
     leftSectionPointerEvents="none"
   />
+}
+
+export const CustomInputTextArea = ({
+  errorText = 'Error',
+  isError = false,
+  label,
+  value,
+  style,
+  component,
+  onChange,
+  extprops,
+  placeholder = label,
+}: CustomInputI<string>) => {
+
+  const borderColor = isError ? 'red' : TEXT_BORDER_BOTTOM
+  return (
+    <Textarea
+      error={isError ? errorText : undefined}
+      styles={{
+        input: { 
+          fontSize: '1.3rem',
+          marginBottom: '.5rem',
+          transition: 'all .2s ease',
+          border: 0,
+          backgroundColor: 'transparent',
+        },
+        wrapper: {
+          transition: 'all .2s ease',
+          borderBottom: `1px solid ${borderColor}`,
+          ...style,
+        }
+      }}
+      placeholder={placeholder}
+      value={value}
+      component={component}
+      onChange={e => onChange(e.currentTarget.value)}
+      {...extprops}
+    >
+    </Textarea>
+  )
 }
