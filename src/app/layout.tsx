@@ -55,7 +55,7 @@ export const ThemeMantine = createTheme({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" {...mantineHtmlProps} style={{ fontSize: '14px' }}>
+    <html lang="en" {...mantineHtmlProps} style={{ fontSize: '12px' }}>
       <head>
         <Analytics/>
         <link rel="preconnect" href="https://www.youtube.com/embed/jyznBJswDZc?si=HoRPijf6m0Tvslwu" />
