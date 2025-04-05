@@ -1,5 +1,5 @@
 'use client'
-import { Container } from '@mantine/core';
+import { Button, Container } from '@mantine/core';
 import { PDFDocument, PDFPage, RGB, RotationTypes, StandardFonts, rgb } from 'pdf-lib'
 import bgImg from '@/../public/calculator/background_CLIENT_PAIN.jpg';
 import logoImg from '@/../public/calculator/LOGO_IMVI.png';
@@ -542,14 +542,13 @@ export default function Pdf() {
       height: '100vh',
       width: '100%',
       padding: 0,
-      
       display: 'flex',
       alignItems: 'center',
 
     }}>
-      <button onClick={handleDownload}>
+      <Button onClick={handleDownload}>
         Descargar PDF
-      </button>
+      </Button>
     </Container>
   )
 }

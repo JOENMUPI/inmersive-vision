@@ -49,7 +49,7 @@ export default function ToursContact() {
   });
 
   useEffect(() => {
-    if (form.getValues().model !== '') return
+    if (typeof window === 'undefined') return
     form.setFieldValue('company', window.location.pathname.split('/')[2])
     form.setFieldValue('model', window.location.pathname.split('/')[3])
     form.setFieldValue('category', window.location.pathname.split('/')[4])

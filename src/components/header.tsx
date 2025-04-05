@@ -44,7 +44,7 @@ export function HeaderMenu() {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
-          if (rect.top >= 0 && rect.top < window.innerHeight) {
+          if (typeof window !== 'undefined' && rect.top >= 0 && rect.top < window.innerHeight) {
             setActiveSection(section);
           }
         }
@@ -52,9 +52,9 @@ export function HeaderMenu() {
     }
 
     window.addEventListener('scroll', checkVisibility)
-    // return () => {
-    //   window.removeEventListener('scroll', checkVisibility)
-    // };
+    return () => {
+      window.removeEventListener('scroll', checkVisibility)
+    };
   }, [])
 
   const scrollToElement = (id: string) => {
@@ -63,7 +63,7 @@ export function HeaderMenu() {
     if (element) element.scrollIntoView({ behavior: 'smooth' })
   }
 
-  if (noShowheaderlist.includes(window.location.pathname.split('/')[1])) return null
+  if (typeof window !== 'undefined' && noShowheaderlist.includes(window.location.pathname.split('/')[1])) return null
   return (<header style={{
       opacity: scrollDirection === ScrollDirection.DOWN ? 0 : 1,
       transition: 'all .2s ease',
