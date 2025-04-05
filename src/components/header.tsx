@@ -37,6 +37,7 @@ export function HeaderMenu() {
   const { getByBreakPoint } = useBreakPointHandler();
   const [activeSection, setActiveSection] = useState<string>(PAGE_1_ID)
   const sections: string[] = [PAGE_1_ID, PAGE_3_ID, PAGE_4_ID, PAGE_5_ID]
+  const [endpoint, setEndpoint] = useState<string>()
 
   useEffect(() => {
     const checkVisibility = () => {
@@ -51,7 +52,9 @@ export function HeaderMenu() {
       })
     }
 
+    setEndpoint(window.location.pathname.split('/')[1])
     window.addEventListener('scroll', checkVisibility)
+    
     return () => {
       window.removeEventListener('scroll', checkVisibility)
     };
@@ -63,7 +66,7 @@ export function HeaderMenu() {
     if (element) element.scrollIntoView({ behavior: 'smooth' })
   }
 
-  if (typeof window !== 'undefined' && noShowheaderlist.includes(window.location.pathname.split('/')[1])) return null
+  if (endpoint && noShowheaderlist.includes(endpoint)) return null
   return (<header style={{
       opacity: scrollDirection === ScrollDirection.DOWN ? 0 : 1,
       transition: 'all .2s ease',
