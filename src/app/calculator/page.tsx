@@ -110,7 +110,8 @@ const handleDownload = async () => {
 
   heightCursor -= fontSizeBase
   const invoiceHeigth = 80
-  page.drawText('INVOICE' ?? 'BUDGET', {
+  // page.drawText('INVOICE' ?/? 'BUDGET', {
+  page.drawText('INVOICE', {
     x: margiBaseX + fontSizeBase + 7,
     y: heightCursor - fontSizeBase - invoiceHeigth,
     rotate: { angle: 90, type: RotationTypes.Degrees },
