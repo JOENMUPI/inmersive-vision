@@ -1,4 +1,4 @@
-import { companyFormList } from "./enums";
+import { companyFormKeys } from "./enums";
 
 export interface formDataI {
   name: string;
@@ -16,7 +16,7 @@ export interface mailI {
 export interface formToursDataI {
   name: string;
   description: string;
-  company: companyFormList;
+  company: companyFormKeys;
   model: string;
   category: string
   email: string;

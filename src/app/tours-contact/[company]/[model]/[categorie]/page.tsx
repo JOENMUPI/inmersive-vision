@@ -53,7 +53,7 @@ export default function ToursContact() {
     form.setFieldValue('company', window.location.pathname.split('/')[2])
     form.setFieldValue('model', window.location.pathname.split('/')[3])
     form.setFieldValue('category', window.location.pathname.split('/')[4])
-  }, [form])
+  }, [])
 
   const sendForm = async () => {
     if (form.validate().hasErrors) return

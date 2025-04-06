@@ -1,3 +1,5 @@
+
+export type companyFormKeys = keyof typeof companyFormList;
 export enum companyFormList {
   MVI_MODERN_HOMES = 'jc@maestra-vida.com',
   FLORIDA_HOUSE_PLAN = 'info@totalbuildingdesign.com',
