@@ -8,7 +8,7 @@ import img2 from '@/../public/page1/Foto_web_portada_02.webp';
 import img3 from '@/../public/page1/Foto_web_portada_03.webp';
 import { CustomText } from '@/components/customText';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
-import { DELAY_ANIMATION, PAGE_1_ID, TEXT_COLOR_GRAY } from '@/utils/conts';
+import { DELAY_ANIMATION, PAGE_1_ID, TEXT_COLOR_GRAY } from '@/utils/consts';
 
 interface data {
   img: string,

@@ -1,5 +1,5 @@
 import { CustomText } from "@/components/customText"
-import { PRIMARY_COLOR_HEX, TEXT_COLOR } from "@/utils/conts"
+import { PRIMARY_COLOR_HEX, TEXT_COLOR } from "@/utils/consts"
 import { Box, MantineStyleProp } from "@mantine/core"
 import { IconPlus } from "@tabler/icons-react"
 

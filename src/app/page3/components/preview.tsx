@@ -1,5 +1,5 @@
 import { useBreakPointHandler } from "@/hooks/breakpointHandler";
-import { PRIMARY_COLOR_HEX, PRIMARY_COLOR_RGB } from "@/utils/conts";
+import { PRIMARY_COLOR_HEX, PRIMARY_COLOR_RGB } from "@/utils/consts";
 import { ActionIcon, Box, Image, Text } from "@mantine/core";
 import React from "react";
 

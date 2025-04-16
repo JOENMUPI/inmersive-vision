@@ -3,7 +3,7 @@ import { Box, Image } from '@mantine/core';
 import { ScrollDirection, useScrollTracker } from '@/hooks/scrollTracker';
 import logoComppany from '@/../public/page6/LOGO_IMVI.webp';
 import { TextSelect } from '@/components/TextSelect';
-import { PAGE_1_ID, PAGE_3_ID, PAGE_4_ID, PAGE_5_ID } from '@/utils/conts';
+import { PAGE_1_ID, PAGE_3_ID, PAGE_4_ID, PAGE_5_ID } from '@/utils/consts';
 import { useEffect, useState } from 'react';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
 
@@ -58,6 +58,7 @@ export function HeaderMenu() {
     return () => {
       window.removeEventListener('scroll', checkVisibility)
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const scrollToElement = (id: string) => {

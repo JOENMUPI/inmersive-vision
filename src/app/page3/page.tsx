@@ -11,7 +11,7 @@ import bgImg3 from '@/../public/page3/marketing_FP_BACKGROUND_FINAL.webp';
 import { Tour360Icon, RenderIcon, FloorPlanIcon } from '@/../public/Iconos/icons'
 import { Preview } from "@/app/page3/components/preview";
 import { CustomText } from "@/components/customText";
-import { DELAY_ANIMATION, PAGE_3_ID } from "@/utils/conts";
+import { DELAY_ANIMATION, PAGE_3_ID } from "@/utils/consts";
 import { useBreakPointHandler } from "@/hooks/breakpointHandler";
 
 interface data {

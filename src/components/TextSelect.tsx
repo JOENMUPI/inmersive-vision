@@ -1,6 +1,6 @@
 import { CustomText } from "@/components/customText";
 import { LineBottom } from "@/components/lineBotton";
-import { PRIMARY_COLOR_HEX, TEXT_COLOR } from "@/utils/conts";
+import { PRIMARY_COLOR_HEX, TEXT_COLOR } from "@/utils/consts";
 import { Box } from "@mantine/core";
 
 interface TextSelectProps {

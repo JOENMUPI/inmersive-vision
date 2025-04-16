@@ -1,5 +1,5 @@
 import { Box } from "@mantine/core";
-import { PRIMARY_COLOR_HEX_2, PRIMARY_COLOR_RGB } from "@/utils/conts";
+import { PRIMARY_COLOR_HEX_2, PRIMARY_COLOR_RGB } from "@/utils/consts";
 
 export function LineBottom({ style, styleLine, children }: {
   style?: React.CSSProperties,

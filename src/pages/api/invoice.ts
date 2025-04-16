@@ -1,9 +1,9 @@
-import { errorMethod, sendFormTours } from '@/server/modules/form/infraestructure/form.controller'
+import { errorMethod, createPdf } from '@/server/modules/invoice/infraestructure/pdf.controller'
 import { adapterResponseI } from '@/server/utilities/adapters'
 import { methodHTTP } from '@/server/utilities/enums'
 import type { NextApiRequest, NextApiResponse } from 'next'
  
 export default function handler(req: NextApiRequest, res: NextApiResponse<adapterResponseI>) {
-  if (req.method === methodHTTP.POST) sendFormTours(req, res)  
+  if (req.method === methodHTTP.POST) createPdf(req, res)  
   else errorMethod(req, res)
 }

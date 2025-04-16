@@ -6,12 +6,13 @@ import { CustomText } from '@/components/customText';
 import { LineBottom } from '@/components/lineBotton';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
 import { useFetch } from '@/hooks/useFetch';
-import { PAGE_6_ID, TEXT_COLOR_GRAY, TEXT_COLOR_GRAY_2 } from '@/utils/conts';
+import { PAGE_6_ID, TEXT_COLOR_GRAY, TEXT_COLOR_GRAY_2 } from '@/utils/consts';
 import { fetchMethod } from '@/utils/enums';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
 import { checkEmail, checkPhone } from '@/utils/validations';
 import { BackgroundImage, Box, Button, Container, Image } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useRef } from 'react';
 
 interface data {
   highlight: string,
@@ -54,6 +55,9 @@ export default function Page6() {
     },
   });
 
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+
   const titleSize = getByBreakPoint('1.5rem', '2rem', '2.5rem', '3rem', '3rem')
   const sendForm = async () => {
     if (form.validate().hasErrors) return
@@ -64,6 +68,8 @@ export default function Page6() {
       loading: true
     })
     const responseServer = await sendF({ endpoint: 'form', body: form.values, method: fetchMethod.POST })
+    
+    if (responseServer.status === 200) form.reset()
     notifyUpdateBase({
       id: 'test',
       title: responseServer.status !== 200 ? 'Error' : 'Form sent',
@@ -131,12 +137,15 @@ export default function Page6() {
               <CustomTextInput
                 value={form.getValues().name}
                 onChange={(data => form.setFieldValue('name', data))}
+                onEnter={emailInputRef?.current?.focus}
                 label='Name'
                 errorText={form.errors?.name ? String(form.errors?.name) : undefined}
                 isError={!!form.errors?.name}
               />
               <CustomTextInput
                 value={form.getValues().email}
+                ref={emailInputRef}
+                onEnter={phoneInputRef?.current?.focus}
                 onChange={(data => form.setFieldValue('email', data))}
                 label='Email'
                 errorText={form.errors?.email ? String(form.errors?.email) : undefined}
@@ -144,6 +153,8 @@ export default function Page6() {
               />
               <CustomPhoneInput
                 label='Phone'
+                ref={phoneInputRef}
+                onEnter={sendForm}
                 value={form.getValues().phone}
                 onChange={(data => form.setFieldValue('phone', data.toString()))}
                 errorText={form.errors?.phone ? String(form.errors?.phone) : undefined}

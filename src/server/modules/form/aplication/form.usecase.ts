@@ -1,23 +1,23 @@
 import nodemailer from 'nodemailer'
 import { mailerConfig } from "@/server/configs/mailer.config"
 import { formDataI, formToursDataI, mailI } from "@/server/modules/form/domain/interfaces"
-import { adapterRes, adapterResI } from "@/server/utilities/adapterRes"
+import { adapterResponseHttp, adapterResponseHttpI } from "@/server/utilities/adapters"
 import { envConfig } from '@/server/configs/env.config'
-import { createMailFormHtml, createMailToursHtml } from '../domain/mials'
-import { companyFormList } from '../domain/enums'
+import { createMailFormHtml, createMailToursHtml } from '@/server/modules/form/domain/mials'
+import { companyFormList } from '@/server/modules/form/domain/enums'
 
 const mailer = nodemailer.createTransport(mailerConfig)
 
 /**
  * @description Esta funcion se usa para enviar el formulario al correo en el cual sera procesado por la empresa
  * @param {formDataI} form form info
- * @returns {Promise<adapterResI<string>>} Retorna un obj para indicar si el mensaje deseado como promesa
+ * @returns {Promise<adapterResponseHttpI<string>>} Retorna un obj para indicar si el mensaje deseado como promesa
  */
-export const FormUseCase = async (form: formDataI): Promise<adapterResI<string>> => {
+export const FormUseCase = async (form: formDataI): Promise<adapterResponseHttpI<string>> => {
   const { email, name } = form
 
-  if (!name) return adapterRes({ response: 'Name is required', statusHttp: 400 })
-  if (!email) return adapterRes({ response: 'Email is required', statusHttp: 400 })
+  if (!name) return adapterResponseHttp({ message: 'Name is required', statusHttp: 400 })
+  if (!email) return adapterResponseHttp({ message: 'Email is required', statusHttp: 400 })
 
   const mail: mailI = {
     from: envConfig.MAILER_USER,
@@ -28,23 +28,23 @@ export const FormUseCase = async (form: formDataI): Promise<adapterResI<string>>
 
   try {
     await mailer.sendMail(mail)
-    return adapterRes({ statusHttp: 200, response: 'Message sent successfully' })
+    return adapterResponseHttp({ statusHttp: 200, message: 'Message sent successfully' })
   } catch (err) {
     console.error(err)
     return err instanceof Error
-      ? adapterRes({ statusHttp: 500, response: 'Unexpected error, please try again later: ' + err.message })
-      : adapterRes({ statusHttp: 500, response: 'Unexpected error, please try again later: Unexpected error' })
+      ? adapterResponseHttp({ statusHttp: 500, message: 'Unexpected error, please try again later: ' + err.message })
+      : adapterResponseHttp({ statusHttp: 500, message: 'Unexpected error, please try again later: Unexpected error' })
   }
 }
 
-export const FormToursUseCase = async (form: formToursDataI): Promise<adapterResI<string>> => {
+export const FormToursUseCase = async (form: formToursDataI): Promise<adapterResponseHttpI<string>> => {
   const { email, description, category, company, model } = form
   
-  if (!description) return adapterRes({ response: 'description is required', statusHttp: 400 })
-  if (!email) return adapterRes({ response: 'Email is required', statusHttp: 400 })
-  if (!category) return adapterRes({ response: 'Category is required', statusHttp: 400 })
-  if (!company) return adapterRes({ response: 'Company is required', statusHttp: 400 })
-  if (!model) return adapterRes({ response: 'Model is required', statusHttp: 400 })
+  if (!description) return adapterResponseHttp({ message: 'description is required', statusHttp: 400 })
+  if (!email) return adapterResponseHttp({ message: 'Email is required', statusHttp: 400 })
+  if (!category) return adapterResponseHttp({ message: 'Category is required', statusHttp: 400 })
+  if (!company) return adapterResponseHttp({ message: 'Company is required', statusHttp: 400 })
+  if (!model) return adapterResponseHttp({ message: 'Model is required', statusHttp: 400 })
 
   const mailHtml: string = createMailToursHtml(form)
 
@@ -67,11 +67,11 @@ export const FormToursUseCase = async (form: formToursDataI): Promise<adapterRes
       mailer.sendMail(companyMail),
       mailer.sendMail(meMail),
     ])
-    return adapterRes({ statusHttp: 200, response: 'Message sent successfully' })
+    return adapterResponseHttp({ statusHttp: 200, message: 'Message sent successfully' })
   } catch (err) {
     console.error(err)
     return err instanceof Error
-      ? adapterRes({ statusHttp: 500, response: 'Unexpected error, please try again later: ' + err.message })
-      : adapterRes({ statusHttp: 500, response: 'Unexpected error, please try again later: Unexpected error' })
+      ? adapterResponseHttp({ statusHttp: 500, message: 'Unexpected error, please try again later: ' + err.message })
+      : adapterResponseHttp({ statusHttp: 500, message: 'Unexpected error, please try again later: Unexpected error' })
   }
 }

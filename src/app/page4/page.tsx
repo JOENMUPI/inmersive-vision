@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from "react";
 import { CustomText } from "@/components/customText";
-import { BG_COLOR, DELAY_ANIMATION, PAGE_4_ID, TEXT_COLOR_GRAY_2 } from "@/utils/conts";
+import { BG_COLOR, DELAY_ANIMATION, PAGE_4_ID, TEXT_COLOR_GRAY_2 } from "@/utils/consts";
 import { ActionIcon, Box, Button, Container, Transition } from "@mantine/core";
 import { PreviewFrame } from "./components/previewFrame";
 import { ViewFrame } from "./components/viewFrame";

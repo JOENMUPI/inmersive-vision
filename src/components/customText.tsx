@@ -1,4 +1,4 @@
-import { TEXT_COLOR } from "@/utils/conts"
+import { TEXT_COLOR } from "@/utils/consts"
 import { Text } from "@mantine/core"
 
 interface customTextI {

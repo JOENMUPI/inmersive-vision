@@ -1,37 +1,23 @@
-'use client'
-import { Button, Container } from '@mantine/core';
-import { PDFDocument, PDFPage, RGB, RotationTypes, StandardFonts, rgb } from 'pdf-lib'
+import { imgToBytes, formatDateToDDMMYYYY, numberToUSD, base64ToByteArray } from "@/server/utilities/formatters"
 import bgImg from '@/../public/pdf/background_CLIENT_PAIN.jpg';
 import logoImg from '@/../public/pdf/LOGO_IMVI.png';
-import { StaticImageData } from 'next/image';
+import { PDFDocument, PDFImage, PDFPage, RGB, rgb, RotationTypes, StandardFonts } from "pdf-lib";
+import { pdfDataI, clientI, paymentInfoI, mountInvoiceI } from "@/server/modules/invoice/domain/interfaces";
+import { generateQR } from "@/server/modules/invoice/aplication/utils/generateQr";
 
-const imgToBytes = async (img: StaticImageData) => {
-  const response = await fetch(img.src);
-  const blobImg = await response.blob();
-  const arrayBuffer = await blobImg.arrayBuffer();
-  return new Uint8Array(arrayBuffer); 
-} 
-
-const base64ToByteArray = (base64: string): Uint8Array<ArrayBuffer> => {
-  const binaryString = window.atob(base64);
-  const len = binaryString.length;
-  const bytes = new Uint8Array(len);
-  // Convertir cada carácter a su valor de byte correspondiente
-  for (let i = 0; i < len; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-  }
-  return bytes;
+export interface generatePdfI {
+  pdfData: pdfDataI,
+  client: clientI
+  paymentInfo: paymentInfoI,
+  mountInvoice: mountInvoiceI
 }
 
-
-const handleDownload = async () => {
+export const generatePdf = async (data: generatePdfI): Promise<string> => {
   // img logic coverted to bytes
   const [bgImgByt, logoImgByt] = await Promise.all([
     imgToBytes(bgImg),
     imgToBytes(logoImg)
   ])
-
-  const qrbyt = base64ToByteArray("iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAklEQVR4AewaftIAAAKWSURBVO3BQa6jAAwFwX4W979yT5ZeISEgyve4Kn6wxijWKMUapVijFGuUYo1SrFGKNUqxRinWKMUapVijFGuUYo1SrFGKNcrBTUn4JpUzSehU7kjCN6ncUaxRijVKsUY5eJjKk5JwhUqXhE7lDpUnJeFJxRqlWKMUa5SDlyXhCpUrknBFEjqVO5JwhcqbijVKsUYp1igHw6l0SeiS0Kn8ZcUapVijFGuUg2FU/mfFGqVYoxRrlIOXqfwSlS4Jd6j8kmKNUqxRijXKwcOS8EuS0KnckYRfVqxRijVKsUY5uEnlL0nCFSp/SbFGKdYoxRrl4KYkdCpdEp6k0ql0SehUziThTBKepPKmYo1SrFGKNcrBTSpnVLokdCq/TKVLwpOS0KncUaxRijVKsUaJHzwoCZ3KmSR0Kl0SOpU7ktCpXJGETqVLwhUqTyrWKMUapVijxA9uSEKn8qYkXKFyRRI6lSuScEblTcUapVijFGuUg5tUziThCpUuCXck4YzKmSR0KleodEnoVJ5UrFGKNUqxRokf/GFJeJLKmSScUemScIXKHcUapVijFGuU+MENSfgmlScl4YzKFUnoVLokdCpPKtYoxRqlWKMcPEzlSUk4k4RvSkKnciYJnUqXhE7ljmKNUqxRijXKwcuScIXKm1S6JJxJQqdyhco3FWuUYo1SrFEOhlHpknCFypkkXJGETqVTeVKxRinWKMUa5WCYJHQqXRI6lTNJ6FSuSMI3FWuUYo1SrFEOXqbyJpUzSehUrlDpktCp/JJijVKsUYo1ysHDkvBNSehUziShU3mTSpeETuVJxRqlWKMUa5T4wRqjWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYo/wAItvzVNYyGZwAAAABJRU5ErkJggg==")
   
   const blueColor = rgb(.18, .47, .58)
   const grayColor = rgb(.29, .35, .4)
@@ -45,14 +31,22 @@ const handleDownload = async () => {
   const margiBaseX = 50
   const margiBaseY = 50
   
+  
   const pdfDoc = await PDFDocument.create()
-  const [fontBase, fontBold, bgImage, logoImage, qrImage] = await Promise.all([
+  const [fontBase, fontBold, bgImage, logoImage] = await Promise.all([
     pdfDoc.embedFont(StandardFonts.Helvetica),
     pdfDoc.embedFont(StandardFonts.HelveticaBold),
     pdfDoc.embedJpg(bgImgByt),
-    pdfDoc.embedPng(logoImgByt),
-    pdfDoc.embedPng(qrbyt)
+    pdfDoc.embedPng(logoImgByt)
   ])
+
+  let qrImage: PDFImage | undefined = undefined
+  if (data.paymentInfo.urlQr) {
+    const qrImg64 = await generateQR(data.paymentInfo.urlQr)
+    const qrbyt = base64ToByteArray(qrImg64.split('base64,')[1])
+    qrImage = await pdfDoc.embedPng(qrbyt)  
+  }
+
   const page = pdfDoc.addPage()
   const { width, height } = page.getSize()
   
@@ -125,8 +119,7 @@ const handleDownload = async () => {
 
   heightCursor -= fontSizeBase
   const invoiceHeigth = 80
-  // page.drawText('INVOICE' ?/? 'BUDGET', {
-  page.drawText('INVOICE', {
+  page.drawText(data.pdfData.isInvoice ? 'INVOICE' : 'BUDGET', {
     x: margiBaseX + fontSizeBase + 7,
     y: heightCursor - fontSizeBase - invoiceHeigth,
     rotate: { angle: 90, type: RotationTypes.Degrees },
@@ -155,7 +148,7 @@ const handleDownload = async () => {
 
   heightCursor -= fontSizeBase
 
-  page.drawText('02/02/2025', {
+  page.drawText(formatDateToDDMMYYYY(data.pdfData.dateExpiration), {
     x: marginRight - 60,
     y: heightCursor - fontSizeBase,
     size: fontSizeBase / 1.2,
@@ -165,7 +158,7 @@ const handleDownload = async () => {
 
   heightCursor -= fontSizeBase
 
-  page.drawText('Avalon Park Group', {
+  page.drawText(data.client.name, {
     x: InvoiceRightX,
     y: heightCursor - fontSizeBase,
     size: fontSizeTitle,
@@ -175,7 +168,7 @@ const handleDownload = async () => {
 
   heightCursor -= fontSizeBase
 
-  page.drawText('A: 13525 Mirror Lake Drive, Orlando FL', {
+  page.drawText('A: ' + data.client.address, {
     x: InvoiceRightX,
     y: heightCursor - fontSizeBase,
     size: fontSizeText,
@@ -185,7 +178,7 @@ const handleDownload = async () => {
 
   heightCursor -= fontSizeBase
 
-  page.drawText('M: email@gmial.com', {
+  page.drawText('M: ' + data.client.email, {
     x: InvoiceRightX,
     y: heightCursor - fontSizeBase,
     size: fontSizeText,
@@ -195,7 +188,7 @@ const handleDownload = async () => {
 
   heightCursor -= fontSizeBase
 
-  page.drawText('P: 4077758395', {
+  page.drawText('P: ' + data.client.phone, {
     x: InvoiceRightX,
     y: heightCursor - fontSizeBase,
     size: fontSizeText,
@@ -221,7 +214,7 @@ const handleDownload = async () => {
 
   heightCursor -= 4
 
-  page.drawText('Project ref: P567', {
+  page.drawText('Project ref: ' + data.pdfData.idProject, {
     x: InvoiceRightX,
     y: heightCursor - fontSizeBase,
     size: fontSizeCaption,
@@ -229,7 +222,7 @@ const handleDownload = async () => {
     color: whiteColor,
   })
 
-  page.drawText('Invoice Nro: 020225-001', {
+  page.drawText('Invoice Nro: ' + data.pdfData.id, {
     x: InvoiceRightX + width / 4 - 30,
     y: heightCursor - fontSizeBase,
     size: fontSizeCaption,
@@ -237,7 +230,7 @@ const handleDownload = async () => {
     color: whiteColor,
   })
 
-  page.drawText('Installments: 1 of 3', {
+  page.drawText(`Installments: ${data.mountInvoice.currentInstallment} of ${data.mountInvoice.totalInstallment}`, {
     x: InvoiceRightX + width / 2 - 30,
     y: heightCursor - fontSizeBase,
     size: fontSizeCaption,
@@ -245,7 +238,7 @@ const handleDownload = async () => {
     color: whiteColor,
   })
 
-  page.drawText('Date issued: 02/02/2025', {
+  page.drawText('Date issued: ' + formatDateToDDMMYYYY(data.pdfData.dateCreation), {
     x: marginRight - 80,
     y: heightCursor - fontSizeBase,
     size: fontSizeCaption,
@@ -284,7 +277,7 @@ const handleDownload = async () => {
   lineGridX({page, thickness: 2 })
   heightCursor -= fontSizeBase
   
-  page.drawText('Renacer description', {
+  page.drawText(data.pdfData?.descriptions[0]?.description ?? '', {
     x: InvoiceRightX,
     y: heightCursor - fontSizeBase,
     size: fontSizeText,
@@ -296,18 +289,19 @@ const handleDownload = async () => {
   const initVerticalLineGrid = heightCursor + 5
   const finalVerticalLineGrid = heightCursor - heightLineGrid * 9
   
+  const textLength = '$00,000.00'.length
   const mountPositionX = alingTextRight({
     fontSize: fontSizeText,
     initX: verticalLinegrid,
-    textLength: '$00,000.00'.length,
+    textLength,
     spread: 75
   })
   
-  page.drawText('$00,0000.00', {
+  page.drawText(numberToUSD(data.pdfData?.descriptions[0]?.amount), {
     x: alingTextRight({
       fontSize: fontSizeTextDescription,
       initX: verticalLinegrid,
-      textLength: '$00,000.00'.length,
+      textLength,
       spread: 70
     }),
     y: heightCursor - fontSizeBase,
@@ -344,7 +338,7 @@ const handleDownload = async () => {
     color: blueColor,
   })
 
-  page.drawText('$00,000.00', {
+  page.drawText(numberToUSD(data.pdfData.descriptions.reduce((acc, val) => acc + val.amount, 0)), {
     x: mountPositionX,
     y: heightCursor - (heightLineGrid + fontSizeText) / 2,
     size: fontSizeText,
@@ -368,7 +362,7 @@ const handleDownload = async () => {
     color: blueColor,
   })
 
-  page.drawText('$00,000.00', {
+  page.drawText(numberToUSD(data.mountInvoice.paidMount), {
     x: mountPositionX,
     y: heightCursor - (heightLineGrid + fontSizeText) / 2,
     size: fontSizeText,
@@ -392,7 +386,7 @@ const handleDownload = async () => {
     color: blueColor,
   })
 
-  page.drawText('$00,000.00', {
+  page.drawText(numberToUSD(data.mountInvoice.pendingMount), {
     x: mountPositionX,
     y: heightCursor - (heightLineGrid + fontSizeText) / 2,
     size: fontSizeText,
@@ -418,111 +412,115 @@ const handleDownload = async () => {
 
   heightCursor -= heightLineGrid
 
-  page.drawText('PAYMENT INFORMATION', {
-    x: InvoiceRightX,
-    y: heightCursor,
-    size: fontSizeTitle,
-    font: fontBold,
-    color: blueColor,
-  })
+  if (data.pdfData.isInvoice) {
+    page.drawText('PAYMENT INFORMATION', {
+      x: InvoiceRightX,
+      y: heightCursor,
+      size: fontSizeTitle,
+      font: fontBold,
+      color: blueColor,
+    })
+  
+    heightCursor -= heightLineGrid - 5
+    const descriptionX = InvoiceRightX + 70
+  
+    page.drawText('Company name:', {
+      x: InvoiceRightX,
+      y: heightCursor,
+      size: fontSizeCaption,
+      font: fontBold,
+      color: whiteColor,
+    })
+  
+    page.drawText(data.paymentInfo.companyName, {
+      x: descriptionX,
+      y: heightCursor,
+      size: fontSizeCaption,
+      font: fontBase,
+      color: whiteColor,
+    })
 
-  heightCursor -= heightLineGrid - 5
-  const descriptionX = InvoiceRightX + 70
-
-  page.drawText('Company name:', {
-    x: InvoiceRightX,
-    y: heightCursor,
-    size: fontSizeCaption,
-    font: fontBold,
-    color: whiteColor,
-  })
-
-  page.drawText('Architecture & Desing LLC', {
-    x: descriptionX,
-    y: heightCursor,
-    size: fontSizeCaption,
-    font: fontBase,
-    color: whiteColor,
-  })
-
-  page.drawImage(qrImage, {
-    x: marginRight - qrImage.width / 2,
-    y: heightCursor - qrImage.height / 2,
-    width: qrImage.width / 2,
-    height: qrImage.height / 2,
-  })
-
-  heightCursor -= fontSizeTextDescription
-
-  page.drawText('Bank name:', {
-    x: InvoiceRightX,
-    y: heightCursor,
-    size: fontSizeCaption,
-    font: fontBold,
-    color: whiteColor,
-  })
-
-  page.drawText('Bank of America', {
-    x: descriptionX,
-    y: heightCursor,
-    size: fontSizeCaption,
-    font: fontBase,
-    color: whiteColor,
-  })
-
-  heightCursor -= fontSizeTextDescription
-
-  page.drawText('Account number:', {
-    x: InvoiceRightX,
-    y: heightCursor,
-    size: fontSizeCaption,
-    font: fontBold,
-    color: whiteColor,
-  })
-
-  page.drawText('11215144', {
-    x: descriptionX,
-    y: heightCursor,
-    size: fontSizeCaption,
-    font: fontBase,
-    color: whiteColor,
-  })
-
-  heightCursor -= fontSizeTextDescription
-
-  page.drawText('Routing number:', {
-    x: InvoiceRightX,
-    y: heightCursor,
-    size: fontSizeCaption,
-    font: fontBold,
-    color: whiteColor,
-  })
-
-  page.drawText('5451154', {
-    x: descriptionX,
-    y: heightCursor,
-    size: fontSizeCaption,
-    font: fontBase,
-    color: whiteColor,
-  })
-
-  heightCursor -= fontSizeTextDescription
-
-  page.drawText('Zelle:', {
-    x: InvoiceRightX,
-    y: heightCursor,
-    size: fontSizeCaption,
-    font: fontBold,
-    color: whiteColor,
-  })
-
-  page.drawText('manager@archdesing.llc', {
-    x: descriptionX,
-    y: heightCursor,
-    size: fontSizeCaption,
-    font: fontBase,
-    color: whiteColor,
-  })
+    if (qrImage) {
+      page.drawImage(qrImage, {
+        x: marginRight - qrImage.width / 2,
+        y: heightCursor - qrImage.height / 2,
+        width: qrImage.width / 2,
+        height: qrImage.height / 2,
+      })
+    }
+  
+    heightCursor -= fontSizeTextDescription
+  
+    page.drawText('Bank name:', {
+      x: InvoiceRightX,
+      y: heightCursor,
+      size: fontSizeCaption,
+      font: fontBold,
+      color: whiteColor,
+    })
+  
+    page.drawText(data.paymentInfo.bankName, {
+      x: descriptionX,
+      y: heightCursor,
+      size: fontSizeCaption,
+      font: fontBase,
+      color: whiteColor,
+    })
+  
+    heightCursor -= fontSizeTextDescription
+  
+    page.drawText('Account number:', {
+      x: InvoiceRightX,
+      y: heightCursor,
+      size: fontSizeCaption,
+      font: fontBold,
+      color: whiteColor,
+    })
+  
+    page.drawText(data.paymentInfo.accountNumber?.toString() ?? '', {
+      x: descriptionX,
+      y: heightCursor,
+      size: fontSizeCaption,
+      font: fontBase,
+      color: whiteColor,
+    })
+  
+    heightCursor -= fontSizeTextDescription
+  
+    page.drawText('Routing number:', {
+      x: InvoiceRightX,
+      y: heightCursor,
+      size: fontSizeCaption,
+      font: fontBold,
+      color: whiteColor,
+    })
+  
+    page.drawText(data.paymentInfo.routingNumber?.toString() ?? '', {
+      x: descriptionX,
+      y: heightCursor,
+      size: fontSizeCaption,
+      font: fontBase,
+      color: whiteColor,
+    })
+  
+    heightCursor -= fontSizeTextDescription
+  
+    page.drawText('Zelle:', {
+      x: InvoiceRightX,
+      y: heightCursor,
+      size: fontSizeCaption,
+      font: fontBold,
+      color: whiteColor,
+    })
+  
+    page.drawText(data.paymentInfo.zelle, {
+      x: descriptionX,
+      y: heightCursor,
+      size: fontSizeCaption,
+      font: fontBase,
+      color: whiteColor,
+    })
+  }
 
   heightCursor -= fontSizeBase * 3
 
@@ -547,30 +545,5 @@ const handleDownload = async () => {
   const blob = new Blob([pdfBytes], { type: 'application/pdf' });
   const url = window.URL.createObjectURL(blob);
   
-  window.open(url, '_blank')
-  
-  // const a = document.createElement('a');
-  // a.href = url;
-  // a.download = 'documento.pdf';
-  // document.body.appendChild(a);
-  // a.click();
-  // a.remove();
-}
-
-export default function Pdf() {
-
-  return (
-    <Container style={{
-      height: '100vh',
-      width: '100%',
-      padding: 0,
-      display: 'flex',
-      alignItems: 'center',
-
-    }}>
-      <Button onClick={handleDownload}>
-        Descargar PDF
-      </Button>
-    </Container>
-  )
+  return url;
 }

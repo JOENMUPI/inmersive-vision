@@ -1,7 +1,7 @@
 'use client';
 import { CustomText } from '@/components/customText';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
-import { BG_COLOR, DELAY_ANIMATION, PAGE_5_ID, PRIMARY_COLOR_HEX_3, TEXT_COLOR_GRAY } from '@/utils/conts';
+import { BG_COLOR, DELAY_ANIMATION, PAGE_5_ID, PRIMARY_COLOR_HEX_3, TEXT_COLOR_GRAY } from '@/utils/consts';
 import { ActionIcon, Avatar, Box, Button, Container, Image, Paper, Rating, Transition } from '@mantine/core';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { useState } from 'react';

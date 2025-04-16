@@ -1,9 +1,10 @@
 import { errorMethod, sendForm } from '@/server/modules/form/infraestructure/form.controller'
-import { responseHttp, responseHttpI } from '@/server/utilities/httpRes'
+import { adapterResponse, adapterResponseI } from '@/server/utilities/adapters'
+import { methodHTTP } from '@/server/utilities/enums'
 import type { NextApiRequest, NextApiResponse } from 'next'
  
-export default function handler(req: NextApiRequest, res: NextApiResponse<responseHttpI>) {
-  if (req.method === 'GET') res.status(200).json(responseHttp({ message: 'Hello from Next.js!' }))
-  else if (req.method === 'POST') sendForm(req, res)
+export default function handler(req: NextApiRequest, res: NextApiResponse<adapterResponseI>) {
+  if (req.method === methodHTTP.GET) res.status(200).json(adapterResponse({ message: 'Hello from Next.js!' }))
+  else if (req.method === methodHTTP.POST) sendForm(req, res)
   else errorMethod(req, res)
 }

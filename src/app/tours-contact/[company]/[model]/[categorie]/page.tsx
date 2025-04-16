@@ -4,13 +4,13 @@ import { CustomInputTextArea, CustomPhoneInput, CustomTextInput } from '@/compon
 import { CustomText } from '@/components/customText';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
 import { useFetch } from '@/hooks/useFetch';
-import { TEXT_COLOR_GRAY_2 } from '@/utils/conts';
+import { TEXT_COLOR_GRAY_2 } from '@/utils/consts';
 import { fetchMethod } from '@/utils/enums';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
 import { checkEmail, checkPhone } from '@/utils/validations';
 import { BackgroundImage, Box, Button, Container } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface formI {
   name: string,
@@ -53,7 +53,13 @@ export default function ToursContact() {
     form.setFieldValue('company', window.location.pathname.split('/')[2])
     form.setFieldValue('model', window.location.pathname.split('/')[3])
     form.setFieldValue('category', window.location.pathname.split('/')[4])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
 
   const sendForm = async () => {
     if (form.validate().hasErrors) return
@@ -64,6 +70,8 @@ export default function ToursContact() {
       loading: true
     })
     const responseServer = await sendF({ endpoint: 'tours-contact', body: form.values, method: fetchMethod.POST })
+
+    if (responseServer.status === 200) form.reset()
     notifyUpdateBase({
       id: 'test',
       title: responseServer.status !== 200 ? 'Error' : 'Form sent',
@@ -120,13 +128,16 @@ export default function ToursContact() {
             }}>
               <CustomTextInput
                 value={form.getValues().name}
+                onEnter={emailInputRef.current?.focus}
                 onChange={(data => form.setFieldValue('name', data))}
                 label='Name'
                 errorText={form.errors?.name ? String(form.errors?.name) : undefined}
                 isError={!!form.errors?.name}
               />
-              <CustomTextInput
+              <CustomTextInput    
+                ref={emailInputRef}            
                 value={form.getValues().email}
+                onEnter={phoneInputRef.current?.focus}
                 onChange={(data => form.setFieldValue('email', data))}
                 label='Email'
                 errorText={form.errors?.email ? String(form.errors?.email) : undefined}
@@ -134,13 +145,17 @@ export default function ToursContact() {
               />
               <CustomPhoneInput
                 label='Phone'
+                ref={phoneInputRef}
                 value={form.getValues().phone}
+                onEnter={descriptionInputRef.current?.focus}
                 onChange={(data => form.setFieldValue('phone', data.toString()))}
                 errorText={form.errors?.phone ? String(form.errors?.phone) : undefined}
                 isError={!!form.errors?.phone}
               />
               <CustomInputTextArea
+                ref={descriptionInputRef}
                 label='Description'
+                onEnter={sendForm}
                 value={form.getValues().description}
                 onChange={(data => form.setFieldValue('description', data.toString()))}
                 errorText={form.errors?.description ? String(form.errors?.description) : undefined}
