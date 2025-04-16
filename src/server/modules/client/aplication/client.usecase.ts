@@ -16,7 +16,7 @@ export const getClientUseCase = async ({
   
   if (dbData.hasError) return adapterResponseHttp({ message: dbData.message, hasError: dbData.hasError, statusHttp: 500 })
   else if (!dbData.payload || dbData.payload.length === 0) {
-    return adapterResponseHttp({ message: 'No clients found', hasError: false, statusHttp: 204 })
+    return adapterResponseHttp({ message: 'No clients found', hasError: false, statusHttp: 200 })
   }
 
   const dataFormatted: clientModel[] = dbData.payload.map(client => {
