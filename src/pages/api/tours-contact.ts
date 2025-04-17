@@ -1,5 +1,5 @@
 import { errorMethod, sendFormTours } from '@/server/modules/form/infraestructure/form.controller'
-import { adapterResponseI } from '@/server/utilities/adapters'
+import { adapterResponseI } from '@/server/utilities/interfaces'
 import { methodHTTP } from '@/server/utilities/enums'
 import type { NextApiRequest, NextApiResponse } from 'next'
  

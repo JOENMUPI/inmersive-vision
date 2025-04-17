@@ -1,6 +1,7 @@
 import { errorMethod, sendForm } from '@/server/modules/form/infraestructure/form.controller'
-import { adapterResponse, adapterResponseI } from '@/server/utilities/adapters'
+import { adapterResponse } from '@/server/utilities/adapters'
 import { methodHTTP } from '@/server/utilities/enums'
+import { adapterResponseI } from '@/server/utilities/interfaces'
 import type { NextApiRequest, NextApiResponse } from 'next'
  
 export default function handler(req: NextApiRequest, res: NextApiResponse<adapterResponseI>) {

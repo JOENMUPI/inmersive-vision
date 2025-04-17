@@ -1,3 +1,4 @@
+import { adapterResponseHttpI, adapterResponseI } from "@/server/utilities/interfaces"
 /**
  *
  * @description Funcion generica para crear una estructura general de respuesta con el cliente
@@ -7,11 +8,6 @@
  * @returns {JSON} A json with { message, hasError, body }.
  */
 
-export interface adapterResponseI<T = object> {
-  message: string
-  hasError?: boolean
-  payload?: T
-}
 
 export const adapterResponse = <Y>({ message, payload, hasError = false }: adapterResponseI<Y>) => {
   return { message, hasError, payload }
@@ -24,10 +20,6 @@ export const adapterResponse = <Y>({ message, payload, hasError = false }: adapt
  * @param {Number} statusHttp Codigo http que deseamos enviar.
  * @returns {Object} A json with { response, status }.
  */
-
-export interface adapterResponseHttpI<T = object> extends adapterResponseI<T> {
-  statusHttp: number;
-}
 
 export const adapterResponseHttp = <Y = object>({ message, statusHttp, hasError = false, payload }: adapterResponseHttpI<Y>) => {
   return { message, statusHttp, hasError, payload }

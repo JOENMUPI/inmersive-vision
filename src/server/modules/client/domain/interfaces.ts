@@ -1,5 +1,4 @@
-import { adapterResponseI } from "@/server/utilities/adapters";
-import { clientModel, updateBaseI, anulateProps } from "@/server/utilities/interfaces";
+import { adapterResponseI, anulateProps, clientModel, updateBaseI } from "@/server/utilities/interfaces";
 
 export interface dbClient {
   getClient: (ids?: string[]) => Promise<adapterResponseI<Array<clientModel>>>;

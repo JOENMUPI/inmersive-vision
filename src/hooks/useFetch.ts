@@ -1,3 +1,4 @@
+import { adapterResponseI } from '@/server/utilities/interfaces'
 import { fetchMethod } from '@/utils/enums'
 import { useState } from 'react'
 
@@ -11,19 +12,12 @@ interface fetchI {
   signal?: AbortSignal
 }
 
-interface responseFetch {
-  status: number
-  body: {
-    message: string
-    body?: object
-    hasError: boolean
-  }
-}
+type responseFetch<T> = adapterResponseI<T>
 
-export const useFetch = (isLoading = false) => {
+export const useFetch = <T>(isLoading = false) => {
   const [loading, setLoading] = useState(isLoading)
 
-  const sendF = async ({ method, endpoint, body, token, signal }: fetchI): Promise<responseFetch> => {
+  const sendF = async ({ method, endpoint, body, token, signal }: fetchI): Promise<responseFetch<T>> => {
     try {
       setLoading(true)
       const headers = new Headers({ 'Content-Type': 'application/json' })
@@ -33,12 +27,12 @@ export const useFetch = (isLoading = false) => {
       if (signal) options = { ...options, signal }
       if (body) options = { ...options, body: JSON.stringify(body) }
       const response = await fetch(url + endpoint, options)
-      
-      return { status: response.status, body: await response.json() }
+      const dataRes = await response.json()
+      return { ...dataRes  }
     } catch (e) {
       console.error(e)
-      const errRes: responseFetch = { status: 500, body: { message: '', hasError: true } } 
-      if (e instanceof Error) errRes.body.message = e.message
+      const errRes: responseFetch<T> = { message: 'Unexpected error, try later', hasError: true } 
+      if (e instanceof Error) errRes.message = e.message
       return errRes
     } finally {
       setLoading(false)
@@ -47,4 +41,3 @@ export const useFetch = (isLoading = false) => {
 
   return { sendF, loading }
 }
-

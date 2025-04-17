@@ -1,9 +1,9 @@
-import { errorMethod, createPdf } from '@/server/modules/invoice/infraestructure/pdf.controller'
 import { adapterResponseI } from '@/server/utilities/interfaces'
-import { methodHTTP } from '@/server/utilities/enums'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { errorMethod, anulateMethodPayment } from '@/server/modules/methodPayment/infraestructure/methodPayment.controller'
+import { methodHTTP } from '@/server/utilities/enums'
  
 export default function handler(req: NextApiRequest, res: NextApiResponse<adapterResponseI>) {
-  if (req.method === methodHTTP.POST) createPdf(req, res)  
+  if (req.method === methodHTTP.PATCH) anulateMethodPayment(req, res)
   else errorMethod(req, res)
 }

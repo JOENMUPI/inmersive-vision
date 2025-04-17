@@ -71,11 +71,11 @@ export default function ToursContact() {
     })
     const responseServer = await sendF({ endpoint: 'tours-contact', body: form.values, method: fetchMethod.POST })
 
-    if (responseServer.status === 200) form.reset()
+    if (!responseServer.hasError) form.reset()
     notifyUpdateBase({
       id: 'test',
-      title: responseServer.status !== 200 ? 'Error' : 'Form sent',
-      message: responseServer ? responseServer.body.message : 'Oh no! try later..',
+      title: responseServer.hasError ? 'Error' : 'Form sent',
+      message: responseServer.message,
       loading: false
     })
   }

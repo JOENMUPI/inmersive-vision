@@ -1,17 +1,28 @@
 import { dbClient } from "@/server/modules/client/domain/interfaces"
-import { adapterResponseHttpI, adapterResponseHttp } from "@/server/utilities/adapters"
+import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { dateToUTC, hexToString } from "@/server/utilities/formatters"
-import { anulateProps, clientModel, encrypManagerI, updateBaseI } from "@/server/utilities/interfaces";
+import { adapterResponseHttpI, anulateProps, clientModel, encrypManagerI, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
 
 export const getClientUseCase = async ({
   clientIds,
   dbManager,
   encryptManager,
+  validatorManager
 }:{
   clientIds?: string[],
   dbManager: dbClient,
   encryptManager: encrypManagerI,
+  validatorManager: validatorManagerI<clientModel>
 }): Promise<adapterResponseHttpI> => {
+  if (!dbManager) {
+    return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
+  } else if (!validatorManager) {
+    return adapterResponseHttp({ message: 'validatorManager is undefined', hasError: true, statusHttp: 500 })
+  }
+
+  const validator = validatorManager.validateGet(clientIds)
+  if (validator.hasError) return adapterResponseHttp({ statusHttp: 400, ...validator })
+  
   const dbData = await dbManager.getClient(clientIds);
   
   if (dbData.hasError) return adapterResponseHttp({ message: dbData.message, hasError: dbData.hasError, statusHttp: 500 })
@@ -39,10 +50,12 @@ export const createClientUseCase = async ({
   clients,
   dbManager,
   encryptManager,
+  validatorManager,
 }:{
   clients: clientModel[],
   dbManager: dbClient,
-  encryptManager: encrypManagerI
+  encryptManager: encrypManagerI,
+  validatorManager: validatorManagerI<clientModel> 
 }): Promise<adapterResponseHttpI<Array<clientModel>>> => {
   if (!clients) {
     return adapterResponseHttp({ message: 'client is undefined', hasError: true, statusHttp: 500 })
@@ -52,7 +65,12 @@ export const createClientUseCase = async ({
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!encryptManager) {
     return adapterResponseHttp({ message: 'encryptManager is undefined', hasError: true, statusHttp: 500 })
+  } else if (!validatorManager) {
+    return adapterResponseHttp({ message: 'validatorManager is undefined', hasError: true, statusHttp: 500 })
   }
+
+  const validator = validatorManager.validateInsert(clients)
+  if (validator.hasError) return adapterResponseHttp({ statusHttp: 400, ...validator })
   
   const _clients: clientModel[] = clients.map(client => ({
     email: encryptManager.encryptAES(client.email),
@@ -69,10 +87,12 @@ export const createClientUseCase = async ({
 
 export const deleteClientUseCase = async ({
   clientIds,
-  dbManager
+  dbManager,
+  validatorManager
 }:{
   clientIds: string[],
   dbManager: dbClient,
+  validatorManager: validatorManagerI<clientModel>,
 }): Promise<adapterResponseHttpI<Array<clientModel>>> => {
   if (!clientIds) {
     return adapterResponseHttp({ message: 'client is undefined', hasError: true, statusHttp: 500 })
@@ -80,7 +100,12 @@ export const deleteClientUseCase = async ({
     return adapterResponseHttp({ message: 'client no data', hasError: true, statusHttp: 500 })
   } else if (!dbManager) {
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
+  } else if (!validatorManager) {
+    return adapterResponseHttp({ message: 'validatorManager is undefined', hasError: true, statusHttp: 500 })
   }
+
+  const validator = validatorManager.validateDelete(clientIds)
+  if (validator.hasError) return adapterResponseHttp({ statusHttp: 400, ...validator })
 
   const res = await dbManager.deleteClient(clientIds);
 
@@ -89,13 +114,15 @@ export const deleteClientUseCase = async ({
 }
 
 export const updateClientUseCase = async ({
-  clients: client,
+  client,
   dbManager,
   encryptManager,
+  validatorManager
 }:{
-  clients: updateBaseI<clientModel>,
+  client: updateBaseI<clientModel>,
   dbManager: dbClient,
-  encryptManager: encrypManagerI
+  encryptManager: encrypManagerI,
+  validatorManager: validatorManagerI<clientModel>
 }): Promise<adapterResponseHttpI<Array<clientModel>>> => {
   if (!client) {
     return adapterResponseHttp({ message: 'client is undefined', hasError: true, statusHttp: 500 })
@@ -107,7 +134,12 @@ export const updateClientUseCase = async ({
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!encryptManager) {
     return adapterResponseHttp({ message: 'encryptManager is undefined', hasError: true, statusHttp: 500 })
+  } else if (!validatorManager) {
+    return adapterResponseHttp({ message: 'validatorManager is undefined', hasError: true, statusHttp: 500 })
   }
+
+  const validator = validatorManager.validateUpdate([client])
+  if (validator.hasError) return adapterResponseHttp({ statusHttp: 400, ...validator })
 
   const _client: updateBaseI<clientModel> = {
     currentId: client.currentId,
@@ -130,22 +162,29 @@ export const updateClientUseCase = async ({
 }
 
 export const anulateClientUseCase = async ({
-  ids,
+  clientIds,
   dbManager,
+  validatorManager
 }:{
-  ids: string[],
+  clientIds: string[],
   dbManager: dbClient,
+  validatorManager: validatorManagerI<clientModel> 
 }): Promise<adapterResponseHttpI<Array<clientModel>>> => {
-  if (!ids) {
+  if (!clientIds) {
     return adapterResponseHttp({ message: 'ids is undefined', hasError: true, statusHttp: 500 })
-  } else if (ids.length === 0) {
+  } else if (clientIds.length === 0) {
     return adapterResponseHttp({ message: 'ids no data', hasError: true, statusHttp: 500 })
   } else if (!dbManager) {
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
+  } else if (!validatorManager) {
+    return adapterResponseHttp({ message: 'validatorManager is undefined', hasError: true, statusHttp: 500 })
   }
 
+  const validator = validatorManager.validateDelete(clientIds)
+  if (validator.hasError) return adapterResponseHttp({ statusHttp: 400, ...validator })
+
   const data: anulateProps = {
-    ids,
+    ids: clientIds,
     soft_deleted: true,
     update_at: dateToUTC(new Date())
   }

@@ -1,7 +1,7 @@
 import { dbClient } from '@/server/modules/client/domain/interfaces';
-import { adapterResponse, adapterResponseI } from '@/server/utilities/adapters';
+import { adapterResponse } from '@/server/utilities/adapters';
 import { supabaseClient } from '@/server/utilities/supabaseClient'
-import { anulateProps, clientModel, updateBaseI } from '@/server/utilities/interfaces';
+import { anulateProps, clientModel, updateBaseI, adapterResponseI } from '@/server/utilities/interfaces';
 import { clientTableKeys, tableNames } from '@/server/utilities/enums';
 
 const getClient = async (clientIds?: string[]): Promise<adapterResponseI<Array<clientModel>>> => {
