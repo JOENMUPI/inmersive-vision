@@ -1,10 +1,11 @@
 import nodemailer from 'nodemailer'
 import { mailerConfig } from "@/server/configs/mailer.config"
 import { formDataI, formToursDataI, mailI } from "@/server/modules/form/domain/interfaces"
-import { adapterResponseHttp, adapterResponseHttpI } from "@/server/utilities/adapters"
+import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { envConfig } from '@/server/configs/env.config'
 import { createMailFormHtml, createMailToursHtml } from '@/server/modules/form/domain/mials'
 import { companyFormList } from '@/server/modules/form/domain/enums'
+import { adapterResponseHttpI } from '@/server/utilities/interfaces'
 
 const mailer = nodemailer.createTransport(mailerConfig)
 

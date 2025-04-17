@@ -1,4 +1,4 @@
-import { adapterResponseI } from '@/server/utilities/adapters'
+import { adapterResponseI } from '@/server/utilities/interfaces'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { errorMethod, anulateClient } from '@/server/modules/client/infraestructure/client.controller'
 import { methodHTTP } from '@/server/utilities/enums'

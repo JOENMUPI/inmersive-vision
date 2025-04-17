@@ -1,5 +1,6 @@
-import { adapterResponseHttp, adapterResponseHttpI } from "@/server/utilities/adapters"
+import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { pdfDataI } from "@/server/modules/invoice/domain/interfaces"
+import { adapterResponseHttpI } from "@/server/utilities/interfaces"
 // import { generatePdf } from "@/server/modules/invoice/aplication/generatePdf"
 
 export const PdfUseCase = async (form: pdfDataI): Promise<adapterResponseHttpI<object>> => {

@@ -59,13 +59,13 @@ export const getMethodPayment = async (req: NextApiRequest, res: NextApiResponse
 }
 
 export const getMethodPaymentInternal = async (ids?: string[]): Promise<adapterResponseI> => {
-  return await getMethodPaymentUseCase({ dbManager, methodPaymentIds: ids, encryptManager })
+  return await getMethodPaymentUseCase({ dbManager, methodPaymentIds: ids, encryptManager, validatorManager })
 }
 
 export const deleteMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
     const response = await deleteMethodPaymentUseCase({
-      clientIds: req.query?.id ? [...req.query.id] : [],
+      methodPaymentIds: req.query?.id ? [...req.query.id] : [],
       dbManager,
       validatorManager
     })
