@@ -1,16 +1,17 @@
 import { adapterResponse } from "@/server/utilities/adapters";
+import { clientTableKeys } from "@/server/utilities/enums";
 import { adapterResponseI, clientModel, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
 import { z, ZodType } from 'zod'
 
 const objectSchema = z.object({
-  name: z.string().trim().nonempty(),
-  email: z.string().trim().nonempty(),
-  phone: z.string().trim().nonempty(),
-  address: z.string().trim().nonempty(),
-  id: z.number(),
-  created_at: z.date(),
-  soft_deleted: z.boolean(),
-  updated_at: z.date(),
+  [clientTableKeys.NAME]: z.string().trim().nonempty(),
+  [clientTableKeys.EMAIL]: z.string().trim().nonempty(),
+  [clientTableKeys.PHONE]: z.string().trim().nonempty(),
+  [clientTableKeys.ADDRESS]: z.string().trim().nonempty(),
+  [clientTableKeys.ID]: z.number(),
+  [clientTableKeys.CREATED_AT]: z.date(),
+  [clientTableKeys.SOFT_DELETED]: z.boolean(),
+  [clientTableKeys.UPDATED_AT]: z.date(),
 });
 
 const validateUpdate = (models: Array<updateBaseI<clientModel>>): adapterResponseI<Array<clientModel>> => {
@@ -53,10 +54,10 @@ const validateGet = (ids?: string[]): adapterResponseI<Array<clientModel>> => {
 
 const validateInsert = (models: clientModel[]): adapterResponseI<Array<clientModel>> => {  
   const schema: ZodType<Array<clientModel>> = z.array(objectSchema.omit({
-    id: true,
-    updated_at: true,
-    soft_deleted: true, 
-    created_at: true
+    [clientTableKeys.ID]: true,
+    [clientTableKeys.UPDATED_AT]: true,
+    [clientTableKeys.SOFT_DELETED]: true, 
+    [clientTableKeys.CREATED_AT]: true
   })).min(1) 
 
   const { success, error } = schema.safeParse(models)

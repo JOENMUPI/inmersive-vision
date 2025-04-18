@@ -1,18 +1,19 @@
 import { adapterResponse } from "@/server/utilities/adapters";
+import { methodPaymentTableKeys } from "@/server/utilities/enums";
 import { adapterResponseI, methodPaymentModel, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
 import { z, ZodType } from 'zod'
 
 const objectSchema = z.object({
-  company_name: z.string().trim().nonempty(),
-  bank_name: z.string().trim().nonempty(),
-  routing_num: z.string().trim().nonempty(),
-  account_num: z.string().trim().nonempty(),
-  zelle: z.string().trim().nonempty(),
-  url_qr: z.string().trim().nonempty().optional(),
-  created_at: z.date(),
-  id: z.number(),
-  soft_deleted: z.boolean(),
-  updated_at: z.date(),
+  [methodPaymentTableKeys.COMPANY_NAME]: z.string().trim().nonempty(),
+  [methodPaymentTableKeys.BANK_NAME]: z.string().trim().nonempty(),
+  [methodPaymentTableKeys.ROUTING_NUM]: z.string().trim().nonempty(),
+  [methodPaymentTableKeys.ACCOUNT_NUM]: z.string().trim().nonempty(),
+  [methodPaymentTableKeys.ZELLE]: z.string().trim().nonempty(),
+  [methodPaymentTableKeys.URL_QR]: z.string().trim().nonempty().optional(),
+  [methodPaymentTableKeys.CREATED_AT]: z.date(),
+  [methodPaymentTableKeys.ID]: z.number(),
+  [methodPaymentTableKeys.SOFT_DELETED]: z.boolean(),
+  [methodPaymentTableKeys.UPDATED_AT]: z.date(),
 });
 
 const validateUpdate = (models: Array<updateBaseI<methodPaymentModel>>): adapterResponseI<Array<methodPaymentModel>> => {
@@ -55,10 +56,10 @@ const validateGet = (ids?: string[]): adapterResponseI<Array<methodPaymentModel>
 
 const validateInsert = (models: methodPaymentModel[]): adapterResponseI<Array<methodPaymentModel>> => {  
   const schema: ZodType<Array<methodPaymentModel>> = z.array(objectSchema.omit({
-    id: true,
-    updated_at: true,
-    soft_deleted: true, 
-    created_at: true
+    [methodPaymentTableKeys.ID]: true,
+    [methodPaymentTableKeys.UPDATED_AT]: true,
+    [methodPaymentTableKeys.SOFT_DELETED]: true, 
+    [methodPaymentTableKeys.CREATED_AT]: true
   })).min(1) 
 
   const { success, error } = schema.safeParse(models)
