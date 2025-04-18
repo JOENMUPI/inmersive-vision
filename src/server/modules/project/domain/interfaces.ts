@@ -6,4 +6,5 @@ export interface dbProject {
   updateProject: (project: updateBaseI<projectModel>) => Promise<adapterResponseI<Array<projectModel>>>;
   deleteProject: (ids: string[]) => Promise<adapterResponseI<Array<projectModel>>>;
   anulateProject: (ids: anulateProps) => Promise<adapterResponseI<Array<projectModel>>>
+  getLastProject: () => Promise<adapterResponseI<Array<projectModel>>>
 }

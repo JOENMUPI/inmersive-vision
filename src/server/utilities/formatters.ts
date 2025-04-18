@@ -53,3 +53,7 @@ export const hexToString = (hex: string): string => {
 export const dateToUTC = (localDate: Date): Date => {
   return new Date(localDate.getTime() - (localDate.getTimezoneOffset() * 60000));
 }
+
+export const numberToXXXX = (num: number, length: number): string => {
+  return String(num).padStart(length, '0');
+}

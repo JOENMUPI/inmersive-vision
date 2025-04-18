@@ -2,6 +2,7 @@ import { dbProject } from "@/server/modules/project/domain/interfaces"
 import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { dateToUTC } from "@/server/utilities/formatters"
 import { adapterResponseHttpI, anulateProps, projectModel, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
+import { generatePublicId } from "../domain/generators";
 
 export const getProjectUseCase = async ({
   projectIds,
@@ -64,10 +65,27 @@ export const createProjectUseCase = async ({
   const validator = validatorManager.validateInsert(projects)
   if (validator.hasError) return adapterResponseHttp({ statusHttp: 400, ...validator })
   
-  const _projects: projectModel[] = projects.map(project => ({
-    public_id: project.public_id,
-    total_installment: project.total_installment
-  }))
+  const lastProject = await dbManager.getLastProject()
+  let lastPublicId: string | undefined
+  
+  if (lastProject.hasError) return adapterResponseHttp({ statusHttp: 500, ...lastProject })
+  if (lastProject.payload && lastProject.payload[0]) lastPublicId = lastProject.payload[0].public_id 
+
+  let errResArr
+  const _projects: projectModel[] = projects.map(project => {
+    const resPublicId = generatePublicId(lastPublicId)
+  
+    if (resPublicId.hasError) errResArr = adapterResponseHttp({ statusHttp: 500, message: resPublicId.message, hasError: true })
+    if (!resPublicId.payload) errResArr = adapterResponseHttp({ statusHttp: 500, message: 'resPublicId no has payload', hasError: true })
+    
+    lastPublicId = resPublicId.payload 
+    return {
+      public_id: resPublicId.payload!,
+      total_installment: project.total_installment
+    }
+  })
+
+  if (errResArr) return errResArr
 
   const res = await dbManager.createProject(_projects);
 

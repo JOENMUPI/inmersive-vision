@@ -91,10 +91,29 @@ const anulateProject = async (props: anulateProps): Promise<adapterResponseI<Arr
   }
 }
 
+const getLastProject = async (): Promise<adapterResponseI<Array<projectModel>>> => {
+  const query = supabaseClient.from(tableNames.PROJECT)
+    .select()
+    .order('created_at', { ascending: false })
+    .limit(1);
+    
+  const { data, error } = await query
+    .eq(projectTableKeys.SOFT_DELETED, false)
+    .overrideTypes<Array<projectModel>>()
+  
+  if (error) {
+    console.error('Error to get projects:', error);
+    return adapterResponse({ message: `Error to get last project: ${error.message}`, hasError: true });
+  } else {
+    return adapterResponse({ message: `Get last project succesfully`, hasError: false, payload: data });;
+  }
+}
+
 export const dbManager: dbProject = {
   createProject,
   deleteProject,
   getProject,
   updateProject,
-  anulateProject
+  anulateProject,
+  getLastProject
 }

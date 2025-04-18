@@ -1,14 +1,15 @@
 import { adapterResponse } from "@/server/utilities/adapters";
+import { projectTableKeys } from "@/server/utilities/enums";
 import { adapterResponseI, projectModel, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
 import { z, ZodType } from 'zod'
 
 const objectSchema = z.object({
-  total_installment: z.number().min(1),
-  public_id: z.string().trim().nonempty(),
-  id: z.number(),
-  created_at: z.date(),
-  soft_deleted: z.boolean(),
-  updated_at: z.date(),
+  [projectTableKeys.TOTAL_INSTALLMENT]: z.number().min(1),
+  [projectTableKeys.PUBLIC_ID]: z.string().trim().nonempty(),
+  [projectTableKeys.ID]: z.number(),
+  [projectTableKeys.CREATED_AT]: z.date(),
+  [projectTableKeys.SOFT_DELETED]: z.boolean(),
+  [projectTableKeys.UPDATED_AT]: z.date(),
 });
 
 const validateUpdate = (models: Array<updateBaseI<projectModel>>): adapterResponseI<Array<projectModel>> => {
@@ -50,11 +51,12 @@ const validateGet = (ids?: string[]): adapterResponseI<Array<projectModel>> => {
 }
 
 const validateInsert = (models: projectModel[]): adapterResponseI<Array<projectModel>> => {  
-  const schema: ZodType<Array<projectModel>> = z.array(objectSchema.omit({
-    id: true,
-    updated_at: true,
-    soft_deleted: true, 
-    created_at: true
+  const schema: ZodType<Array<Omit<projectModel, `${projectTableKeys.PUBLIC_ID}`>>> = z.array(objectSchema.omit({
+    [projectTableKeys.ID]: true,
+    [projectTableKeys.UPDATED_AT]: true,
+    [projectTableKeys.SOFT_DELETED]: true, 
+    [projectTableKeys.CREATED_AT]: true,
+    [projectTableKeys.PUBLIC_ID]: true
   })).min(1) 
 
   const { success, error } = schema.safeParse(models)
