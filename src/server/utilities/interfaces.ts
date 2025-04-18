@@ -72,8 +72,6 @@ export interface installmentModel extends commoncolsModel {
 export interface projectModel extends commoncolsModel {
   public_id: string
   total_installment: number
-  phone: string
-  address: string 
 }
 
 export interface userModel extends commoncolsModel {
