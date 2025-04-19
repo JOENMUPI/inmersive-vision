@@ -64,8 +64,8 @@ export interface methodPaymentModel extends commoncolsModel {
 }
 
 export interface installmentModel extends commoncolsModel {
-  project_id: string
-  mount_pay: string
+  project_id: number
+  mount_pay: number
   installment_num: number
 }
 
