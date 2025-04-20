@@ -40,21 +40,21 @@ export interface anulateProps {
   update_at: Date
 }
 
-interface commoncolsModel {
+interface commonColsModel {
   id?: number
   soft_deleted?: boolean
   created_at?: Date
   updated_at?: Date
 } 
 
-export interface clientModel extends commoncolsModel {
+export interface clientModel extends commonColsModel {
   name: string
   email: string
   phone: string
   address: string 
 }
 
-export interface methodPaymentModel extends commoncolsModel {
+export interface methodPaymentModel extends commonColsModel {
   company_name: string
   bank_name: string
   routing_num: string
@@ -63,18 +63,18 @@ export interface methodPaymentModel extends commoncolsModel {
   url_qr?: string 
 }
 
-export interface installmentModel extends commoncolsModel {
+export interface installmentModel extends commonColsModel {
   project_id: number
   mount_pay: number
   installment_num: number
 }
 
-export interface projectModel extends commoncolsModel {
+export interface projectModel extends commonColsModel {
   public_id: string
   total_installment: number
 }
 
-export interface userModel extends commoncolsModel {
+export interface userModel extends commonColsModel {
   email: string
   pass: string
   salt_pass: string
@@ -82,18 +82,18 @@ export interface userModel extends commoncolsModel {
   session_expire_at?: Date 
 }
 
-export interface permissionModel extends commoncolsModel {
+export interface permissionModel extends commonColsModel {
   description: string
 }
 
-export interface userPermissionModel extends Omit<commoncolsModel, 'id'> {
+export interface userPermissionModel extends Omit<commonColsModel, 'id'> {
   is_allowed: boolean
   user_id: number
   permission_id: number
   address: string 
 }
 
-export interface invoiceModel extends Omit<commoncolsModel, 'id'> {
+export interface invoiceModel extends Omit<commonColsModel, 'id'> {
   project_id: number
   method_payment_id: number
   installment_id: number
@@ -104,12 +104,12 @@ export interface invoiceModel extends Omit<commoncolsModel, 'id'> {
   ref_num_paid: string
 }
 
-export interface projectDescriptionModel extends commoncolsModel {
+export interface projectDescriptionModel extends commonColsModel {
   project_id: number
-  desciption: string
+  description: string
 }
 
-export interface projectDescriptionInviceModel extends Omit<commoncolsModel, 'id'> {
+export interface projectDescriptionInviceModel extends Omit<commonColsModel, 'id'> {
   unitary_price: string
   element_num: number
   project_description_id: string
