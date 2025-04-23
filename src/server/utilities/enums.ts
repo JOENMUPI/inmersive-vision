@@ -1,5 +1,5 @@
 export enum tableNames {
-  CLIENT = 'client',
+  invoice = 'client',
   PROJECT = 'project',
   USERS = 'users',
   USER_PERMISSION = 'user_permission',
@@ -19,6 +19,11 @@ export enum methodHTTP {
   DELETE = 'DELETE'
 }
 
+export enum typePublicId {
+  PROJECT = 'PJ',
+  INVOICE = 'IN',
+}
+
 export enum clientTableKeys {
   NAME = 'name',
   EMAIL = 'email',
@@ -30,26 +35,19 @@ export enum clientTableKeys {
   UPDATED_AT = 'updated_at'
 }
 
-export enum projectDescriptionInviceTableKeys {
-  UNITARY_PRICE = 'unitary_price',
-  ELEMENT_NUM = 'element_num',
-  PROJECT_DESCRIPTION_ID = 'project_description_id',
-  INVOICE_PRUBLIC_ID = 'invoice_public_id',
-  SOFT_DELETED = 'soft_deleted',
-  CREATED_AT = 'created_at',
-  UPDATED_AT = 'updated_at'
-}
-
 export enum projectDescriptionTableKeys {
   PROJECT_ID = 'project_id',
   DESCRIPTION = 'description',
+  UNITARY_PRICE = 'unitary_price',
+  ELEMENT_NUM = 'element_num',
+  INVOICE_PRUBLIC_ID = 'invoice_public_id',
   ID = 'id',
   SOFT_DELETED = 'soft_deleted',
   CREATED_AT = 'created_at',
   UPDATED_AT = 'updated_at'
 }
 
-export enum invoiceKeys {
+export enum invoiceTableKeys {
   PROJECT_ID = 'project_id',
   METHOD_PAYMENT_ID = 'method_payment_id',
   CLIENT_ID = 'client_id',

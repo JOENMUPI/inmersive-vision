@@ -2,7 +2,8 @@ import { dbProject } from "@/server/modules/project/domain/interfaces"
 import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { dateToUTC } from "@/server/utilities/formatters"
 import { adapterResponseHttpI, anulateProps, projectModel, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
-import { generatePublicId } from "../domain/generators";
+import { generatePublicId } from "../../../utilities/generators";
+import { typePublicId } from "@/server/utilities/enums";
 
 export const getProjectUseCase = async ({
   projectIds,
@@ -73,7 +74,7 @@ export const createProjectUseCase = async ({
 
   let errResArr
   const _projects: projectModel[] = projects.map(project => {
-    const resPublicId = generatePublicId(lastPublicId)
+    const resPublicId = generatePublicId({ lastPublicId, typePublicId: typePublicId.PROJECT})
   
     if (resPublicId.hasError) errResArr = adapterResponseHttp({ statusHttp: 500, message: resPublicId.message, hasError: true })
     if (!resPublicId.payload) errResArr = adapterResponseHttp({ statusHttp: 500, message: 'resPublicId no has payload', hasError: true })

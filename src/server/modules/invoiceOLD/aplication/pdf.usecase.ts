@@ -1,5 +1,5 @@
 import { adapterResponseHttp } from "@/server/utilities/adapters"
-import { pdfDataI } from "@/server/modules/invoice/domain/interfaces"
+import { pdfDataI } from "@/server/modules/invoiceOLD/domain/interfaces"
 import { adapterResponseHttpI } from "@/server/utilities/interfaces"
 // import { generatePdf } from "@/server/modules/invoice/aplication/generatePdf"
 

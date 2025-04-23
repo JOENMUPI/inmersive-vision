@@ -2,8 +2,8 @@ import { imgToBytes, formatDateToDDMMYYYY, numberToUSD, base64ToByteArray } from
 import bgImg from '@/../public/pdf/background_CLIENT_PAIN.jpg';
 import logoImg from '@/../public/pdf/LOGO_IMVI.png';
 import { PDFDocument, PDFImage, PDFPage, RGB, rgb, RotationTypes, StandardFonts } from "pdf-lib";
-import { pdfDataI, clientI, paymentInfoI, mountInvoiceI } from "@/server/modules/invoice/domain/interfaces";
-import { generateQR } from "@/server/modules/invoice/aplication/utils/generateQr";
+import { pdfDataI, clientI, paymentInfoI, mountInvoiceI } from "@/server/modules/invoiceOLD/domain/interfaces";
+import { generateQR } from "@/server/modules/invoiceOLD/aplication/utils/generateQr";
 
 export interface generatePdfI {
   pdfData: pdfDataI,

@@ -38,6 +38,9 @@ export const getProjectDescriptionUseCase = async ({
     return {
       description: projectDescription.description,
       project_id: projectDescription.project_id,
+      element_num: projectDescription.element_num,
+      invoice_public_id: projectDescription.invoice_public_id,
+      unitary_price: projectDescription.unitary_price,
       id: projectDescription.id,
       soft_deleted: projectDescription.soft_deleted,
       created_at: projectDescription.created_at,
@@ -72,7 +75,10 @@ export const createProjectDescriptionUseCase = async ({
   
   const _projectDescriptions: projectDescriptionModel[] = projectDescriptions.map(projectDescription => ({
     description: projectDescription.description,
-    project_id: projectDescription.project_id
+    project_id: projectDescription.project_id,
+    element_num: projectDescription.element_num,
+    invoice_public_id: projectDescription.invoice_public_id,
+    unitary_price: projectDescription.unitary_price
   }))
 
   const res = await dbManager.createProjectDescription(_projectDescriptions);
@@ -138,6 +144,9 @@ export const updateProjectDescriptionUseCase = async ({
     newData: {
       description: projectDescription.newData.description,
       project_id: projectDescription.newData.project_id,
+      element_num: projectDescription.newData.element_num,
+      invoice_public_id: projectDescription.newData.invoice_public_id,
+      unitary_price: projectDescription.newData.unitary_price,
       id: projectDescription.newData.id,
       created_at: projectDescription.newData.created_at,
       soft_deleted: projectDescription.newData.soft_deleted,

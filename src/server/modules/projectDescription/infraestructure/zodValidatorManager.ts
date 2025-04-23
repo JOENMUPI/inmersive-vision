@@ -6,6 +6,9 @@ import { z, ZodType } from 'zod'
 const objectSchema = z.object({
   [projectDescriptionTableKeys.DESCRIPTION]: z.string().trim().nonempty(),
   [projectDescriptionTableKeys.PROJECT_ID]: z.number().min(1),
+  [projectDescriptionTableKeys.INVOICE_PRUBLIC_ID]: z.string().trim().nonempty(),
+  [projectDescriptionTableKeys.UNITARY_PRICE]: z.number().min(1),
+  [projectDescriptionTableKeys.ELEMENT_NUM]: z.number().min(1),
   [projectDescriptionTableKeys.ID]: z.number(),
   [projectDescriptionTableKeys.CREATED_AT]: z.date(),
   [projectDescriptionTableKeys.SOFT_DELETED]: z.boolean(),

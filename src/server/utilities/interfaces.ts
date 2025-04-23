@@ -9,11 +9,11 @@ export interface adapterResponseHttpI<T = object> extends adapterResponseI<T> {
 }
 
 // validation
-export interface validatorManagerI<T> {
+export interface validatorManagerI<T, Y = string> {
   validateInsert: (data: T[]) => adapterResponseI<Array<T>>
-  validateGet: (ids?: string[]) => adapterResponseI<Array<T>>
-  validateDelete: (ids: string[]) => adapterResponseI<Array<T>>
-  validateUpdate: (data: Array<updateBaseI<T>>) => adapterResponseI<Array<T>>
+  validateGet: (ids?: Y[]) => adapterResponseI<Array<T>>
+  validateDelete: (ids: Y[]) => adapterResponseI<Array<T>>
+  validateUpdate: (data: Array<updateBaseI<T, Y>>) => adapterResponseI<Array<T>>
 }
 
 // encrypt
@@ -29,13 +29,13 @@ export interface encrypManagerI {
   checkSHA256: (hash: hashPropI, textToCompare: string) => boolean
 }
 
-export interface updateBaseI<Y> {
-  currentId: string
+export interface updateBaseI<Y, T = string> {
+  currentId: T
   newData: Y
 }
 
-export interface anulateProps {
-  ids: string[]
+export interface anulateProps<Y = string> {
+  ids: Y[]
   soft_deleted: boolean
   update_at: Date
 }
@@ -93,13 +93,16 @@ export interface userPermissionModel extends Omit<commonColsModel, 'id'> {
   address: string 
 }
 
-export interface invoiceModel extends Omit<commonColsModel, 'id'> {
-  project_id: number
-  method_payment_id: number
+export interface invoiceId {
   installment_id: number
+  project_id: number
+}
+
+export interface invoiceModel extends Omit<commonColsModel, 'id'>, invoiceId  {
+  method_payment_id: number
   client_id: number 
   public_id: string
-  exporation_date: Date
+  expiration_date: Date
   creation_date: Date
   ref_num_paid: string
 }
@@ -107,11 +110,7 @@ export interface invoiceModel extends Omit<commonColsModel, 'id'> {
 export interface projectDescriptionModel extends commonColsModel {
   project_id: number
   description: string
-}
-
-export interface projectDescriptionInviceModel extends Omit<commonColsModel, 'id'> {
-  unitary_price: string
+  unitary_price: number
   element_num: number
-  project_description_id: string
   invoice_public_id: string 
 }

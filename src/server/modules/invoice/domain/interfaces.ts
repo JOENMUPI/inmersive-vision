@@ -1,38 +1,36 @@
-export interface pdfDataI {
-  isInvoice: boolean;
-  dateExpiration: Date
-  dateCreation: Date;
-  idProject: string;
-  descriptions: descriptionPdfI[];
-  id: string
+import {
+  adapterResponseI,
+  anulateProps,
+  clientModel,
+  installmentModel,
+  invoiceId,
+  invoiceModel,
+  methodPaymentModel,
+  projectDescriptionModel,
+  projectModel,
+  updateBaseI
+} from "@/server/utilities/interfaces";
+
+export interface completeInvoice {
+  invoices: invoiceModel
+  installments: installmentModel[]
+  projectDescription: projectDescriptionModel[]
+  project?: projectModel
+  client?: clientModel
+  methodPatment?: methodPaymentModel
 }
 
-export interface clientI {
-  name: string
-  address: string
-  email: string
-  phone: string
-  id: string
-}
+export interface dbInvoice {
+  getInvoice: (ids?: invoiceId[]) => Promise<adapterResponseI<Array<invoiceModel>>>
+  createInvoice: (invoices: invoiceModel[]) => Promise<adapterResponseI<Array<invoiceModel>>>
+  updateInvoice: (invoice: updateBaseI<invoiceModel, invoiceId>) => Promise<adapterResponseI<Array<invoiceModel>>>
+  deleteInvoice: (ids: invoiceId[]) => Promise<adapterResponseI<Array<invoiceModel>>>
+  anulateInvoice: (ids: anulateProps<invoiceId>) => Promise<adapterResponseI<Array<invoiceModel>>>
+  getLastInvoice: () => Promise<adapterResponseI<Array<invoiceModel>>>
 
-export interface paymentInfoI {
-  id: string
-  bankName: string
-  companyName: string
-  urlQr: string;
-  accountNumber: number
-  routingNumber: number
-  zelle: string
-}
-
-export interface mountInvoiceI {
-  currentInstallment: number;
-  totalInstallment: number;
-  paidMount: number;
-  pendingMount: number;
-}
-
-export interface descriptionPdfI {
-  amount: number
-  description: string
+  // getCompleteInvoice: (ids?: invoiceId[]) => Promise<adapterResponseI<Array<completeInvoice>>>
+  // createCompleteInvoice: (invoices: completeInvoice[]) => Promise<adapterResponseI<Array<completeInvoice>>>
+  // updateCompleteInvoice: (invoice: updateBaseI<completeInvoice, invoiceId>) => Promise<adapterResponseI<Array<completeInvoice>>>
+  // deleteCompleteInvoice: (ids: invoiceId[]) => Promise<adapterResponseI<Array<completeInvoice>>>
+  // anulateCompleteInvoice: (ids: anulateProps<invoiceId>) => Promise<adapterResponseI<Array<completeInvoice>>>
 }

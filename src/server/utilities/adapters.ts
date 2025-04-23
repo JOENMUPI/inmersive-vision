@@ -24,3 +24,8 @@ export const adapterResponse = <Y>({ message, payload, hasError = false }: adapt
 export const adapterResponseHttp = <Y = object>({ message, statusHttp, hasError = false, payload }: adapterResponseHttpI<Y>) => {
   return { message, statusHttp, hasError, payload }
 }
+
+
+export const auxiliaryId = (...props: string[]): string => {
+  return props.join('-')
+}

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { adapterResponse } from "@/server/utilities/adapters";
-import { PdfUseCase } from "@/server/modules/invoice/aplication/pdf.usecase";
+import { PdfUseCase } from "@/server/modules/invoiceOLD/aplication/pdf.usecase";
 import { adapterResponseI } from "@/server/utilities/interfaces";
 
 export const createPdf = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
