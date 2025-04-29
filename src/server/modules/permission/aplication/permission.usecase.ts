@@ -14,7 +14,7 @@ export const getPermissionUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  permissionIds?: string[],
+  permissionIds?: number[],
   dbManager: dbPermission,
   validatorManager: validatorManagerI<permissionModel>
 }): Promise<adapterResponseHttpI> => {
@@ -84,7 +84,7 @@ export const deletePermissionUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  permissionIds: string[],
+  permissionIds: number[],
   dbManager: dbPermission,
   validatorManager: validatorManagerI<permissionModel>,
 }): Promise<adapterResponseHttpI<Array<permissionModel>>> => {
@@ -153,7 +153,7 @@ export const anulatePermissionUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  permissionIds: string[],
+  permissionIds: number[],
   dbManager: dbPermission,
   validatorManager: validatorManagerI<permissionModel> 
 }): Promise<adapterResponseHttpI<Array<permissionModel>>> => {

@@ -1,5 +1,5 @@
 export enum tableNames {
-  invoice = 'client',
+  CLIENT = 'client',
   PROJECT = 'project',
   USERS = 'users',
   USER_PERMISSION = 'user_permission',
@@ -8,7 +8,6 @@ export enum tableNames {
   INSTALLMENT = 'installment',
   INVOICE = 'invoice',
   PROJECT_DESCIPTION = 'project_description',
-  PROJECT_DESCRIPTON_INVOICE = 'project_description_invoice',
 }
 
 export enum methodHTTP {

@@ -18,7 +18,7 @@ const objectSchema = z.object({
 const validateUpdate = (models: Array<updateBaseI<projectDescriptionModel>>): adapterResponseI<Array<projectDescriptionModel>> => {
   const schema: ZodType<Array<updateBaseI<projectDescriptionModel>>> = z.array(
     z.object({
-      currentId: z.string().trim().nonempty(), 
+      currentId: z.number().min(1), 
       newData: objectSchema,
     }
   )).min(1) 
@@ -31,8 +31,8 @@ const validateUpdate = (models: Array<updateBaseI<projectDescriptionModel>>): ad
   return response
 }
 
-const validateDelete = (ids: string[]): adapterResponseI<Array<projectDescriptionModel>> => {
-  const schema = z.array(z.string().trim().nonempty()).min(1) 
+const validateDelete = (ids: number[]): adapterResponseI<Array<projectDescriptionModel>> => {
+  const schema = z.array(z.number().min(1)).min(1) 
 
   const { success, error } = schema.safeParse(ids)
   const response = adapterResponse<projectDescriptionModel[]>({ hasError: !success, message: 'All done' }) 
@@ -42,8 +42,8 @@ const validateDelete = (ids: string[]): adapterResponseI<Array<projectDescriptio
   return response
 }
 
-const validateGet = (ids?: string[]): adapterResponseI<Array<projectDescriptionModel>> => {
-  const schema = z.array(z.string().trim().nonempty()).optional() 
+const validateGet = (ids?: number[]): adapterResponseI<Array<projectDescriptionModel>> => {
+  const schema = z.array(z.number().min(1)).optional() 
 
   const { success, error } = schema.safeParse(ids)
   const response = adapterResponse<projectDescriptionModel[]>({ hasError: !success, message: 'All done' }) 

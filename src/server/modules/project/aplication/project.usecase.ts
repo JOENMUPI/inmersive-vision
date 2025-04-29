@@ -10,7 +10,7 @@ export const getProjectUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  projectIds?: string[],
+  projectIds?: number[],
   dbManager: dbProject,
   validatorManager: validatorManagerI<projectModel>
 }): Promise<adapterResponseHttpI> => {
@@ -77,7 +77,7 @@ export const createProjectUseCase = async ({
     const resPublicId = generatePublicId({ lastPublicId, typePublicId: typePublicId.PROJECT})
   
     if (resPublicId.hasError) errResArr = adapterResponseHttp({ statusHttp: 500, message: resPublicId.message, hasError: true })
-    if (!resPublicId.payload) errResArr = adapterResponseHttp({ statusHttp: 500, message: 'resPublicId no has payload', hasError: true })
+    else if (!resPublicId.payload) errResArr = adapterResponseHttp({ statusHttp: 500, message: 'resPublicId no has payload', hasError: true })
     
     lastPublicId = resPublicId.payload 
     return {
@@ -99,7 +99,7 @@ export const deleteProjectUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  projectIds: string[],
+  projectIds: number[],
   dbManager: dbProject,
   validatorManager: validatorManagerI<projectModel>,
 }): Promise<adapterResponseHttpI<Array<projectModel>>> => {
@@ -169,7 +169,7 @@ export const anulateProjectUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  projectIds: string[],
+  projectIds: number[],
   dbManager: dbProject,
   validatorManager: validatorManagerI<projectModel> 
 }): Promise<adapterResponseHttpI<Array<projectModel>>> => {

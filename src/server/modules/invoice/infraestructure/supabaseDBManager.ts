@@ -39,7 +39,7 @@ const getInvoice = async (invoiceIds?: invoiceId[]): Promise<adapterResponseI<Ar
 }
 
 const updateInvoice = async (invoice: updateBaseI<invoiceModel, invoiceId>): Promise<adapterResponseI<Array<invoiceModel>>> => {
-  const query = supabaseClient.from(tableNames.invoice)
+  const query = supabaseClient.from(tableNames.INVOICE)
     .update(invoice.newData)
     .eq(invoiceTableKeys.PROJECT_ID, invoice.currentId.project_id)
     .eq(invoiceTableKeys.INSTALLMENT_ID, invoice.currentId.installment_id)
@@ -57,7 +57,7 @@ const updateInvoice = async (invoice: updateBaseI<invoiceModel, invoiceId>): Pro
 }
 
 const createInvoice = async (invoices: invoiceModel[]): Promise<adapterResponseI<Array<invoiceModel>>> => {
-  const query = supabaseClient.from(tableNames.invoice)
+  const query = supabaseClient.from(tableNames.INVOICE)
   .insert(invoices)
   .select()
 
@@ -72,26 +72,36 @@ const createInvoice = async (invoices: invoiceModel[]): Promise<adapterResponseI
 }
 
 const deleteInvoice = async (invoiceId: invoiceId[]): Promise<adapterResponseI<Array<invoiceModel>>> => {
-  const query = supabaseClient.from(tableNames.invoice)
-  .delete()
-  .in(invoiceTableKeys.INSTALLMENT_ID, invoiceId)
-  .select()
-  
-  const { data, error } = await query.overrideTypes<Array<invoiceModel>>();
+  const response: invoiceModel[] = []
 
-  if (error) {
-    console.error('Error deleting invoices:', error)
-    return adapterResponse({ message: `Error deleting invoices: ${error.message}`, hasError: true })
-  } else {
-    return adapterResponse({ message: 'Invoices deleted successfully', hasError: false, payload: data })
+  for(const id of invoiceId) {
+    const query = supabaseClient.from(tableNames.INVOICE)
+    .delete()
+    .eq(invoiceTableKeys.INSTALLMENT_ID, id.installment_id)
+    .eq(invoiceTableKeys.PROJECT_ID, id.project_id)
+    .select()
+    
+    const { data, error } = await query.overrideTypes<Array<invoiceModel>>();
+  
+    if (error) {
+      const fallback = await createInvoice(response)
+      if (fallback.hasError) return adapterResponse({ message: `Error on fallback deleting invoices: ${fallback.message}`, hasError: true })
+
+      console.error('Error deleting invoices:', error)
+      return adapterResponse({ message: `Error deleting invoices: ${error.message}`, hasError: true })
+    } 
+
+    response.push(...data)
   }
+  
+  return adapterResponse({ message: 'Invoices deleted successfully', hasError: false, payload: response })
 }
 
 const anulateInvoice = async (props: anulateProps<invoiceId>): Promise<adapterResponseI<Array<invoiceModel>>> => {
   const response: invoiceModel[] = []
   
   for(const id of props.ids) {
-    const query = supabaseClient.from(tableNames.invoice)
+    const query = supabaseClient.from(tableNames.INVOICE)
     .update({ 
       [invoiceTableKeys.SOFT_DELETED]: props.soft_deleted,
       [invoiceTableKeys.UPDATED_AT]: props.update_at,
@@ -99,11 +109,10 @@ const anulateInvoice = async (props: anulateProps<invoiceId>): Promise<adapterRe
     .eq(invoiceTableKeys.PROJECT_ID, id.project_id)
     .eq(invoiceTableKeys.INSTALLMENT_ID, id.installment_id)
     .select()
-    const { data, error } = await query.overrideTypes<Array<invoiceModel>>();
-    if (error) {
-      const fallback = await createInvoice(response)
-      if (fallback.hasError) return adapterResponse({ message: `Error on fallback deleting invoices: ${fallback.message}`, hasError: true })
 
+    const { data, error } = await query.overrideTypes<Array<invoiceModel>>();
+    
+    if (error) {
       console.error('Error anulating invoices:', error)
       return adapterResponse({ message: `Error anulating invoices: ${error.message}`, hasError: true })
     } 

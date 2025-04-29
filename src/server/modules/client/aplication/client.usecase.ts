@@ -9,7 +9,7 @@ export const getClientUseCase = async ({
   encryptManager,
   validatorManager
 }:{
-  clientIds?: string[],
+  clientIds?: number[],
   dbManager: dbClient,
   encryptManager: encrypManagerI,
   validatorManager: validatorManagerI<clientModel>
@@ -90,7 +90,7 @@ export const deleteClientUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  clientIds: string[],
+  clientIds: number[],
   dbManager: dbClient,
   validatorManager: validatorManagerI<clientModel>,
 }): Promise<adapterResponseHttpI<Array<clientModel>>> => {
@@ -144,9 +144,9 @@ export const updateClientUseCase = async ({
   const _client: updateBaseI<clientModel> = {
     currentId: client.currentId,
     newData: {
-      address: encryptManager.decryptAES(client.newData.address),
-      email: encryptManager.decryptAES(client.newData.email),
-      phone: encryptManager.decryptAES(client.newData.name),
+      address: encryptManager.encryptAES(client.newData.address),
+      email: encryptManager.encryptAES(client.newData.email),
+      phone: encryptManager.encryptAES(client.newData.name),
       id: client.newData.id,
       name: client.newData.name,
       created_at: client.newData.created_at,
@@ -154,7 +154,7 @@ export const updateClientUseCase = async ({
       updated_at: dateToUTC(new Date())
     }
   }
-  
+
   const res = await dbManager.updateClient(_client);
 
   if (res.hasError) return adapterResponseHttp({ message: res.message, hasError: res.hasError, statusHttp: 500 })
@@ -166,7 +166,7 @@ export const anulateClientUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  clientIds: string[],
+  clientIds: number[],
   dbManager: dbClient,
   validatorManager: validatorManagerI<clientModel> 
 }): Promise<adapterResponseHttpI<Array<clientModel>>> => {

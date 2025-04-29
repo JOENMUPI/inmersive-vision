@@ -4,7 +4,7 @@ import { supabaseClient } from '@/server/utilities/supabaseClient'
 import { anulateProps, installmentModel, updateBaseI, adapterResponseI } from '@/server/utilities/interfaces';
 import { installmentTableKeys, tableNames } from '@/server/utilities/enums';
 
-const getInstallment = async (installmentIds?: string[]): Promise<adapterResponseI<Array<installmentModel>>> => {
+const getInstallment = async (installmentIds?: number[]): Promise<adapterResponseI<Array<installmentModel>>> => {
   const query = supabaseClient.from(tableNames.INSTALLMENT)
     .select()
 
@@ -56,7 +56,7 @@ const createInstallment = async (installments: installmentModel[]): Promise<adap
   }
 }
 
-const deleteInstallment = async (installmentId: string[]): Promise<adapterResponseI<Array<installmentModel>>> => {
+const deleteInstallment = async (installmentId: number[]): Promise<adapterResponseI<Array<installmentModel>>> => {
   const query = supabaseClient.from(tableNames.INSTALLMENT)
   .delete()
   .in(installmentTableKeys.ID, installmentId)

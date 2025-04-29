@@ -25,7 +25,6 @@ export const adapterResponseHttp = <Y = object>({ message, statusHttp, hasError 
   return { message, statusHttp, hasError, payload }
 }
 
-
 export const auxiliaryId = (...props: string[]): string => {
   return props.join('-')
 }

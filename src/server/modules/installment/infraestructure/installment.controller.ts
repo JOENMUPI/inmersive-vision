@@ -8,13 +8,23 @@ import {
   updateInstallmentUseCase,
   anulateInstallmentUseCase
 } from "@/server/modules/installment/aplication/installment.usecase";
-import { adapterResponseI } from "@/server/utilities/interfaces";
+import { adapterResponseI, installmentModel } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/installment/infraestructure/zodValidatorManager"
+import { httpToId, httpToInstallment, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
 
 export const createInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const installmentFormatted = httpToInstallment({ httpData: req.body, optionalFieldObligatory: false })
+        
+    if (installmentFormatted.hasError) res.status(400).json(installmentFormatted)
+    if (!installmentFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'InstallmentFormatted parser no has payload',
+      hasError: true
+    }))
+
+
     const response = await createInstallmentUseCase({
-      installments: req.body,
+      installments: installmentFormatted.payload!,
       dbManager,
       validatorManager
     })
@@ -35,8 +45,20 @@ export const createInstallment = async (req: NextApiRequest, res: NextApiRespons
 
 export const getInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const idsFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: !!req.query?.id,
+      isNumber: true
+    })
+    
+    if (idsFormatted.hasError) res.status(400).json(idsFormatted)
+    if (!idsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'IdsFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await getInstallmentUseCase({
-      installmentIds: req.query?.id ? [...req.query.id] : undefined,
+      installmentIds: idsFormatted.payload!,
       dbManager,
       validatorManager
     })
@@ -55,14 +77,26 @@ export const getInstallment = async (req: NextApiRequest, res: NextApiResponse<a
   }
 }
 
-export const getInstallmentInternal = async (ids?: string[]): Promise<adapterResponseI> => {
+export const getInstallmentInternal = async (ids?: number[]): Promise<adapterResponseI> => {
   return await getInstallmentUseCase({ dbManager, installmentIds: ids, validatorManager })
 }
 
 export const deleteInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const idsFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: !!req.query?.id,
+      isNumber: true
+    })
+    
+    if (idsFormatted.hasError) res.status(400).json(idsFormatted)
+    if (!idsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'IdsFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await deleteInstallmentUseCase({
-      installmentIds: req.query?.id ? [...req.query.id] : [],
+      installmentIds: idsFormatted.payload!,
       dbManager,
       validatorManager
     })
@@ -83,8 +117,21 @@ export const deleteInstallment = async (req: NextApiRequest, res: NextApiRespons
 
 export const updateInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const installmentFormatted = httpToUpdateBase<installmentModel>({
+      httpParamId: req.query?.id as string ?? '',
+      httpData: req.body as never,
+      dataHandler: httpToInstallment,
+      idHandler: httpToId
+    })
+
+    if (installmentFormatted.hasError) res.status(400).json(installmentFormatted)
+    if (!installmentFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'InstallmentFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await updateInstallmentUseCase({
-      installment: req.body,
+      installment: installmentFormatted.payload!,
       dbManager,
       validatorManager
     })
@@ -105,8 +152,20 @@ export const updateInstallment = async (req: NextApiRequest, res: NextApiRespons
 
 export const anulateInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const idsFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: !!req.query?.id,
+      isNumber: true
+    })
+    
+    if (idsFormatted.hasError) res.status(400).json(idsFormatted)
+    if (!idsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'IdsFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await anulateInstallmentUseCase({
-      installmentIds: req.query.id ? [...req.query.id] : [],
+      installmentIds: idsFormatted.payload!,
       dbManager,
       validatorManager
     })

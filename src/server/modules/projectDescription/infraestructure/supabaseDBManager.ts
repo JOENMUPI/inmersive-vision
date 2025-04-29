@@ -4,7 +4,7 @@ import { supabaseClient } from '@/server/utilities/supabaseClient'
 import { anulateProps, projectDescriptionModel, updateBaseI, adapterResponseI } from '@/server/utilities/interfaces';
 import { projectDescriptionTableKeys, tableNames } from '@/server/utilities/enums';
 
-const getProjectDescription = async (projectDescriptionIds?: string[]): Promise<adapterResponseI<Array<projectDescriptionModel>>> => {
+const getProjectDescription = async (projectDescriptionIds?: number[]): Promise<adapterResponseI<Array<projectDescriptionModel>>> => {
   const query = supabaseClient.from(tableNames.PROJECT_DESCIPTION)
     .select()
 
@@ -60,7 +60,7 @@ const createProjectDescription = async (
   }
 }
 
-const deleteProjectDescription = async (projectDescriptionId: string[]): Promise<adapterResponseI<Array<projectDescriptionModel>>> => {
+const deleteProjectDescription = async (projectDescriptionId: number[]): Promise<adapterResponseI<Array<projectDescriptionModel>>> => {
   const query = supabaseClient.from(tableNames.PROJECT_DESCIPTION)
   .delete()
   .in(projectDescriptionTableKeys.ID, projectDescriptionId)

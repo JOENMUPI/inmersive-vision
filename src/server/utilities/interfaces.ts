@@ -9,7 +9,7 @@ export interface adapterResponseHttpI<T = object> extends adapterResponseI<T> {
 }
 
 // validation
-export interface validatorManagerI<T, Y = string> {
+export interface validatorManagerI<T, Y = number> {
   validateInsert: (data: T[]) => adapterResponseI<Array<T>>
   validateGet: (ids?: Y[]) => adapterResponseI<Array<T>>
   validateDelete: (ids: Y[]) => adapterResponseI<Array<T>>
@@ -29,12 +29,23 @@ export interface encrypManagerI {
   checkSHA256: (hash: hashPropI, textToCompare: string) => boolean
 }
 
-export interface updateBaseI<Y, T = string> {
+export interface httpToDataI {
+  httpData: never[],
+  optionalFieldObligatory: boolean
+}
+
+export interface httpToIdI {
+  ids: string[],
+  isOptional: boolean,
+  isNumber: boolean
+}
+
+export interface updateBaseI<Y, T = number> {
   currentId: T
   newData: Y
 }
 
-export interface anulateProps<Y = string> {
+export interface anulateProps<Y = number> {
   ids: Y[]
   soft_deleted: boolean
   update_at: Date
@@ -86,11 +97,15 @@ export interface permissionModel extends commonColsModel {
   description: string
 }
 
+export interface userPermissionId {
+  user_id: number,
+  permission_id: number,
+}
+
 export interface userPermissionModel extends Omit<commonColsModel, 'id'> {
   is_allowed: boolean
   user_id: number
   permission_id: number
-  address: string 
 }
 
 export interface invoiceId {
@@ -104,7 +119,7 @@ export interface invoiceModel extends Omit<commonColsModel, 'id'>, invoiceId  {
   public_id: string
   expiration_date: Date
   creation_date: Date
-  ref_num_paid: string
+  ref_num_paid?: string
 }
 
 export interface projectDescriptionModel extends commonColsModel {

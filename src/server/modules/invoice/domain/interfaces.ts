@@ -27,10 +27,4 @@ export interface dbInvoice {
   deleteInvoice: (ids: invoiceId[]) => Promise<adapterResponseI<Array<invoiceModel>>>
   anulateInvoice: (ids: anulateProps<invoiceId>) => Promise<adapterResponseI<Array<invoiceModel>>>
   getLastInvoice: () => Promise<adapterResponseI<Array<invoiceModel>>>
-
-  // getCompleteInvoice: (ids?: invoiceId[]) => Promise<adapterResponseI<Array<completeInvoice>>>
-  // createCompleteInvoice: (invoices: completeInvoice[]) => Promise<adapterResponseI<Array<completeInvoice>>>
-  // updateCompleteInvoice: (invoice: updateBaseI<completeInvoice, invoiceId>) => Promise<adapterResponseI<Array<completeInvoice>>>
-  // deleteCompleteInvoice: (ids: invoiceId[]) => Promise<adapterResponseI<Array<completeInvoice>>>
-  // anulateCompleteInvoice: (ids: anulateProps<invoiceId>) => Promise<adapterResponseI<Array<completeInvoice>>>
 }

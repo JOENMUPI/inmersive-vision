@@ -4,7 +4,7 @@ import { supabaseClient } from '@/server/utilities/supabaseClient'
 import { anulateProps, projectModel, updateBaseI, adapterResponseI } from '@/server/utilities/interfaces';
 import { projectTableKeys, tableNames } from '@/server/utilities/enums';
 
-const getProject = async (projectIds?: string[]): Promise<adapterResponseI<Array<projectModel>>> => {
+const getProject = async (projectIds?: number[]): Promise<adapterResponseI<Array<projectModel>>> => {
   const query = supabaseClient.from(tableNames.PROJECT)
     .select()
 
@@ -56,7 +56,7 @@ const createProject = async (projects: projectModel[]): Promise<adapterResponseI
   }
 }
 
-const deleteProject = async (projectId: string[]): Promise<adapterResponseI<Array<projectModel>>> => {
+const deleteProject = async (projectId: number[]): Promise<adapterResponseI<Array<projectModel>>> => {
   const query = supabaseClient.from(tableNames.PROJECT)
   .delete()
   .in(projectTableKeys.ID, projectId)

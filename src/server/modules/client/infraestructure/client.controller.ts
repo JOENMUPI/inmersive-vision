@@ -9,13 +9,22 @@ import {
   updateClientUseCase,
   anulateClientUseCase
 } from "@/server/modules/client/aplication/client.usecase";
-import { adapterResponseI } from "@/server/utilities/interfaces";
+import { adapterResponseI, clientModel } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/client/infraestructure/zodValidatorManager"
+import { httpToClient, httpToId, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
 
 export const createClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const clientsFormatted = httpToClient({ httpData: req.body, optionalFieldObligatory: false })
+    
+    if (clientsFormatted.hasError) res.status(400).json(clientsFormatted)
+    if (!clientsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'ClientFormatted parser no has payload',
+      hasError: true
+    }))
+    
     const response = await createClientUseCase({
-      clients: req.body,
+      clients: clientsFormatted.payload!,
       dbManager,
       encryptManager,
       validatorManager
@@ -37,8 +46,20 @@ export const createClient = async (req: NextApiRequest, res: NextApiResponse<ada
 
 export const getClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const clientIdsFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: !!req.query?.id,
+      isNumber: true
+    })
+    
+    if (clientIdsFormatted.hasError) res.status(400).json(clientIdsFormatted)
+    if (!clientIdsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'ClientFormatted parser no has payload',
+      hasError: true
+    }))
+    
     const response = await getClientUseCase({
-      clientIds: req.query?.id ? [...req.query.id] : undefined,
+      clientIds: clientIdsFormatted.payload!,
       dbManager,
       encryptManager,
       validatorManager
@@ -58,14 +79,26 @@ export const getClient = async (req: NextApiRequest, res: NextApiResponse<adapte
   }
 }
 
-export const getClientInternal = async (ids?: string[]): Promise<adapterResponseI> => {
+export const getClientInternal = async (ids?: number[]): Promise<adapterResponseI> => {
   return await getClientUseCase({ dbManager, clientIds: ids, encryptManager, validatorManager })
 }
 
 export const deleteClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const clientIdsFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: false,
+      isNumber: true
+    })
+    
+    if (clientIdsFormatted.hasError) res.status(400).json(clientIdsFormatted)
+    if (!clientIdsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'ClientIdsFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await deleteClientUseCase({
-      clientIds: req.query?.id ? [...req.query.id] : [],
+      clientIds: clientIdsFormatted.payload!,
       dbManager,
       validatorManager
     })
@@ -86,13 +119,26 @@ export const deleteClient = async (req: NextApiRequest, res: NextApiResponse<ada
 
 export const updateClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const ClientFormatted = httpToUpdateBase<clientModel>({
+      httpParamId: req.query?.id as string ?? '',
+      httpData: req.body as never,
+      dataHandler: httpToClient,
+      idHandler: httpToId
+    })
+
+    if (ClientFormatted.hasError) res.status(400).json(ClientFormatted)
+    if (!ClientFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'ClientFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await updateClientUseCase({
-      client: req.body,
+      client: ClientFormatted.payload!,
       dbManager,
       encryptManager,
       validatorManager
     })
-  
+
     res.status(response.statusHttp).json(adapterResponse({
       message: response.message,
       hasError: response.hasError,
@@ -109,8 +155,20 @@ export const updateClient = async (req: NextApiRequest, res: NextApiResponse<ada
 
 export const anulateClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const clientIdsFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: false,
+      isNumber: true
+    })
+    
+    if (clientIdsFormatted.hasError) res.status(400).json(clientIdsFormatted)
+    if (!clientIdsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'ClientFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await anulateClientUseCase({
-      clientIds: req.query.id ? [...req.query.id] : [],
+      clientIds: clientIdsFormatted.payload!,
       dbManager,
       validatorManager
     })

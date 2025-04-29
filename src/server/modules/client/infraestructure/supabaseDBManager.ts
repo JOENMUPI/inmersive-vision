@@ -4,8 +4,8 @@ import { supabaseClient } from '@/server/utilities/supabaseClient'
 import { anulateProps, clientModel, updateBaseI, adapterResponseI } from '@/server/utilities/interfaces';
 import { clientTableKeys, tableNames } from '@/server/utilities/enums';
 
-const getClient = async (clientIds?: string[]): Promise<adapterResponseI<Array<clientModel>>> => {
-  const query = supabaseClient.from(tableNames.invoice)
+const getClient = async (clientIds?: number[]): Promise<adapterResponseI<Array<clientModel>>> => {
+  const query = supabaseClient.from(tableNames.CLIENT)
     .select()
 
   if (clientIds && clientIds.length > 0) {
@@ -25,7 +25,7 @@ const getClient = async (clientIds?: string[]): Promise<adapterResponseI<Array<c
 }
 
 const updateClient = async (client: updateBaseI<clientModel>): Promise<adapterResponseI<Array<clientModel>>> => {
-  const query = supabaseClient.from(tableNames.invoice)
+  const query = supabaseClient.from(tableNames.CLIENT)
     .update(client.newData)
     .eq(clientTableKeys.ID, client.currentId)
     .select()
@@ -42,7 +42,7 @@ const updateClient = async (client: updateBaseI<clientModel>): Promise<adapterRe
 }
 
 const createClient = async (clients: clientModel[]): Promise<adapterResponseI<Array<clientModel>>> => {
-  const query = supabaseClient.from(tableNames.invoice)
+  const query = supabaseClient.from(tableNames.CLIENT)
   .insert(clients)
   .select()
 
@@ -56,8 +56,8 @@ const createClient = async (clients: clientModel[]): Promise<adapterResponseI<Ar
   }
 }
 
-const deleteClient = async (clientId: string[]): Promise<adapterResponseI<Array<clientModel>>> => {
-  const query = supabaseClient.from(tableNames.invoice)
+const deleteClient = async (clientId: number[]): Promise<adapterResponseI<Array<clientModel>>> => {
+  const query = supabaseClient.from(tableNames.CLIENT)
   .delete()
   .in(clientTableKeys.ID, clientId)
   .select()
@@ -73,7 +73,7 @@ const deleteClient = async (clientId: string[]): Promise<adapterResponseI<Array<
 }
 
 const anulateClient = async (props: anulateProps): Promise<adapterResponseI<Array<clientModel>>> => {
-  const query = supabaseClient.from(tableNames.invoice)
+  const query = supabaseClient.from(tableNames.CLIENT)
   .update({ 
     [clientTableKeys.SOFT_DELETED]: props.soft_deleted,
     [clientTableKeys.UPDATED_AT]: props.update_at,

@@ -8,13 +8,22 @@ import {
   updatePermissionUseCase,
   anulatePermissionUseCase
 } from "@/server/modules/permission/aplication/permission.usecase";
-import { adapterResponseI } from "@/server/utilities/interfaces";
+import { adapterResponseI, permissionModel } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/permission/infraestructure/zodValidatorManager"
+import { httpToId, httpToPermission, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
 
 export const createPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const permissionsFormatted = httpToPermission({ httpData: req.body, optionalFieldObligatory: false })
+        
+    if (permissionsFormatted.hasError) res.status(400).json(permissionsFormatted)
+    if (!permissionsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'PermissionFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await createPermissionUseCase({
-      permissions: req.body,
+      permissions: permissionsFormatted.payload!,
       dbManager,
       validatorManager
     })
@@ -35,8 +44,20 @@ export const createPermission = async (req: NextApiRequest, res: NextApiResponse
 
 export const getPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const permissionIdsFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: !!req.query?.id,
+      isNumber: true
+    })
+    
+    if (permissionIdsFormatted.hasError) res.status(400).json(permissionIdsFormatted)
+    if (!permissionIdsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'PermissionIdsFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await getPermissionUseCase({
-      permissionIds: req.query?.id ? [...req.query.id] : undefined,
+      permissionIds: permissionIdsFormatted.payload,
       dbManager,
       validatorManager
     })
@@ -55,14 +76,26 @@ export const getPermission = async (req: NextApiRequest, res: NextApiResponse<ad
   }
 }
 
-export const getPermissionInternal = async (ids?: string[]): Promise<adapterResponseI> => {
+export const getPermissionInternal = async (ids?: number[]): Promise<adapterResponseI> => {
   return await getPermissionUseCase({ dbManager, permissionIds: ids, validatorManager })
 }
 
 export const deletePermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const permissionIdsFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: false,
+      isNumber: true
+    })
+    
+    if (permissionIdsFormatted.hasError) res.status(400).json(permissionIdsFormatted)
+    if (!permissionIdsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'PermissionIdsFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await deletePermissionUseCase({
-      permissionIds: req.query?.id ? [...req.query.id] : [],
+      permissionIds: permissionIdsFormatted.payload!,
       dbManager,
       validatorManager
     })
@@ -83,8 +116,21 @@ export const deletePermission = async (req: NextApiRequest, res: NextApiResponse
 
 export const updatePermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const permissionFormatted = httpToUpdateBase<permissionModel>({
+      httpParamId: req.query?.id as string ?? '',
+      httpData: req.body as never,
+      dataHandler: httpToPermission,
+      idHandler: httpToId
+    })
+
+    if (permissionFormatted.hasError) res.status(400).json(permissionFormatted)
+    if (!permissionFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'PermissionFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await updatePermissionUseCase({
-      permission: req.body,
+      permission: permissionFormatted.payload!,
       dbManager,
       validatorManager
     })
@@ -105,8 +151,20 @@ export const updatePermission = async (req: NextApiRequest, res: NextApiResponse
 
 export const anulatePermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const permissionIdsFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: false,
+      isNumber: true
+    })
+    
+    if (permissionIdsFormatted.hasError) res.status(400).json(permissionIdsFormatted)
+    if (!permissionIdsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'PermissionIdsFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await anulatePermissionUseCase({
-      permissionIds: req.query.id ? [...req.query.id] : [],
+      permissionIds: permissionIdsFormatted.payload!,
       dbManager,
       validatorManager
     })

@@ -4,7 +4,7 @@ import { supabaseClient } from '@/server/utilities/supabaseClient'
 import { anulateProps, permissionModel, updateBaseI, adapterResponseI } from '@/server/utilities/interfaces';
 import { permissionTableKeys, tableNames } from '@/server/utilities/enums';
 
-const getPermission = async (permissionIds?: string[]): Promise<adapterResponseI<Array<permissionModel>>> => {
+const getPermission = async (permissionIds?: number[]): Promise<adapterResponseI<Array<permissionModel>>> => {
   const query = supabaseClient.from(tableNames.PERMISSION)
     .select()
 
@@ -56,7 +56,7 @@ const createPermission = async (permissions: permissionModel[]): Promise<adapter
   }
 }
 
-const deletePermission = async (permissionId: string[]): Promise<adapterResponseI<Array<permissionModel>>> => {
+const deletePermission = async (permissionId: number[]): Promise<adapterResponseI<Array<permissionModel>>> => {
   const query = supabaseClient.from(tableNames.PERMISSION)
   .delete()
   .in(permissionTableKeys.ID, permissionId)

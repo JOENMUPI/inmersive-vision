@@ -14,7 +14,7 @@ export const getInstallmentUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  installmentIds?: string[],
+  installmentIds?: number[],
   dbManager: dbInstallment,
   validatorManager: validatorManagerI<installmentModel>
 }): Promise<adapterResponseHttpI> => {
@@ -88,7 +88,7 @@ export const deleteInstallmentUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  installmentIds: string[],
+  installmentIds: number[],
   dbManager: dbInstallment,
   validatorManager: validatorManagerI<installmentModel>,
 }): Promise<adapterResponseHttpI<Array<installmentModel>>> => {
@@ -159,7 +159,7 @@ export const anulateInstallmentUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  installmentIds: string[],
+  installmentIds: number[],
   dbManager: dbInstallment,
   validatorManager: validatorManagerI<installmentModel> 
 }): Promise<adapterResponseHttpI<Array<installmentModel>>> => {

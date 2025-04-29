@@ -8,13 +8,22 @@ import {
   updateProjectDescriptionUseCase,
   anulateProjectDescriptionUseCase
 } from "@/server/modules/projectDescription/aplication/projectDescription.usecase";
-import { adapterResponseI } from "@/server/utilities/interfaces";
+import { adapterResponseI, projectDescriptionModel } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/projectDescription/infraestructure/zodValidatorManager"
+import { httpToId, httpToProjectDescription, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
 
 export const createProjectDescription = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const projectDescriptionsFormatted = httpToProjectDescription({ httpData: req.body, optionalFieldObligatory: false })
+        
+    if (projectDescriptionsFormatted.hasError) res.status(400).json(projectDescriptionsFormatted)
+    if (!projectDescriptionsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'ProjectDescriptionFormatted parser no has payload',
+      hasError: true
+    }))
+    
     const response = await createProjectDescriptionUseCase({
-      projectDescriptions: req.body,
+      projectDescriptions: projectDescriptionsFormatted.payload!,
       dbManager,
       validatorManager
     })
@@ -35,8 +44,20 @@ export const createProjectDescription = async (req: NextApiRequest, res: NextApi
 
 export const getProjectDescription = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const projectDescriptionIdsFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: !!req.query?.id,
+      isNumber: true
+    })
+    
+    if (projectDescriptionIdsFormatted.hasError) res.status(400).json(projectDescriptionIdsFormatted)
+    if (!projectDescriptionIdsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'ProjectDescriptionIdsFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await getProjectDescriptionUseCase({
-      projectDescriptionIds: req.query?.id ? [...req.query.id] : undefined,
+      projectDescriptionIds: projectDescriptionIdsFormatted.payload!,
       dbManager,
       validatorManager
     })
@@ -55,14 +76,26 @@ export const getProjectDescription = async (req: NextApiRequest, res: NextApiRes
   }
 }
 
-export const getProjectDescriptionInternal = async (ids?: string[]): Promise<adapterResponseI> => {
+export const getProjectDescriptionInternal = async (ids?: number[]): Promise<adapterResponseI> => {
   return await getProjectDescriptionUseCase({ dbManager, projectDescriptionIds: ids, validatorManager })
 }
 
 export const deleteProjectDescription = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const projectDescriptionIdsFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: false,
+      isNumber: true
+    })
+    
+    if (projectDescriptionIdsFormatted.hasError) res.status(400).json(projectDescriptionIdsFormatted)
+    if (!projectDescriptionIdsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'ProjectDescriptionIdsFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await deleteProjectDescriptionUseCase({
-      projectDescriptionIds: req.query?.id ? [...req.query.id] : [],
+      projectDescriptionIds: projectDescriptionIdsFormatted.payload!,
       dbManager,
       validatorManager
     })
@@ -83,8 +116,21 @@ export const deleteProjectDescription = async (req: NextApiRequest, res: NextApi
 
 export const updateProjectDescription = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const projectDescriptionFormatted = httpToUpdateBase<projectDescriptionModel>({
+      httpParamId: req.query?.id as string ?? '',
+      httpData: req.body as never,
+      dataHandler: httpToProjectDescription,
+      idHandler: httpToId
+    })
+
+    if (projectDescriptionFormatted.hasError) res.status(400).json(projectDescriptionFormatted)
+    if (!projectDescriptionFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'ProjectDescriptionFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await updateProjectDescriptionUseCase({
-      projectDescription: req.body,
+      projectDescription: projectDescriptionFormatted.payload!,
       dbManager,
       validatorManager
     })
@@ -105,8 +151,20 @@ export const updateProjectDescription = async (req: NextApiRequest, res: NextApi
 
 export const anulateProjectDescription = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const projectDescriptionIdsFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: false,
+      isNumber: true
+    })
+    
+    if (projectDescriptionIdsFormatted.hasError) res.status(400).json(projectDescriptionIdsFormatted)
+    if (!projectDescriptionIdsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'ProjectDescriptionIdsFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await anulateProjectDescriptionUseCase({
-      projectDescriptionIds: req.query.id ? [...req.query.id] : [],
+      projectDescriptionIds: projectDescriptionIdsFormatted.payload!,
       dbManager,
       validatorManager
     })

@@ -9,7 +9,7 @@ export const getMethodPaymentUseCase = async ({
   encryptManager,
   validatorManager
 }:{
-  methodPaymentIds?: string[],
+  methodPaymentIds?: number[],
   dbManager: dbMethodPayment,
   encryptManager: encrypManagerI,
   validatorManager: validatorManagerI<methodPaymentModel>
@@ -96,7 +96,7 @@ export const deleteMethodPaymentUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  methodPaymentIds: string[],
+  methodPaymentIds: number[],
   dbManager: dbMethodPayment,
   validatorManager: validatorManagerI<methodPaymentModel>
 }): Promise<adapterResponseHttpI<Array<methodPaymentModel>>> => {
@@ -174,7 +174,7 @@ export const anulateMethodPaymentUseCase = async ({
   dbManager,
   validatorManager,
 }:{
-  methodPaymentIds: string[],
+  methodPaymentIds: number[],
   dbManager: dbMethodPayment,
   validatorManager: validatorManagerI<methodPaymentModel>
 }): Promise<adapterResponseHttpI<Array<methodPaymentModel>>> => {

@@ -14,7 +14,7 @@ export const getProjectDescriptionUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  projectDescriptionIds?: string[],
+  projectDescriptionIds?: number[],
   dbManager: dbProjectDescription,
   validatorManager: validatorManagerI<projectDescriptionModel>
 }): Promise<adapterResponseHttpI> => {
@@ -92,7 +92,7 @@ export const deleteProjectDescriptionUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  projectDescriptionIds: string[],
+  projectDescriptionIds: number[],
   dbManager: dbProjectDescription,
   validatorManager: validatorManagerI<projectDescriptionModel>,
 }): Promise<adapterResponseHttpI<Array<projectDescriptionModel>>> => {
@@ -165,7 +165,7 @@ export const anulateProjectDescriptionUseCase = async ({
   dbManager,
   validatorManager
 }:{
-  projectDescriptionIds: string[],
+  projectDescriptionIds: number[],
   dbManager: dbProjectDescription,
   validatorManager: validatorManagerI<projectDescriptionModel> 
 }): Promise<adapterResponseHttpI<Array<projectDescriptionModel>>> => {

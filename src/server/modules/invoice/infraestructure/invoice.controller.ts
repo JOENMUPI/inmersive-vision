@@ -8,8 +8,9 @@ import {
   updateInvoiceUseCase,
   anulateInvoiceUseCase
 } from "@/server/modules/invoice/aplication/invoice.usecase";
-import { adapterResponseI, invoiceId } from "@/server/utilities/interfaces";
+import { adapterResponseI, invoiceId, invoiceModel } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/invoice/infraestructure/zodValidatorManager"
+import { httpToId, httpToInvoice, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
 
 const invoiceIdHandler = ({
   installmentIds,
@@ -24,17 +25,26 @@ const invoiceIdHandler = ({
     })
   } 
 
-  for(let i = 0; i < projectIds.length - 1; i++) {
-    if (Number.isNaN(Number(installmentIds[i]) || Number.isNaN(Number(projectIds[i])))) {
-      return adapterResponse({
-        message: 'intallment_id or project_id is not a valid number',
-        hasError: true,
-      })
-    }
+  const installmentIdsFormatted = httpToId({ ids: installmentIds, isOptional: false, isNumber: true })
+  
+  if (installmentIdsFormatted.hasError) return adapterResponse({ message: installmentIdsFormatted.message, hasError: true })
+  if (!installmentIdsFormatted.payload) adapterResponse({
+    message: 'InstallmentIdsFormatted parser no has payload',
+    hasError: true
+  })
 
+  const projectIdsFormatted = httpToId({ ids: projectIds, isOptional: false, isNumber: true })
+  
+  if (projectIdsFormatted.hasError) return adapterResponse({ message: projectIdsFormatted.message, hasError: true })
+  if (!projectIdsFormatted.payload) adapterResponse({
+    message: 'ProjectIdsFormatted parser no has payload',
+    hasError: true
+  })
+
+  for(let i = 0; i < projectIdsFormatted.payload!.length; i++) {
     invoiceIds.push({
-      installment_id: Number(installmentIds[i]),
-      project_id: Number(projectIds[i])
+      installment_id: installmentIdsFormatted.payload![i],
+      project_id: projectIdsFormatted.payload![i]
     })
   }
 
@@ -47,8 +57,16 @@ const invoiceIdHandler = ({
 
 export const createInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const invoicesFormatted = httpToInvoice({ httpData: req.body, optionalFieldObligatory: false })
+            
+    if (invoicesFormatted.hasError) res.status(400).json(invoicesFormatted)
+    if (!invoicesFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'InvoicesFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await createInvoiceUseCase({
-      invoices: req.body,
+      invoices: invoicesFormatted.payload!,
       dbManager,
       validatorManager,
     })
@@ -69,8 +87,8 @@ export const createInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
 
 export const getInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const installmentIds: string[] | undefined = req.query?.installment_id ? [...req.query.installment_id] : undefined  
-    const projectIds: string[] | undefined = req.query?.project_id ? [...req.query.project_id] : undefined 
+    const installmentIds: string[] | undefined = req.query?.installment_id ? reqQueryToArray(req.query.installment_id) : undefined  
+    const projectIds: string[] | undefined = req.query?.project_id ? reqQueryToArray(req.query.project_id) : undefined 
     let invoiceIds: invoiceId[] | undefined
 
     if (installmentIds && projectIds) {
@@ -110,13 +128,13 @@ export const getInvoiceInternal = async (ids?: invoiceId[]): Promise<adapterResp
 export const deleteInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
     const { hasError, message, payload } = invoiceIdHandler({
-      installmentIds: req.query?.installment_id ? [...req.query.installment_id] : [],
-      projectIds: req.query?.project_id ? [...req.query.project_id] : []
+      installmentIds: req.query?.installment_id ? reqQueryToArray(req.query.installment_id) : [],
+      projectIds: req.query?.project_id ? reqQueryToArray(req.query.project_id) : []
     })
 
     if (hasError) res.status(400).json(adapterResponse({ message, hasError }))
     if (!payload || payload.length === 0) {
-      res.status(400).json(adapterResponse({ message: 'invoiceIdHandler no return a payload', hasError:true }))
+      res.status(400).json(adapterResponse({ message: 'InvoiceIdHandler no return a payload', hasError:true }))
     }
 
     const response = await deleteInvoiceUseCase({
@@ -141,12 +159,30 @@ export const deleteInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
 
 export const updateInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const invoiceFormatted = httpToUpdateBase<invoiceModel, invoiceId>({
+      httpParamId: req.query?.project_id as string ?? '',
+      httpData: req.body as never,
+      dataHandler: httpToInvoice,
+      idHandler: () => {
+        return invoiceIdHandler({
+          installmentIds: req.query?.installment_id ? reqQueryToArray(req.query?.installment_id) : [],
+          projectIds: req.query?.project_id ? reqQueryToArray(req.query?.project_id) : []
+        })
+      }
+    })
+
+    if (invoiceFormatted.hasError) res.status(400).json(invoiceFormatted)
+    if (!invoiceFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'InvoiceFormatted parser no has payload',
+      hasError: true
+    }))
+
     const response = await updateInvoiceUseCase({
-      invoice: req.body,
+      invoice: invoiceFormatted.payload!,
       dbManager,
       validatorManager
     })
-  
+
     res.status(response.statusHttp).json(adapterResponse({
       message: response.message,
       hasError: response.hasError,
@@ -164,13 +200,13 @@ export const updateInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
 export const anulateInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
     const { hasError, message, payload } = invoiceIdHandler({
-      installmentIds: req.query?.installment_id ? [...req.query.installment_id] : [],
-      projectIds: req.query?.project_id ? [...req.query.project_id] : []
+      installmentIds: req.query?.installment_id ? reqQueryToArray(req.query?.installment_id) : [],
+      projectIds: req.query?.project_id ? reqQueryToArray(req.query?.project_id) : []
     })
 
     if (hasError) res.status(400).json(adapterResponse({ message, hasError }))
     if (!payload || payload.length === 0) {
-      res.status(400).json(adapterResponse({ message: 'invoiceIdHandler no return a payload', hasError:true }))
+      res.status(400).json(adapterResponse({ message: 'InvoiceIdHandler no return a payload', hasError:true }))
     }
     
     const response = await anulateInvoiceUseCase({

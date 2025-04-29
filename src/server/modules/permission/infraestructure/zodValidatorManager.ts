@@ -14,7 +14,7 @@ const objectSchema = z.object({
 const validateUpdate = (models: Array<updateBaseI<permissionModel>>): adapterResponseI<Array<permissionModel>> => {
   const schema: ZodType<Array<updateBaseI<permissionModel>>> = z.array(
     z.object({
-      currentId: z.string().trim().nonempty(), 
+      currentId: z.number().min(1), 
       newData: objectSchema,
     }
   )).min(1) 
@@ -27,8 +27,8 @@ const validateUpdate = (models: Array<updateBaseI<permissionModel>>): adapterRes
   return response
 }
 
-const validateDelete = (ids: string[]): adapterResponseI<Array<permissionModel>> => {
-  const schema = z.array(z.string().trim().nonempty()).min(1) 
+const validateDelete = (ids: number[]): adapterResponseI<Array<permissionModel>> => {
+  const schema = z.array(z.number().min(1)).min(1) 
 
   const { success, error } = schema.safeParse(ids)
   const response = adapterResponse<permissionModel[]>({ hasError: !success, message: 'All done' }) 
@@ -38,8 +38,8 @@ const validateDelete = (ids: string[]): adapterResponseI<Array<permissionModel>>
   return response
 }
 
-const validateGet = (ids?: string[]): adapterResponseI<Array<permissionModel>> => {
-  const schema = z.array(z.string().trim().nonempty()).optional() 
+const validateGet = (ids?: number[]): adapterResponseI<Array<permissionModel>> => {
+  const schema = z.array(z.number().min(1)).optional() 
 
   const { success, error } = schema.safeParse(ids)
   const response = adapterResponse<permissionModel[]>({ hasError: !success, message: 'All done' }) 

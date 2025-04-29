@@ -4,7 +4,7 @@ import { supabaseClient } from '@/server/utilities/supabaseClient'
 import { anulateProps, methodPaymentModel, updateBaseI, adapterResponseI } from '@/server/utilities/interfaces';
 import { methodPaymentTableKeys, tableNames } from '@/server/utilities/enums';
 
-const getMethodPayment = async (methodPaymentIds?: string[]): Promise<adapterResponseI<Array<methodPaymentModel>>> => {
+const getMethodPayment = async (methodPaymentIds?: number[]): Promise<adapterResponseI<Array<methodPaymentModel>>> => {
   const query = supabaseClient.from(tableNames.METHOD_PAYMENT)
     .select()
 
@@ -56,7 +56,7 @@ const createMethodPayment = async (methodPayment: methodPaymentModel[]): Promise
   }
 }
 
-const deleteMethodPayment = async (clientId: string[]): Promise<adapterResponseI<Array<methodPaymentModel>>> => {
+const deleteMethodPayment = async (clientId: number[]): Promise<adapterResponseI<Array<methodPaymentModel>>> => {
   const query = supabaseClient.from(tableNames.METHOD_PAYMENT)
   .delete()
   .in(methodPaymentTableKeys.ID, clientId)

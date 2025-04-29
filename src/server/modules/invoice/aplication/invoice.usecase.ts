@@ -37,7 +37,6 @@ export const getInvoiceUseCase = async ({
     return adapterResponseHttp({ message: 'No invoices found', hasError: false, statusHttp: 200 })
   }
 
-
   const dataFormatted: invoiceModel[] = dbData.payload.map(invoice => {
     return {
       client_id: invoice.client_id,
@@ -82,13 +81,13 @@ export const createInvoiceUseCase = async ({
   const lastInvoice = await dbManager.getLastInvoice()
 
   if(lastInvoice.hasError) return adapterResponseHttp({ message: lastInvoice.message, hasError: true, statusHttp: 400 }) 
-  if(!lastInvoice.payload || lastInvoice.payload.length === 0) {
-    return adapterResponseHttp({ message: "LastInvoice no has payload", hasError: true, statusHttp: 400 }) 
-  }
+  
+  let lastPublicId: string | undefined
+  if(lastInvoice.payload && lastInvoice.payload.length > 0) lastPublicId = lastInvoice.payload[0].public_id
 
-  const publicId = generatePublicId({ typePublicId: typePublicId.PROJECT, lastPublicId: lastInvoice.payload[0].public_id })
-  if(lastInvoice.hasError) return adapterResponseHttp({ message: lastInvoice.message, hasError: true, statusHttp: 400 }) 
-  if(!lastInvoice.payload || lastInvoice.payload.length === 0) {
+  const publicId = generatePublicId({ typePublicId: typePublicId.INVOICE, lastPublicId })
+  if(publicId.hasError) return adapterResponseHttp({ message: publicId.message, hasError: true, statusHttp: 400 }) 
+  if(!publicId.payload || publicId.payload.length === 0) {
     return adapterResponseHttp({ message: "PublicId no has payload", hasError: true, statusHttp: 400 }) 
   }
   
@@ -100,7 +99,7 @@ export const createInvoiceUseCase = async ({
     method_payment_id: invoice.method_payment_id,
     project_id: invoice.project_id,
     public_id: publicId.payload!,
-    ref_num_paid: invoice.ref_num_paid
+    ref_num_paid: invoice.ref_num_paid,
   }))
 
   const res = await dbManager.createInvoice(_invoices);
@@ -188,7 +187,7 @@ export const anulateInvoiceUseCase = async ({
   invoiceIds,
   dbManager,
   validatorManager
-}:{
+}: {
   invoiceIds: invoiceId[],
   dbManager: dbInvoice,
   validatorManager: validatorManagerI<invoiceModel, invoiceId> 

@@ -4,7 +4,7 @@ import { adapterResponseI, invoiceId, invoiceModel, updateBaseI, validatorManage
 import { z, ZodType } from 'zod'
 
 const objectSchema = z.object({
-  [invoiceTableKeys.REF_NUM_PAID]: z.string().trim().nonempty(),
+  [invoiceTableKeys.REF_NUM_PAID]: z.string().trim().nonempty().optional(),
   [invoiceTableKeys.PUBLIC_ID]: z.string().trim().nonempty() ,
   [invoiceTableKeys.CLIENT_ID]: z.number().min(1),
   [invoiceTableKeys.INSTALLMENT_ID]: z.number().min(1),
@@ -18,9 +18,12 @@ const objectSchema = z.object({
 });
 
 const validateUpdate = (models: Array<updateBaseI<invoiceModel, invoiceId>>): adapterResponseI<Array<invoiceModel>> => {
-  const schema: ZodType<Array<updateBaseI<invoiceModel>>> = z.array(
+  const schema: ZodType<Array<updateBaseI<invoiceModel, invoiceId>>> = z.array(
     z.object({
-      currentId: z.string().trim().nonempty(), 
+      currentId: z.object({
+        [invoiceTableKeys.PROJECT_ID]: z.number().min(1),
+        [invoiceTableKeys.INSTALLMENT_ID]: z.number().min(1)
+      }), 
       newData: objectSchema,
     }
   )).min(1) 
@@ -48,10 +51,10 @@ const validateDelete = (ids: invoiceId[]): adapterResponseI<Array<invoiceModel>>
 }
 
 const validateGet = (ids?: invoiceId[]): adapterResponseI<Array<invoiceModel>> => {
-  const schema: ZodType<Array<invoiceId>> = z.array(objectSchema.pick({
+  const schema: ZodType<Array<invoiceId> | undefined> = z.array(objectSchema.pick({
     [invoiceTableKeys.PROJECT_ID]: true,
     [invoiceTableKeys.INSTALLMENT_ID]: true
-  })) 
+  })).optional()
 
   const { success, error } = schema.safeParse(ids)
   const response = adapterResponse<invoiceModel[]>({ hasError: !success, message: 'All done' }) 
@@ -73,7 +76,6 @@ const validateInsert = (models: invoiceModel[]): adapterResponseI<Array<invoiceM
   const response = adapterResponse<Array<invoiceModel>>({ hasError: !success, message: 'All done' }) 
   
   if (error && error.errors.length > 0) response.message = error.errors[0].path + ": " + error.errors[0].message
-  
   return response
 }
 
