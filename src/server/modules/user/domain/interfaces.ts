@@ -6,4 +6,10 @@ export interface dbUser {
   updateUser: (user: updateBaseI<userModel>) => Promise<adapterResponseI<Array<userModel>>>;
   deleteUser: (ids: number[]) => Promise<adapterResponseI<Array<userModel>>>;
   anulateUser: (ids: anulateProps) => Promise<adapterResponseI<Array<userModel>>>
+  getUserByEmail: (email: string) => Promise<adapterResponseI<Array<userModel>>>;
+}
+
+export interface loginI {
+  email: string
+  pass: string
 }

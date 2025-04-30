@@ -1,7 +1,7 @@
-import { dbUser } from "@/server/modules/user/domain/interfaces"
+import { dbUser, loginI } from "@/server/modules/user/domain/interfaces"
 import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { dateToUTC } from "@/server/utilities/formatters"
-import { adapterResponseHttpI, anulateProps, userModel, encrypManagerI, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
+import { adapterResponseHttpI, anulateProps, userModel, encrypManagerI, updateBaseI, validatorManagerI, jwtManagerI } from "@/server/utilities/interfaces";
 
 export const getUserUseCase = async ({
   userIds,
@@ -205,4 +205,70 @@ export const anulateUserUseCase = async ({
 
   if (res.hasError) return adapterResponseHttp({ message: res.message, hasError: res.hasError, statusHttp: 500 })
   else return adapterResponseHttp({ payload: res.payload, message: res.message, hasError: res.hasError, statusHttp: 200 })
+}
+
+export const loginUseCase = async ({
+  loginData,
+  dbManager,
+  encryptManager,
+  validatorManager,
+  jwtManager
+}:{
+  loginData: loginI,
+  dbManager: dbUser,
+  encryptManager: encrypManagerI,
+  validatorManager: validatorManagerI<userModel>
+  jwtManager: jwtManagerI
+}): Promise<adapterResponseHttpI> => {
+  if (!dbManager) {
+    return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
+  } else if (!validatorManager) {
+    return adapterResponseHttp({ message: 'validatorManager is undefined', hasError: true, statusHttp: 500 })
+  } else if (!encryptManager) {
+    return adapterResponseHttp({ message: 'encryptManager is undefined', hasError: true, statusHttp: 500 })
+  } else if (!loginData) {
+    return adapterResponseHttp({ message: 'loginData is undefined', hasError: true, statusHttp: 500 })
+  }
+
+  // const validator = validatorManager.validateGet(loginData)
+  // if (validator.hasError) return adapterResponseHttp({ statusHttp: 400, ...validator })
+  
+  const dbData = await dbManager.getUserByEmail(loginData.email);
+  
+  if (dbData.hasError) return adapterResponseHttp({ message: dbData.message, hasError: dbData.hasError, statusHttp: 500 })
+  else if (!dbData.payload || dbData.payload.length === 0) {
+    return adapterResponseHttp({ message: 'No users found with email: ' + loginData.email, hasError: false, statusHttp: 200 })
+  }
+
+  if (dbData.payload.length !== 1) {
+    return adapterResponseHttp({ message: 'More than one user is not possible with: ' + loginData.email, hasError: false, statusHttp: 500 })
+  }
+
+  const _dbUser = dbData.payload[0]
+  if (!encryptManager.checkSHA256({ hash: _dbUser.pass, salt: _dbUser.salt_pass }, loginData.pass)) {
+    return adapterResponseHttp({ message: 'Pass not match', hasError: false, statusHttp: 400 })
+  }
+
+  const token = jwtManager.createToken({ email: _dbUser.email})
+  if (token) {
+    
+  }
+
+
+
+  const dataFormatted: userModel[] = dbData.payload.map(user => {
+    return {
+      email: user.email,
+      pass: user.pass,
+      salt_pass: user.salt_pass,
+      session_expire_at: user.session_expire_at,
+      session_token: user.session_token,
+      id: user.id,
+      soft_deleted: user.soft_deleted,
+      created_at: user.created_at,
+      updated_at: user.updated_at
+    }
+  })
+  
+  return adapterResponseHttp({ payload: dataFormatted, message: dbData.message, hasError: dbData.hasError, statusHttp: 200 })
 }

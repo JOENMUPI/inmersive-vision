@@ -8,6 +8,16 @@ export interface adapterResponseHttpI<T = object> extends adapterResponseI<T> {
   statusHttp: number;
 }
 
+// jwt
+export interface tokenI {
+  email: string
+}
+
+export interface jwtManagerI {
+  createToken: (data: tokenI) => string
+  verifyToken: (token: string) => adapterResponseI<tokenI>
+}
+
 // validation
 export interface validatorManagerI<T, Y = number> {
   validateInsert: (data: T[]) => adapterResponseI<Array<T>>

@@ -9,4 +9,5 @@ export const envConfig = {
   SUPABASE_URL: process.env.SUPABASE_URL || 'SUPABASE_URL',
   SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY || 'SUPABASE_ANON_KEY',
   ENCRYPT_KEY: process.env.ENCRYPT_KEY || 'ENCRYPT_KEY',
+  JWT_SECRET_KEY: process.env.JWT_SECRET_KEY || 'JWT_SECRET_KEY',
 }

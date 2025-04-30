@@ -64,8 +64,10 @@ export const getUser = async (req: NextApiRequest, res: NextApiResponse<adapterR
       validatorManager
     })
   
+    const userAgent = req.headers['user-agent'];
+    const clientIp = req.socket.remoteAddress;
     res.status(response.statusHttp).json(adapterResponse({
-      message: response.message,
+      message: response.message + ' User-Agent: ' + userAgent + ' IP del cliente: ' + clientIp,
       hasError: response.hasError,
       payload: response.payload
     }))

@@ -91,10 +91,25 @@ const anulateUser = async (props: anulateProps): Promise<adapterResponseI<Array<
   }
 }
 
+const getUserByEmail = async (email: string): Promise<adapterResponseI<Array<userModel>>> => {
+  const { data, error } = await supabaseClient.from(tableNames.USERS)
+    .select()
+    .eq(userTableKeys.EMAIL, email)
+    .overrideTypes<Array<userModel>>()
+
+  if (error) {
+    console.error('Error to get users by email:', error);
+    return adapterResponse({ message: `Error to get users by email: ${error.message}`, hasError: true, });
+  } else {
+    return adapterResponse({ message: `Get users by email succesfully`, hasError: false, payload: data });;
+  }
+}
+
 export const dbManager: dbUser = {
   createUser,
   deleteUser,
   getUser,
   updateUser,
-  anulateUser
+  anulateUser,
+  getUserByEmail
 }
