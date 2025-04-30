@@ -66,8 +66,10 @@ export const getUser = async (req: NextApiRequest, res: NextApiResponse<adapterR
   
     const userAgent = req.headers['user-agent'];
     const clientIp = req.socket.remoteAddress;
+    const clientIplocal = req.socket.localAddress;
+    const Iplocal = req.socket.address();
     res.status(response.statusHttp).json(adapterResponse({
-      message: response.message + ' User-Agent: ' + userAgent + ' IP del cliente: ' + clientIp,
+      message: response.message + ' User-Agent: ' + userAgent + ' IP del cliente: ' + clientIp + ' clientIplocal ' + clientIplocal +' Iplocal ' + Iplocal,
       hasError: response.hasError,
       payload: response.payload
     }))
