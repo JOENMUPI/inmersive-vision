@@ -253,9 +253,10 @@ export const loginUseCase = async ({
 
   if (!tokenEncryp) return adapterResponseHttp({ message: 'TokenEncryp is undefined', hasError: true, statusHttp: 400 })
 
-  const cookie = cookieManager.createCookie({ data: tokenEncryp })
+  // const cookie = cookieManager.createCookie({ data: tokenEncryp })
 
-  if (!cookie) return adapterResponseHttp({ message: 'Cookie is undefined', hasError: true, statusHttp: 400 })
+  // if (!cookie) return adapterResponseHttp({ message: 'Cookie is undefined', hasError: true, statusHttp: 400 })
   
-  return adapterResponseHttp({ payload: cookie, message: dbData.message, hasError: dbData.hasError, statusHttp: 200 })
+  // return adapterResponseHttp({ payload: cookie, message: dbData.message, hasError: dbData.hasError, statusHttp: 200 })
+  return adapterResponseHttp({ payload: tokenEncryp, message: dbData.message, hasError: dbData.hasError, statusHttp: 200 })
 }
