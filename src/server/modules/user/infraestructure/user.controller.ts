@@ -283,7 +283,7 @@ export const errorMethod = (req: NextApiRequest, res: NextApiResponse<adapterRes
 export const test = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
     const loginFormatted = httpToLogin({
-      httpData: { userId: 'joseemundop@gmail.com', pass: '123456789JM@' } as never,
+      httpData: { email: 'joseemundop@gmail.com', pass: '123456789JM@' } as never,
       optionalFieldObligatory: false
     })
 
