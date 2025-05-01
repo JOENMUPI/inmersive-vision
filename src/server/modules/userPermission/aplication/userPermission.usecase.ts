@@ -19,7 +19,7 @@ export const getUserPermissionUseCase = async ({
   userPermissionIds?: userPermissionId[],
   dbManager: dbUserPermission,
   validatorManager: validatorManagerI<userPermissionModel, userPermissionId>
-}): Promise<adapterResponseHttpI> => {
+}): Promise<adapterResponseHttpI<Array<userPermissionModel>>> => {
   if (!dbManager) {
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!validatorManager) {

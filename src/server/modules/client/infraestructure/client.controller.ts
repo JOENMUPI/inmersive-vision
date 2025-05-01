@@ -12,8 +12,9 @@ import {
 import { adapterResponseI, clientModel } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/client/infraestructure/zodValidatorManager"
 import { httpToClient, httpToId, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
-import { checkJWT } from "@/server/utilities/validations";
+import { checkJWT, checkUserPermission } from "@/server/utilities/validations";
 import { jwtManager } from "@/server/utilities/JWTManager";
+import { permissionIds } from "@/server/utilities/enums";
 
 export const createClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
@@ -21,6 +22,12 @@ export const createClient = async (req: NextApiRequest, res: NextApiResponse<ada
                     
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
+    const hasPermission = await checkUserPermission({ user_id: jwt.payload!.userId, permission_id: permissionIds.CREATE_CLIENT })
+    if (jwt.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!jwt.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true })) 
+    
+    
 
     const clientsFormatted = httpToClient({ httpData: req.body, optionalFieldObligatory: false })
     

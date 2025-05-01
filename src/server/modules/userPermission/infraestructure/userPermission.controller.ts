@@ -128,8 +128,8 @@ export const getUserPermission = async (req: NextApiRequest, res: NextApiRespons
   }
 }
 
-export const getUserPermissionInternal = async (ids?: userPermissionId[]): Promise<adapterResponseI> => {
-  return await getUserPermissionUseCase({ dbManager, userPermissionIds: ids, validatorManager })
+export const getUserPermissionInternal = async (ids?: userPermissionId[]): Promise<adapterResponseI<Array<userPermissionModel>>> => {
+  return await getUserPermissionUseCase({ dbManager, userPermissionIds: ids, validatorManager })   
 }
 
 export const deleteUserPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
