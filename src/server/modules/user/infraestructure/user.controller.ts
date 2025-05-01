@@ -309,7 +309,8 @@ export const test = async (req: NextApiRequest, res: NextApiResponse<adapterResp
     
     res.setHeader('Set-Cookie', _loginUseCase.payload!).status(_loginUseCase.statusHttp).json(adapterResponse({
       message: 'Logged succesfully',
-      hasError: _loginUseCase.hasError
+      hasError: _loginUseCase.hasError,
+      payload: {token: _loginUseCase.payload}
     }))
   } catch (err) {
     console.error(err)
