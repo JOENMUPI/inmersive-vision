@@ -238,7 +238,7 @@ export const login = async (req: NextApiRequest, res: NextApiResponse<adapterRes
       message: 'LoginUseCase parser no has payload',
       hasError: true
     }))
-    console.log('_loginUseCase', _loginUseCase)
+    
     res.setHeader('Set-Cookie', _loginUseCase.payload!).status(_loginUseCase.statusHttp).json(adapterResponse({
       message: 'Logged succesfully',
       hasError: _loginUseCase.hasError
@@ -306,7 +306,7 @@ export const test = async (req: NextApiRequest, res: NextApiResponse<adapterResp
       message: 'LoginUseCase parser no has payload',
       hasError: true
     }))
-    console.log('_loginUseCase', _loginUseCase)
+    
     res.setHeader('Set-Cookie', _loginUseCase.payload!).status(_loginUseCase.statusHttp).json(adapterResponse({
       message: 'Logged succesfully',
       hasError: _loginUseCase.hasError
