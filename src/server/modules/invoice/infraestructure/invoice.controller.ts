@@ -14,6 +14,7 @@ import { httpToId, httpToInvoice, httpToUpdateBase, reqQueryToArray } from "@/se
 import { checkJWT } from "@/server/utilities/validations";
 import { jwtManager } from "@/server/utilities/JWTManager";
 import { encryptManager } from "@/server/utilities/cryptojs";
+import { cookieManager } from "@/server/utilities/cookieManager";
 
 const invoiceIdHandler = ({
   installmentIds,
@@ -60,7 +61,7 @@ const invoiceIdHandler = ({
 
 export const createInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
             
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -95,7 +96,7 @@ export const createInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
 
 export const getInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
             
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -140,7 +141,7 @@ export const getInvoiceInternal = async (ids?: invoiceId[]): Promise<adapterResp
 
 export const deleteInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
             
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -177,7 +178,7 @@ export const deleteInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
 
 export const updateInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
             
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -222,7 +223,7 @@ export const updateInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
 
 export const anulateInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
             
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))

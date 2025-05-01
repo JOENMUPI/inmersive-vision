@@ -14,10 +14,11 @@ import { httpToId, httpToProject, httpToUpdateBase, reqQueryToArray } from "@/se
 import { checkJWT } from "@/server/utilities/validations";
 import { jwtManager } from "@/server/utilities/JWTManager";
 import { encryptManager } from "@/server/utilities/cryptojs";
+import { cookieManager } from "@/server/utilities/cookieManager";
 
 export const createProject = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
     
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -52,7 +53,7 @@ export const createProject = async (req: NextApiRequest, res: NextApiResponse<ad
 
 export const getProject = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
     
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -95,7 +96,7 @@ export const getProjectInternal = async (ids?: number[]): Promise<adapterRespons
 
 export const deleteProject = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
     
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -134,7 +135,7 @@ export const deleteProject = async (req: NextApiRequest, res: NextApiResponse<ad
 
 export const updateProject = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
     
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -174,7 +175,7 @@ export const updateProject = async (req: NextApiRequest, res: NextApiResponse<ad
 
 export const anulateProject = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
     
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))

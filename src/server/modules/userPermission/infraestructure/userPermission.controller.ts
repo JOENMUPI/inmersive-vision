@@ -14,6 +14,7 @@ import { validatorManager } from "@/server/modules/userPermission/infraestructur
 import { httpToId, httpToUpdateBase, httpToUserPermission, reqQueryToArray } from "@/server/utilities/formatters";
 import { checkJWT } from "@/server/utilities/validations";
 import { jwtManager } from "@/server/utilities/JWTManager";
+import { cookieManager } from "@/server/utilities/cookieManager";
 
 const userPermissionIdHandler = ({
   permissionIds,
@@ -60,7 +61,7 @@ const userPermissionIdHandler = ({
 
 export const createUserPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
     
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -95,7 +96,7 @@ export const createUserPermission = async (req: NextApiRequest, res: NextApiResp
 
 export const getUserPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
     
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -134,7 +135,7 @@ export const getUserPermissionInternal = async (ids?: userPermissionId[]): Promi
 
 export const deleteUserPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
     
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -171,7 +172,7 @@ export const deleteUserPermission = async (req: NextApiRequest, res: NextApiResp
 
 export const updateUserPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
     
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -217,7 +218,7 @@ export const updateUserPermission = async (req: NextApiRequest, res: NextApiResp
 
 export const anulateUserPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
     
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))

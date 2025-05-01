@@ -14,10 +14,11 @@ import {
 import { httpToId, httpToMethodPayment, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
 import { checkJWT } from "@/server/utilities/validations";
 import { jwtManager } from "@/server/utilities/JWTManager";
+import { cookieManager } from "@/server/utilities/cookieManager";
 
 export const createMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
             
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -54,7 +55,7 @@ export const createMethodPayment = async (req: NextApiRequest, res: NextApiRespo
 
 export const getMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
         
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -98,7 +99,7 @@ export const getMethodPaymentInternal = async (ids?: number[]): Promise<adapterR
 
 export const deleteMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
         
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -137,7 +138,7 @@ export const deleteMethodPayment = async (req: NextApiRequest, res: NextApiRespo
 
 export const updateMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
         
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
@@ -178,7 +179,7 @@ export const updateMethodPayment = async (req: NextApiRequest, res: NextApiRespo
 
 export const anulateMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
-    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    const jwt = await checkJWT({ req, jwtManager, encryptManager, cookieManager })
         
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))

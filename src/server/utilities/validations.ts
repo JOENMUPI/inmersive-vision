@@ -1,5 +1,5 @@
 import { NextApiRequest } from "next";
-import { adapterResponseI, encryptManagerI, jwtManagerI, tokenI, userPermissionId } from "@/server/utilities/interfaces";
+import { adapterResponseI, cookieManagerI, encryptManagerI, jwtManagerI, tokenI, userPermissionId } from "@/server/utilities/interfaces";
 import { adapterResponse } from "@/server/utilities/adapters";
 import { getUserPermissionInternal } from "@/server/modules/userPermission/infraestructure/userPermission.controller";
 
@@ -14,14 +14,16 @@ export const checkEmail = (val: string): boolean => {
 export const checkJWT = async ({
   encryptManager,
   jwtManager,
-  req
+  req,
+  cookieManager
 }: {
-  req: NextApiRequest, jwtManager: jwtManagerI, encryptManager: encryptManagerI }): Promise<adapterResponseI<tokenI>> => {
-  const  { cookies } = req
-  if (!cookies) return adapterResponse({ message: 'No cookies provided', hasError: true })
-  
-  const { token } = cookies
-  if (!token) return adapterResponse({ message: 'No token provided', hasError: true })
+  req: NextApiRequest,
+  jwtManager: jwtManagerI,
+  encryptManager: encryptManagerI,
+  cookieManager: cookieManagerI
+}): Promise<adapterResponseI<tokenI>> => {
+  const token = cookieManager.getCookie({ key: 'token', req })
+  if (!token) return adapterResponse({ message: 'No cookies provided', hasError: true })
   
   const decrypToken = encryptManager.decryptAES(token)  
   if (!decrypToken) return adapterResponse({ message: 'DecrypToken is undefined', hasError: true })

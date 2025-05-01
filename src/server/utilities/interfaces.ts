@@ -1,3 +1,5 @@
+import { NextApiRequest } from "next";
+
 export interface adapterResponseI<T = object> {
   message: string
   hasError?: boolean
@@ -25,8 +27,14 @@ export interface createCookieProps {
   maxAge?: number
 }
 
+export interface getCookieProps {
+  req: NextApiRequest
+  key: string
+}
+
 export interface cookieManagerI {
   createCookie: (data: createCookieProps) => string
+  getCookie: (data: getCookieProps) => string
 }
 
 // validation
