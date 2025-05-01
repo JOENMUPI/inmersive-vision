@@ -12,9 +12,16 @@ import {
 import { adapterResponseI, clientModel } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/client/infraestructure/zodValidatorManager"
 import { httpToClient, httpToId, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
+import { checkJWT } from "@/server/utilities/validations";
+import { jwtManager } from "@/server/utilities/JWTManager";
 
 export const createClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+                    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const clientsFormatted = httpToClient({ httpData: req.body, optionalFieldObligatory: false })
     
     if (clientsFormatted.hasError) res.status(400).json(clientsFormatted)
@@ -46,6 +53,11 @@ export const createClient = async (req: NextApiRequest, res: NextApiResponse<ada
 
 export const getClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+                    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const clientIdsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: !!req.query?.id,
@@ -85,6 +97,11 @@ export const getClientInternal = async (ids?: number[]): Promise<adapterResponse
 
 export const deleteClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+                    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const clientIdsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,
@@ -119,6 +136,11 @@ export const deleteClient = async (req: NextApiRequest, res: NextApiResponse<ada
 
 export const updateClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+                    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const ClientFormatted = httpToUpdateBase<clientModel>({
       httpParamId: req.query?.id as string ?? '',
       httpData: req.body as never,
@@ -155,6 +177,11 @@ export const updateClient = async (req: NextApiRequest, res: NextApiResponse<ada
 
 export const anulateClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+                    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const clientIdsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,

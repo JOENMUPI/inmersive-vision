@@ -93,11 +93,9 @@ export enum projectTableKeys {
 }
 
 export enum userTableKeys {
-  SESSION_TOKEN = 'session_token',
   SALT_PASS = 'salt_pass',
   PASS = 'pass',
   EMAIL = 'email',
-  SESSION_EXPIRE_AT = 'session_expire_at',
   ID = 'id',
   SOFT_DELETED = 'soft_deleted',
   CREATED_AT = 'created_at',

@@ -7,14 +7,23 @@ import {
   createUserUseCase,
   deleteUserUseCase,
   updateUserUseCase,
-  anulateUserUseCase
-} from "@/server/modules/user/aplication/user.usecase";
-import { adapterResponseI, userModel } from "@/server/utilities/interfaces";
+  anulateUserUseCase,
+  loginUseCase
+} from "@/server/modules/user/aplication/user.usecase"
+import { cookieManager } from "@/server/utilities/cookieManager"
+import { jwtManager } from "@/server/utilities/JWTManager"
+import { adapterResponseI, userModel } from "@/server/utilities/interfaces"
 import { validatorManager } from "@/server/modules/user/infraestructure/zodValidatorManager"
-import { httpToId, httpToUpdateBase, httpToUser, reqQueryToArray } from "@/server/utilities/formatters";
+import { httpToId, httpToLogin, httpToUpdateBase, httpToUser, reqQueryToArray } from "@/server/utilities/formatters"
+import { checkJWT } from "@/server/utilities/validations";
 
 export const createUser = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const usersFormatted = httpToUser({ httpData: req.body, optionalFieldObligatory: false })
     
     if (usersFormatted.hasError) res.status(400).json(usersFormatted)
@@ -46,6 +55,11 @@ export const createUser = async (req: NextApiRequest, res: NextApiResponse<adapt
 
 export const getUser = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const usersFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: !!req.query?.id,
@@ -64,12 +78,8 @@ export const getUser = async (req: NextApiRequest, res: NextApiResponse<adapterR
       validatorManager
     })
   
-    const userAgent = req.headers['user-agent'];
-    const clientIp = req.socket.remoteAddress;
-    const clientIplocal = req.socket.localAddress;
-    const Iplocal = req.socket.address();
     res.status(response.statusHttp).json(adapterResponse({
-      message: response.message + ' User-Agent: ' + userAgent + ' IP del cliente: ' + clientIp + ' clientIplocal ' + clientIplocal +' Iplocal ' + Iplocal,
+      message: response.message,
       hasError: response.hasError,
       payload: response.payload
     }))
@@ -88,6 +98,11 @@ export const getUserInternal = async (ids?: number[]): Promise<adapterResponseI>
 
 export const deleteUser = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const usersFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,
@@ -122,6 +137,11 @@ export const deleteUser = async (req: NextApiRequest, res: NextApiResponse<adapt
 
 export const updateUser = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const userFormatted = httpToUpdateBase<userModel>({
       httpParamId: req.query?.id as string ?? '',
       httpData: req.body as never,
@@ -158,6 +178,11 @@ export const updateUser = async (req: NextApiRequest, res: NextApiResponse<adapt
 
 export const anulateUser = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const usersFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,
@@ -180,6 +205,64 @@ export const anulateUser = async (req: NextApiRequest, res: NextApiResponse<adap
       message: response.message,
       hasError: response.hasError,
       payload: response.payload
+    }))
+  } catch (err) {
+    console.error(err)
+    res.status(500).json(adapterResponse({
+      message: 'Unexpected error, please try again later: ' + (err instanceof Error ? err.message : 'Unexpected error'),
+      hasError: true,
+    }))
+  }
+}
+
+export const login = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
+  try {
+    const loginFormatted = httpToLogin({ httpData: req.body as never, optionalFieldObligatory: false })
+
+    if (loginFormatted.hasError) res.status(400).json(loginFormatted)
+    if (!loginFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'LoginFormatted parser no has payload',
+      hasError: true
+    }))
+
+    const _loginUseCase = await loginUseCase({
+      loginData: loginFormatted.payload!,
+      dbManager,
+      encryptManager,
+      cookieManager,
+      jwtManager
+    })
+
+    if (_loginUseCase.hasError) res.status(_loginUseCase.statusHttp).json({ message: _loginUseCase.message, hasError: true })
+    if (!_loginUseCase.payload) res.status(_loginUseCase.statusHttp).json(adapterResponse({
+      message: 'LoginUseCase parser no has payload',
+      hasError: true
+    }))
+    console.log('_loginUseCase', _loginUseCase)
+    res.setHeader('Set-Cookie', _loginUseCase.payload!).status(_loginUseCase.statusHttp).json(adapterResponse({
+      message: 'Logged succesfully',
+      hasError: _loginUseCase.hasError
+    }))
+  } catch (err) {
+    console.error(err)
+    res.status(500).json(adapterResponse({
+      message: 'Unexpected error, please try again later: ' + (err instanceof Error ? err.message : 'Unexpected error'),
+      hasError: true,
+    }))
+  }
+} 
+
+export const logout = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
+  try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
+    const tokenCookieLogout = cookieManager.createCookie({ data: "", maxAge: 0 })
+    
+    res.setHeader('Set-Cookie',  tokenCookieLogout).status(200).json(adapterResponse({
+      message: 'Logout succesfully',
+      hasError: false
     }))
   } catch (err) {
     console.error(err)

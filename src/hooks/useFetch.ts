@@ -23,15 +23,20 @@ export const useFetch = <T>(isLoading = false) => {
       const headers = new Headers({ 'Content-Type': 'application/json' })
 
       if (token) headers.append('x-access-token', token)
+      
       let options: RequestInit = { method, headers, mode: 'cors' }
+      
       if (signal) options = { ...options, signal }
       if (body) options = { ...options, body: JSON.stringify(body) }
+      
       const response = await fetch(url + endpoint, options)
       const dataRes = await response.json()
+      
       return { ...dataRes  }
     } catch (e) {
       console.error(e)
       const errRes: responseFetch<T> = { message: 'Unexpected error, try later', hasError: true } 
+      
       if (e instanceof Error) errRes.message = e.message
       return errRes
     } finally {

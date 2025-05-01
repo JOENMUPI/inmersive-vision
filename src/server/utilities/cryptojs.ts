@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js"
-import { encrypManagerI, hashPropI } from "./interfaces";
+import { encryptManagerI, hashPropI } from "./interfaces";
 import { envConfig } from "../configs/env.config";
 
 
@@ -28,7 +28,7 @@ const checkSHA256 = (data: hashPropI, textToCompare: string): boolean => {
   return data.hash === hashTextToCompare.hash
 }
 
-export const encryptManager: encrypManagerI = {
+export const encryptManager: encryptManagerI = {
  decryptAES,
  encryptAES,
  encryptSHA256,

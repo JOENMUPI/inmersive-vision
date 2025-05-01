@@ -11,9 +11,17 @@ import {
 import { adapterResponseI, projectDescriptionModel } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/projectDescription/infraestructure/zodValidatorManager"
 import { httpToId, httpToProjectDescription, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
+import { checkJWT } from "@/server/utilities/validations";
+import { jwtManager } from "@/server/utilities/JWTManager";
+import { encryptManager } from "@/server/utilities/cryptojs";
 
 export const createProjectDescription = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const projectDescriptionsFormatted = httpToProjectDescription({ httpData: req.body, optionalFieldObligatory: false })
         
     if (projectDescriptionsFormatted.hasError) res.status(400).json(projectDescriptionsFormatted)
@@ -44,6 +52,11 @@ export const createProjectDescription = async (req: NextApiRequest, res: NextApi
 
 export const getProjectDescription = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const projectDescriptionIdsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: !!req.query?.id,
@@ -82,6 +95,11 @@ export const getProjectDescriptionInternal = async (ids?: number[]): Promise<ada
 
 export const deleteProjectDescription = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const projectDescriptionIdsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,
@@ -116,6 +134,11 @@ export const deleteProjectDescription = async (req: NextApiRequest, res: NextApi
 
 export const updateProjectDescription = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const projectDescriptionFormatted = httpToUpdateBase<projectDescriptionModel>({
       httpParamId: req.query?.id as string ?? '',
       httpData: req.body as never,
@@ -151,6 +174,11 @@ export const updateProjectDescription = async (req: NextApiRequest, res: NextApi
 
 export const anulateProjectDescription = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+      
     const projectDescriptionIdsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,

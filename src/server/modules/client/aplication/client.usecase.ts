@@ -1,7 +1,7 @@
 import { dbClient } from "@/server/modules/client/domain/interfaces"
 import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { dateToUTC, hexToString } from "@/server/utilities/formatters"
-import { adapterResponseHttpI, anulateProps, clientModel, encrypManagerI, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
+import { adapterResponseHttpI, anulateProps, clientModel, encryptManagerI, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
 
 export const getClientUseCase = async ({
   clientIds,
@@ -11,7 +11,7 @@ export const getClientUseCase = async ({
 }:{
   clientIds?: number[],
   dbManager: dbClient,
-  encryptManager: encrypManagerI,
+  encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<clientModel>
 }): Promise<adapterResponseHttpI> => {
   if (!dbManager) {
@@ -54,7 +54,7 @@ export const createClientUseCase = async ({
 }:{
   clients: clientModel[],
   dbManager: dbClient,
-  encryptManager: encrypManagerI,
+  encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<clientModel> 
 }): Promise<adapterResponseHttpI<Array<clientModel>>> => {
   if (!clients) {
@@ -121,7 +121,7 @@ export const updateClientUseCase = async ({
 }:{
   client: updateBaseI<clientModel>,
   dbManager: dbClient,
-  encryptManager: encrypManagerI,
+  encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<clientModel>
 }): Promise<adapterResponseHttpI<Array<clientModel>>> => {
   if (!client) {

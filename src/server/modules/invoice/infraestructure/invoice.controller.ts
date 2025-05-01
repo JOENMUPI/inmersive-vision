@@ -11,6 +11,9 @@ import {
 import { adapterResponseI, invoiceId, invoiceModel } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/invoice/infraestructure/zodValidatorManager"
 import { httpToId, httpToInvoice, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
+import { checkJWT } from "@/server/utilities/validations";
+import { jwtManager } from "@/server/utilities/JWTManager";
+import { encryptManager } from "@/server/utilities/cryptojs";
 
 const invoiceIdHandler = ({
   installmentIds,
@@ -57,6 +60,11 @@ const invoiceIdHandler = ({
 
 export const createInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+            
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+        
     const invoicesFormatted = httpToInvoice({ httpData: req.body, optionalFieldObligatory: false })
             
     if (invoicesFormatted.hasError) res.status(400).json(invoicesFormatted)
@@ -87,6 +95,11 @@ export const createInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
 
 export const getInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+            
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const installmentIds: string[] | undefined = req.query?.installment_id ? reqQueryToArray(req.query.installment_id) : undefined  
     const projectIds: string[] | undefined = req.query?.project_id ? reqQueryToArray(req.query.project_id) : undefined 
     let invoiceIds: invoiceId[] | undefined
@@ -127,6 +140,11 @@ export const getInvoiceInternal = async (ids?: invoiceId[]): Promise<adapterResp
 
 export const deleteInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+            
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const { hasError, message, payload } = invoiceIdHandler({
       installmentIds: req.query?.installment_id ? reqQueryToArray(req.query.installment_id) : [],
       projectIds: req.query?.project_id ? reqQueryToArray(req.query.project_id) : []
@@ -159,6 +177,11 @@ export const deleteInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
 
 export const updateInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+            
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const invoiceFormatted = httpToUpdateBase<invoiceModel, invoiceId>({
       httpParamId: req.query?.project_id as string ?? '',
       httpData: req.body as never,
@@ -199,6 +222,11 @@ export const updateInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
 
 export const anulateInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+            
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const { hasError, message, payload } = invoiceIdHandler({
       installmentIds: req.query?.installment_id ? reqQueryToArray(req.query?.installment_id) : [],
       projectIds: req.query?.project_id ? reqQueryToArray(req.query?.project_id) : []

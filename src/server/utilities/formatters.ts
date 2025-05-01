@@ -16,6 +16,7 @@ import {
   userModel,
   userPermissionModel
 } from "@/server/utilities/interfaces";
+import { loginI } from "../modules/user/domain/interfaces";
 
 export function formatDateToDDMMYYYY(date: Date) {
   const day = String(date.getDate()).padStart(2, '0');
@@ -518,10 +519,8 @@ export const httpToUser = ({
   
     const {
       salt_pass,
-      session_expire_at,
       email,
       pass,
-      session_token,
       created_at,
       soft_deleted,
       updated_at,
@@ -539,8 +538,6 @@ export const httpToUser = ({
       email: String(email),
       pass: String(pass),
       salt_pass: String(salt_pass),
-      session_expire_at: session_expire_at ? dateToUTC(new Date(session_expire_at)) : undefined,
-      session_token: salt_pass ? String(session_token) : undefined,
     }
   
     if (optionalFieldObligatory) {
@@ -611,4 +608,23 @@ export const httpToUserPermission = ({
   }
   
   return adapterResponse({ message: 'All done', payload: userPermissionsFormatted })
+}
+
+export const httpToLogin = ({ httpData }: httpToDataI<never>): adapterResponseI<loginI> => {
+  if (Array.isArray(httpData)) {
+    return adapterResponse({ message: 'httpData is an array, must be a object', hasError: true })
+  } else if (typeof httpData !== 'object') {
+    return adapterResponse({ message: 'httpData no has a objent', hasError: true })
+  }
+
+  const { email, pass } = httpData  
+  
+  if (!email || !pass ) return adapterResponse({ message: 'Obligatory keys is undefined (email, pass)', hasError: true })
+    
+  const loginFormatted: loginI = {
+    email: String(email),
+    pass: String(pass),
+  }
+    
+  return adapterResponse({ message: 'All done', payload: loginFormatted })
 }

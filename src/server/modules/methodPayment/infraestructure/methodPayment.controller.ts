@@ -12,9 +12,17 @@ import {
   updateMethodPaymentUseCase
 } from "@/server/modules/methodPayment/aplication/methodPayment.usecase";
 import { httpToId, httpToMethodPayment, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
+import { checkJWT } from "@/server/utilities/validations";
+import { jwtManager } from "@/server/utilities/JWTManager";
 
 export const createMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+            
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+        
+
     const proyectsFormatted = httpToMethodPayment({ httpData: req.body, optionalFieldObligatory: false })
             
     if (proyectsFormatted.hasError) res.status(400).json(proyectsFormatted)
@@ -46,6 +54,11 @@ export const createMethodPayment = async (req: NextApiRequest, res: NextApiRespo
 
 export const getMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+        
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const methodPaymentFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: !!req.query?.id,
@@ -85,6 +98,11 @@ export const getMethodPaymentInternal = async (ids?: number[]): Promise<adapterR
 
 export const deleteMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+        
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+  
     const methodPaymentFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,
@@ -119,6 +137,11 @@ export const deleteMethodPayment = async (req: NextApiRequest, res: NextApiRespo
 
 export const updateMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+        
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const methodPaymentFormatted = httpToUpdateBase<methodPaymentModel>({
       httpParamId: req.query?.id as string ?? '',
       httpData: req.body as never,
@@ -155,6 +178,11 @@ export const updateMethodPayment = async (req: NextApiRequest, res: NextApiRespo
 
 export const anulateMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+        
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const methodPaymentFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,

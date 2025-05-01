@@ -11,9 +11,17 @@ import {
 import { adapterResponseI, installmentModel } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/installment/infraestructure/zodValidatorManager"
 import { httpToId, httpToInstallment, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
+import { checkJWT } from "@/server/utilities/validations";
+import { jwtManager } from "@/server/utilities/JWTManager";
+import { encryptManager } from "@/server/utilities/cryptojs";
 
 export const createInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+                
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const installmentFormatted = httpToInstallment({ httpData: req.body, optionalFieldObligatory: false })
         
     if (installmentFormatted.hasError) res.status(400).json(installmentFormatted)
@@ -45,6 +53,11 @@ export const createInstallment = async (req: NextApiRequest, res: NextApiRespons
 
 export const getInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+                
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const idsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: !!req.query?.id,
@@ -83,6 +96,11 @@ export const getInstallmentInternal = async (ids?: number[]): Promise<adapterRes
 
 export const deleteInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+                
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const idsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: !!req.query?.id,
@@ -117,6 +135,11 @@ export const deleteInstallment = async (req: NextApiRequest, res: NextApiRespons
 
 export const updateInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+                
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+    
     const installmentFormatted = httpToUpdateBase<installmentModel>({
       httpParamId: req.query?.id as string ?? '',
       httpData: req.body as never,
@@ -152,6 +175,11 @@ export const updateInstallment = async (req: NextApiRequest, res: NextApiRespons
 
 export const anulateInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+                
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+       
     const idsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: !!req.query?.id,

@@ -10,12 +10,23 @@ export interface adapterResponseHttpI<T = object> extends adapterResponseI<T> {
 
 // jwt
 export interface tokenI {
-  email: string
+  userId: number
+  revoked: boolean
 }
 
 export interface jwtManagerI {
   createToken: (data: tokenI) => string
   verifyToken: (token: string) => adapterResponseI<tokenI>
+}
+
+// cookie
+export interface createCookieProps {
+  data: string
+  maxAge?: number
+}
+
+export interface cookieManagerI {
+  createCookie: (data: createCookieProps) => string
 }
 
 // validation
@@ -32,15 +43,15 @@ export interface hashPropI {
   salt: string
 }
 
-export interface encrypManagerI {
+export interface encryptManagerI {
   decryptAES: (text: string) => string
   encryptAES: (text: string) => string
   encryptSHA256: (text: string, salt?: string) => hashPropI
   checkSHA256: (hash: hashPropI, textToCompare: string) => boolean
 }
 
-export interface httpToDataI {
-  httpData: never[],
+export interface httpToDataI <T = never[]> {
+  httpData: T,
   optionalFieldObligatory: boolean
 }
 
@@ -98,9 +109,7 @@ export interface projectModel extends commonColsModel {
 export interface userModel extends commonColsModel {
   email: string
   pass: string
-  salt_pass: string
-  session_token?: string 
-  session_expire_at?: Date 
+  salt_pass: string 
 }
 
 export interface permissionModel extends commonColsModel {

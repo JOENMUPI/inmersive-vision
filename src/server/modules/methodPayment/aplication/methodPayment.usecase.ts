@@ -1,7 +1,7 @@
 import { dbMethodPayment } from "@/server/modules/methodPayment/domain/interfaces"
 import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { dateToUTC, hexToString } from "@/server/utilities/formatters"
-import { adapterResponseHttpI, anulateProps, methodPaymentModel, encrypManagerI, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
+import { adapterResponseHttpI, anulateProps, methodPaymentModel, encryptManagerI, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
 
 export const getMethodPaymentUseCase = async ({
   methodPaymentIds,
@@ -11,7 +11,7 @@ export const getMethodPaymentUseCase = async ({
 }:{
   methodPaymentIds?: number[],
   dbManager: dbMethodPayment,
-  encryptManager: encrypManagerI,
+  encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<methodPaymentModel>
 }): Promise<adapterResponseHttpI> => {
   if (!validatorManager) {
@@ -58,7 +58,7 @@ export const createMethodPaymentUseCase = async ({
 }:{
   methodPayments: methodPaymentModel[],
   dbManager: dbMethodPayment,
-  encryptManager: encrypManagerI,
+  encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<methodPaymentModel>
 }): Promise<adapterResponseHttpI<Array<methodPaymentModel>>> => {
   if (!methodPayments) {
@@ -127,7 +127,7 @@ export const updateMethodPaymentUseCase = async ({
 }:{
   methodPayment: updateBaseI<methodPaymentModel>,
   dbManager: dbMethodPayment,
-  encryptManager: encrypManagerI,
+  encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<methodPaymentModel>
 }): Promise<adapterResponseHttpI<Array<methodPaymentModel>>> => {
   if (!methodPayment) {

@@ -1,7 +1,7 @@
 import { dbUser, loginI } from "@/server/modules/user/domain/interfaces"
 import { adapterResponseHttp } from "@/server/utilities/adapters"
-import { dateToUTC } from "@/server/utilities/formatters"
-import { adapterResponseHttpI, anulateProps, userModel, encrypManagerI, updateBaseI, validatorManagerI, jwtManagerI } from "@/server/utilities/interfaces";
+import { dateToUTC, hexToString } from "@/server/utilities/formatters"
+import { adapterResponseHttpI, anulateProps, userModel, encryptManagerI, updateBaseI, validatorManagerI, jwtManagerI, cookieManagerI } from "@/server/utilities/interfaces";
 
 export const getUserUseCase = async ({
   userIds,
@@ -33,8 +33,6 @@ export const getUserUseCase = async ({
       email: user.email,
       pass: user.pass,
       salt_pass: user.salt_pass,
-      session_expire_at: user.session_expire_at,
-      session_token: user.session_token,
       id: user.id,
       soft_deleted: user.soft_deleted,
       created_at: user.created_at,
@@ -53,7 +51,7 @@ export const createUserUseCase = async ({
 }:{
   users: userModel[],
   dbManager: dbUser,
-  encryptManager: encrypManagerI,
+  encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<userModel> 
 }): Promise<adapterResponseHttpI<Array<userModel>>> => {
   if (!users) {
@@ -124,7 +122,7 @@ export const updateUserUseCase = async ({
 }:{
   user: updateBaseI<userModel>,
   dbManager: dbUser,
-  encryptManager: encrypManagerI,
+  encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<userModel>
 }): Promise<adapterResponseHttpI<Array<userModel>>> => {
   if (!user) {
@@ -158,8 +156,6 @@ export const updateUserUseCase = async ({
       email: user.newData.email,
       pass: userDB.payload[0].pass,
       salt_pass: userDB.payload[0].salt_pass,
-      session_expire_at: user.newData.session_expire_at,
-      session_token: user.newData.session_token,
       id: user.newData.id,
       created_at: user.newData.created_at,
       soft_deleted: user.newData.soft_deleted,
@@ -211,28 +207,27 @@ export const loginUseCase = async ({
   loginData,
   dbManager,
   encryptManager,
-  validatorManager,
-  jwtManager
+  jwtManager,
+  cookieManager
 }:{
   loginData: loginI,
   dbManager: dbUser,
-  encryptManager: encrypManagerI,
-  validatorManager: validatorManagerI<userModel>
-  jwtManager: jwtManagerI
-}): Promise<adapterResponseHttpI> => {
+  encryptManager: encryptManagerI,
+  jwtManager: jwtManagerI,
+  cookieManager: cookieManagerI
+}): Promise<adapterResponseHttpI<string>> => {
   if (!dbManager) {
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
-  } else if (!validatorManager) {
-    return adapterResponseHttp({ message: 'validatorManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!encryptManager) {
     return adapterResponseHttp({ message: 'encryptManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!loginData) {
     return adapterResponseHttp({ message: 'loginData is undefined', hasError: true, statusHttp: 500 })
+  } else if (!cookieManager) {
+    return adapterResponseHttp({ message: 'cookieManager is undefined', hasError: true, statusHttp: 500 })
+  } else if (!jwtManager) {
+    return adapterResponseHttp({ message: 'jwtManager is undefined', hasError: true, statusHttp: 500 })
   }
 
-  // const validator = validatorManager.validateGet(loginData)
-  // if (validator.hasError) return adapterResponseHttp({ statusHttp: 400, ...validator })
-  
   const dbData = await dbManager.getUserByEmail(loginData.email);
   
   if (dbData.hasError) return adapterResponseHttp({ message: dbData.message, hasError: dbData.hasError, statusHttp: 500 })
@@ -241,34 +236,26 @@ export const loginUseCase = async ({
   }
 
   if (dbData.payload.length !== 1) {
-    return adapterResponseHttp({ message: 'More than one user is not possible with: ' + loginData.email, hasError: false, statusHttp: 500 })
+    return adapterResponseHttp({ message: 'More than one user is not possible with: ' + loginData.email, hasError: true, statusHttp: 500 })
   }
 
   const _dbUser = dbData.payload[0]
-  if (!encryptManager.checkSHA256({ hash: _dbUser.pass, salt: _dbUser.salt_pass }, loginData.pass)) {
-    return adapterResponseHttp({ message: 'Pass not match', hasError: false, statusHttp: 400 })
+
+  if (!encryptManager.checkSHA256({ hash: hexToString(_dbUser.pass), salt: _dbUser.salt_pass }, loginData.pass)) {
+    return adapterResponseHttp({ message: 'Pass not match', hasError: true, statusHttp: 400 })
   }
 
-  const token = jwtManager.createToken({ email: _dbUser.email})
-  if (token) {
-    
-  }
-
-
-
-  const dataFormatted: userModel[] = dbData.payload.map(user => {
-    return {
-      email: user.email,
-      pass: user.pass,
-      salt_pass: user.salt_pass,
-      session_expire_at: user.session_expire_at,
-      session_token: user.session_token,
-      id: user.id,
-      soft_deleted: user.soft_deleted,
-      created_at: user.created_at,
-      updated_at: user.updated_at
-    }
-  })
+  const token = jwtManager.createToken({ userId: _dbUser.id!, revoked: false })
   
-  return adapterResponseHttp({ payload: dataFormatted, message: dbData.message, hasError: dbData.hasError, statusHttp: 200 })
+  if (!token) return adapterResponseHttp({ message: 'Token is undefined', hasError: true, statusHttp: 400 })
+
+  const tokenEncryp = encryptManager.encryptAES(token)
+
+  if (!tokenEncryp) return adapterResponseHttp({ message: 'TokenEncryp is undefined', hasError: true, statusHttp: 400 })
+
+  const cookie = cookieManager.createCookie({ data: tokenEncryp })
+
+  if (!cookie) return adapterResponseHttp({ message: 'Cookie is undefined', hasError: true, statusHttp: 400 })
+  
+  return adapterResponseHttp({ payload: cookie, message: dbData.message, hasError: dbData.hasError, statusHttp: 200 })
 }

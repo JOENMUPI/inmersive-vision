@@ -12,6 +12,8 @@ import {
 import { adapterResponseI, userPermissionId, userPermissionModel } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/userPermission/infraestructure/zodValidatorManager"
 import { httpToId, httpToUpdateBase, httpToUserPermission, reqQueryToArray } from "@/server/utilities/formatters";
+import { checkJWT } from "@/server/utilities/validations";
+import { jwtManager } from "@/server/utilities/JWTManager";
 
 const userPermissionIdHandler = ({
   permissionIds,
@@ -58,6 +60,11 @@ const userPermissionIdHandler = ({
 
 export const createUserPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+      
     const userPermissionsFormatted = httpToUserPermission({ httpData: req.body, optionalFieldObligatory: false })
                 
     if (userPermissionsFormatted.hasError) res.status(400).json(userPermissionsFormatted)
@@ -88,6 +95,11 @@ export const createUserPermission = async (req: NextApiRequest, res: NextApiResp
 
 export const getUserPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const { message, hasError, payload } = userPermissionIdHandler({
       permissionIds: req.query?.installmentIds ? reqQueryToArray(req.query.installmentIds) : [],
       userIds: req.query?.projectIds ? reqQueryToArray(req.query.projectIds) : [],
@@ -122,6 +134,11 @@ export const getUserPermissionInternal = async (ids?: userPermissionId[]): Promi
 
 export const deleteUserPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const { hasError, message, payload } = userPermissionIdHandler({
       permissionIds: req.query?.permission_id ? reqQueryToArray(req.query.permission_id) : [],
       userIds: req.query?.user_id ? reqQueryToArray(req.query.user_id) : []
@@ -154,6 +171,11 @@ export const deleteUserPermission = async (req: NextApiRequest, res: NextApiResp
 
 export const updateUserPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+      
     const userPermissionFormatted = httpToUpdateBase<userPermissionModel, userPermissionId>({
       httpParamId: req.query?.user_id as string ?? '',
       httpData: req.body as never,
@@ -195,6 +217,11 @@ export const updateUserPermission = async (req: NextApiRequest, res: NextApiResp
 
 export const anulateUserPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
+    const jwt = await checkJWT({ req, jwtManager, encryptManager })
+    
+    if (jwt.hasError) res.status(400).json(jwt)
+    if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
     const { hasError, message, payload } = userPermissionIdHandler({
       permissionIds: req.query?.permission_id ? reqQueryToArray(req.query.permission_id) : [],
       userIds: req.query?.user_id ? reqQueryToArray(req.query.user_id) : []

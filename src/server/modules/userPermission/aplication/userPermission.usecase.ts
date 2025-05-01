@@ -4,7 +4,7 @@ import { dateToUTC } from "@/server/utilities/formatters"
 import {
   adapterResponseHttpI,
   anulateProps,
-  encrypManagerI,
+  encryptManagerI,
   updateBaseI,
   userPermissionId,
   userPermissionModel,
@@ -120,7 +120,7 @@ export const updateUserPermissionUseCase = async ({
 }:{
   userPermission: updateBaseI<userPermissionModel, userPermissionId>,
   dbManager: dbUserPermission,
-  encryptManager: encrypManagerI,
+  encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<userPermissionModel, userPermissionId>
 }): Promise<adapterResponseHttpI<Array<userPermissionModel>>> => {
   if (!userPermission) {

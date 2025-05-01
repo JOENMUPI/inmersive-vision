@@ -7,8 +7,6 @@ const objectSchema = z.object({
   [userTableKeys.PASS]: z.string().trim().nonempty(),
   [userTableKeys.EMAIL]: z.string().trim().nonempty(),
   [userTableKeys.SALT_PASS]: z.string().trim().nonempty(),
-  [userTableKeys.SESSION_TOKEN]: z.string().trim().optional(),
-  [userTableKeys.SESSION_EXPIRE_AT]: z.date().optional(),
   [userTableKeys.ID]: z.number(),
   [userTableKeys.CREATED_AT]: z.date(),
   [userTableKeys.SOFT_DELETED]: z.boolean(),
