@@ -276,3 +276,46 @@ export const logout = async (req: NextApiRequest, res: NextApiResponse<adapterRe
 export const errorMethod = (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   res.status(400).json(adapterResponse({ message: 'Method not available', hasError: true }))
 }
+
+
+
+
+export const test = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
+  try {
+    const loginFormatted = httpToLogin({
+      httpData: { userId: 'joseemundop@gmail.com', pass: '123456789JM@' } as never,
+      optionalFieldObligatory: false
+    })
+
+    if (loginFormatted.hasError) res.status(400).json(loginFormatted)
+    if (!loginFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'LoginFormatted parser no has payload',
+      hasError: true
+    }))
+
+    const _loginUseCase = await loginUseCase({
+      loginData: loginFormatted.payload!,
+      dbManager,
+      encryptManager,
+      cookieManager,
+      jwtManager
+    })
+
+    if (_loginUseCase.hasError) res.status(_loginUseCase.statusHttp).json({ message: _loginUseCase.message, hasError: true })
+    if (!_loginUseCase.payload) res.status(_loginUseCase.statusHttp).json(adapterResponse({
+      message: 'LoginUseCase parser no has payload',
+      hasError: true
+    }))
+    console.log('_loginUseCase', _loginUseCase)
+    res.setHeader('Set-Cookie', _loginUseCase.payload!).status(_loginUseCase.statusHttp).json(adapterResponse({
+      message: 'Logged succesfully',
+      hasError: _loginUseCase.hasError
+    }))
+  } catch (err) {
+    console.error(err)
+    res.status(500).json(adapterResponse({
+      message: 'Unexpected error, please try again later: ' + (err instanceof Error ? err.message : 'Unexpected error'),
+      hasError: true,
+    }))
+  }
+} 
