@@ -35,12 +35,3 @@ export const checkJWT = async ({
   if (decodedToken.payload.revoked) return adapterResponse({ message: 'Token revoked', hasError: true })
   return adapterResponse({ message: 'Token valid', hasError: false, payload: decodedToken.payload })
 }
-
-export const checkUserPermission = async (id: userPermissionId): Promise<adapterResponseI<boolean>> => {
-  const userPermission = await getUserPermissionInternal([id])
-
-  if (userPermission.hasError) return adapterResponse({ message: userPermission.message, hasError: true })
-  if (!userPermission.payload) return adapterResponse({ message: 'No payload in userPermission', hasError: false, payload: false })
-  if (userPermission.payload.length > 1) return adapterResponse({ message: 'userPermission will be one', hasError: true })
-  return adapterResponse({ message: 'All done', hasError: false, payload: !!userPermission.payload![0].is_allowed })
-}

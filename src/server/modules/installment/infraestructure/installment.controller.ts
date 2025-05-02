@@ -15,6 +15,8 @@ import { checkJWT } from "@/server/utilities/validations";
 import { jwtManager } from "@/server/utilities/JWTManager";
 import { encryptManager } from "@/server/utilities/cryptojs";
 import { cookieManager } from "@/server/utilities/cookieManager";
+import { permissionIds } from "@/server/utilities/enums";
+import { checkUserPermissionInternal } from "@/server/modules/userPermission/infraestructure/userPermission.controller";
 
 export const createInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
@@ -23,6 +25,11 @@ export const createInstallment = async (req: NextApiRequest, res: NextApiRespons
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.CREATE_INSTALLMENT })
+    
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+
     const installmentFormatted = httpToInstallment({ httpData: req.body, optionalFieldObligatory: false })
         
     if (installmentFormatted.hasError) res.status(400).json(installmentFormatted)
@@ -59,6 +66,11 @@ export const getInstallment = async (req: NextApiRequest, res: NextApiResponse<a
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.GET_INSTALLMENT })
+  
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+
     const idsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: !!req.query?.id,
@@ -101,6 +113,11 @@ export const deleteInstallment = async (req: NextApiRequest, res: NextApiRespons
                 
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.DELETE_INSTALLMENT })
+    
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
     
     const idsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
@@ -141,6 +158,11 @@ export const updateInstallment = async (req: NextApiRequest, res: NextApiRespons
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.EDIT_CLIENT })
+    
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+    
     const installmentFormatted = httpToUpdateBase<installmentModel>({
       httpParamId: req.query?.id as string ?? '',
       httpData: req.body as never,
@@ -180,7 +202,12 @@ export const anulateInstallment = async (req: NextApiRequest, res: NextApiRespon
                 
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
-       
+    
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.ANULATE_CLIENT })
+    
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+
     const idsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: !!req.query?.id,

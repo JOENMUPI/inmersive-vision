@@ -15,6 +15,8 @@ import { jwtManager } from "@/server/utilities/JWTManager";
 import { encryptManager } from "@/server/utilities/cryptojs";
 import { checkJWT } from "@/server/utilities/validations";
 import { cookieManager } from "@/server/utilities/cookieManager";
+import { permissionIds } from "@/server/utilities/enums";
+import { checkUserPermissionInternal } from "@/server/modules/userPermission/infraestructure/userPermission.controller";
 
 export const createPermission = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
@@ -22,6 +24,11 @@ export const createPermission = async (req: NextApiRequest, res: NextApiResponse
         
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.CREATE_PERMISSION })
+                
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
     
     const permissionsFormatted = httpToPermission({ httpData: req.body, optionalFieldObligatory: false })
         
@@ -58,6 +65,11 @@ export const getPermission = async (req: NextApiRequest, res: NextApiResponse<ad
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.GET_PERMISSION })
+                
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+      
     const permissionIdsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: !!req.query?.id,
@@ -101,6 +113,11 @@ export const deletePermission = async (req: NextApiRequest, res: NextApiResponse
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.DELETE_PERMISSION })
+                
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+      
     const permissionIdsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,
@@ -140,6 +157,11 @@ export const updatePermission = async (req: NextApiRequest, res: NextApiResponse
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.EDIT_PERMISSION })
+                
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+      
     const permissionFormatted = httpToUpdateBase<permissionModel>({
       httpParamId: req.query?.id as string ?? '',
       httpData: req.body as never,
@@ -180,6 +202,11 @@ export const anulatePermission = async (req: NextApiRequest, res: NextApiRespons
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.ANULATE_PERMISSION })
+                
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+      
     const permissionIdsFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,

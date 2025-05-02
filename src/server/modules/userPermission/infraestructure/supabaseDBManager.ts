@@ -30,10 +30,10 @@ const getUserPermission = async (userPermissionIds?: userPermissionId[]): Promis
     return adapterResponse({ message: `Error to get user permissions: ${error.message}`, hasError: true, });
   } 
 
-  let dataFiltered = data
+  let dataFiltered: userPermissionModel[] = data
   if (userPermissionIds && userPermissionIds.length > 0) {
     const allowedIds = new Set(userPermissionIds.map(id => auxiliaryId(id.user_id.toString(), id.permission_id.toString())))
-    dataFiltered = data.filter(el => allowedIds.has(auxiliaryId(el.project_id.toString(), el.installment_id.toString())))
+    dataFiltered = data.filter(el => allowedIds.has(auxiliaryId(el.user_id.toString(), el.permission_id.toString())))
   }
   return adapterResponse({ message: `Get user permissions succesfully`, hasError: false, payload: dataFiltered });;
 }

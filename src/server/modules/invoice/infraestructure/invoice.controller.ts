@@ -15,6 +15,8 @@ import { checkJWT } from "@/server/utilities/validations";
 import { jwtManager } from "@/server/utilities/JWTManager";
 import { encryptManager } from "@/server/utilities/cryptojs";
 import { cookieManager } from "@/server/utilities/cookieManager";
+import { checkUserPermissionInternal } from "@/server/modules/userPermission/infraestructure/userPermission.controller";
+import { permissionIds } from "@/server/utilities/enums";
 
 const invoiceIdHandler = ({
   installmentIds,
@@ -65,6 +67,11 @@ export const createInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
             
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.CREATE_INVOICE })
+          
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
         
     const invoicesFormatted = httpToInvoice({ httpData: req.body, optionalFieldObligatory: false })
             
@@ -101,6 +108,11 @@ export const getInvoice = async (req: NextApiRequest, res: NextApiResponse<adapt
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.GET_INVOICE })
+          
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+
     const installmentIds: string[] | undefined = req.query?.installment_id ? reqQueryToArray(req.query.installment_id) : undefined  
     const projectIds: string[] | undefined = req.query?.project_id ? reqQueryToArray(req.query.project_id) : undefined 
     let invoiceIds: invoiceId[] | undefined
@@ -145,7 +157,12 @@ export const deleteInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
             
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
-    
+
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.DELETE_INVOICE })
+          
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+
     const { hasError, message, payload } = invoiceIdHandler({
       installmentIds: req.query?.installment_id ? reqQueryToArray(req.query.installment_id) : [],
       projectIds: req.query?.project_id ? reqQueryToArray(req.query.project_id) : []
@@ -183,6 +200,12 @@ export const updateInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.EDIT_INVOICE })
+        
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+  
+
     const invoiceFormatted = httpToUpdateBase<invoiceModel, invoiceId>({
       httpParamId: req.query?.project_id as string ?? '',
       httpData: req.body as never,
@@ -227,7 +250,12 @@ export const anulateInvoice = async (req: NextApiRequest, res: NextApiResponse<a
             
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
-    
+
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.ANULATE_INVOICE })
+          
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+  
     const { hasError, message, payload } = invoiceIdHandler({
       installmentIds: req.query?.installment_id ? reqQueryToArray(req.query?.installment_id) : [],
       projectIds: req.query?.project_id ? reqQueryToArray(req.query?.project_id) : []

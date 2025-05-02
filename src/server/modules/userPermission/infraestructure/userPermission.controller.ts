@@ -15,6 +15,7 @@ import { httpToId, httpToUpdateBase, httpToUserPermission, reqQueryToArray } fro
 import { checkJWT } from "@/server/utilities/validations";
 import { jwtManager } from "@/server/utilities/JWTManager";
 import { cookieManager } from "@/server/utilities/cookieManager";
+import { permissionIds } from "@/server/utilities/enums";
 
 const userPermissionIdHandler = ({
   permissionIds,
@@ -66,6 +67,11 @@ export const createUserPermission = async (req: NextApiRequest, res: NextApiResp
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
       
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.CREATE_USER_PERMISSION })
+                    
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+
     const userPermissionsFormatted = httpToUserPermission({ httpData: req.body, optionalFieldObligatory: false })
                 
     if (userPermissionsFormatted.hasError) res.status(400).json(userPermissionsFormatted)
@@ -101,6 +107,11 @@ export const getUserPermission = async (req: NextApiRequest, res: NextApiRespons
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
 
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.GET_USER_PERMISSION })
+                    
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+  
     const { message, hasError, payload } = userPermissionIdHandler({
       permissionIds: req.query?.installmentIds ? reqQueryToArray(req.query.installmentIds) : [],
       userIds: req.query?.projectIds ? reqQueryToArray(req.query.projectIds) : [],
@@ -140,6 +151,11 @@ export const deleteUserPermission = async (req: NextApiRequest, res: NextApiResp
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
 
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.DELETE_USER_PERMISSION })
+                  
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+  
     const { hasError, message, payload } = userPermissionIdHandler({
       permissionIds: req.query?.permission_id ? reqQueryToArray(req.query.permission_id) : [],
       userIds: req.query?.user_id ? reqQueryToArray(req.query.user_id) : []
@@ -177,6 +193,11 @@ export const updateUserPermission = async (req: NextApiRequest, res: NextApiResp
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
       
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.EDIT_USER_PERMISSION })
+                    
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+
     const userPermissionFormatted = httpToUpdateBase<userPermissionModel, userPermissionId>({
       httpParamId: req.query?.user_id as string ?? '',
       httpData: req.body as never,
@@ -223,6 +244,11 @@ export const anulateUserPermission = async (req: NextApiRequest, res: NextApiRes
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
 
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.ANULATE_USER_PERMISSION })
+                    
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+
     const { hasError, message, payload } = userPermissionIdHandler({
       permissionIds: req.query?.permission_id ? reqQueryToArray(req.query.permission_id) : [],
       userIds: req.query?.user_id ? reqQueryToArray(req.query.user_id) : []
@@ -251,6 +277,15 @@ export const anulateUserPermission = async (req: NextApiRequest, res: NextApiRes
       hasError: true,
     }))
   }
+}
+
+export const checkUserPermissionInternal = async (id: userPermissionId): Promise<adapterResponseI<boolean>> => {
+  const userPermission = await getUserPermissionInternal([id])
+
+  if (userPermission.hasError) return adapterResponse({ message: userPermission.message, hasError: true })
+  if (!userPermission.payload) return adapterResponse({ message: 'No payload in userPermission', hasError: false, payload: false })
+  if (userPermission.payload.length > 1) return adapterResponse({ message: 'userPermission will be one', hasError: true })
+  return adapterResponse({ message: 'All done', hasError: false, payload: !!userPermission.payload![0].is_allowed })
 }
 
 export const errorMethod = (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {

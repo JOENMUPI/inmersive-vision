@@ -15,6 +15,8 @@ import { httpToId, httpToMethodPayment, httpToUpdateBase, reqQueryToArray } from
 import { checkJWT } from "@/server/utilities/validations";
 import { jwtManager } from "@/server/utilities/JWTManager";
 import { cookieManager } from "@/server/utilities/cookieManager";
+import { checkUserPermissionInternal } from "../../userPermission/infraestructure/userPermission.controller";
+import { permissionIds } from "@/server/utilities/enums";
 
 export const createMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
@@ -23,6 +25,10 @@ export const createMethodPayment = async (req: NextApiRequest, res: NextApiRespo
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
         
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.CREATE_METHOD_PAYMENT })
+          
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))  
 
     const proyectsFormatted = httpToMethodPayment({ httpData: req.body, optionalFieldObligatory: false })
             
@@ -60,6 +66,11 @@ export const getMethodPayment = async (req: NextApiRequest, res: NextApiResponse
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.GET_METHOD_PAYMENT })
+          
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+
     const methodPaymentFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: !!req.query?.id,
@@ -104,6 +115,11 @@ export const deleteMethodPayment = async (req: NextApiRequest, res: NextApiRespo
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
   
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.DELETE_METHOD_PAYMENT })
+          
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+
     const methodPaymentFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,
@@ -143,6 +159,11 @@ export const updateMethodPayment = async (req: NextApiRequest, res: NextApiRespo
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.EDIT_METHOD_PAYMENT })
+          
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+
     const methodPaymentFormatted = httpToUpdateBase<methodPaymentModel>({
       httpParamId: req.query?.id as string ?? '',
       httpData: req.body as never,
@@ -184,6 +205,11 @@ export const anulateMethodPayment = async (req: NextApiRequest, res: NextApiResp
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.ANULATE_METHOD_PAYMENT })
+          
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+
     const methodPaymentFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,

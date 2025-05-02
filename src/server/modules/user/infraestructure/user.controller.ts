@@ -16,6 +16,8 @@ import { adapterResponseI, userModel } from "@/server/utilities/interfaces"
 import { validatorManager } from "@/server/modules/user/infraestructure/zodValidatorManager"
 import { httpToId, httpToLogin, httpToUpdateBase, httpToUser, reqQueryToArray } from "@/server/utilities/formatters"
 import { checkJWT } from "@/server/utilities/validations";
+import { permissionIds } from "@/server/utilities/enums";
+import { checkUserPermissionInternal } from "@/server/modules/userPermission/infraestructure/userPermission.controller";
 
 export const createUser = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
@@ -23,6 +25,11 @@ export const createUser = async (req: NextApiRequest, res: NextApiResponse<adapt
 
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
+
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.CREATE_USER })
+                        
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
 
     const usersFormatted = httpToUser({ httpData: req.body, optionalFieldObligatory: false })
     
@@ -60,6 +67,11 @@ export const getUser = async (req: NextApiRequest, res: NextApiResponse<adapterR
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
 
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.GET_USER })
+                        
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+  
     const usersFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: !!req.query?.id,
@@ -103,6 +115,11 @@ export const deleteUser = async (req: NextApiRequest, res: NextApiResponse<adapt
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
 
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.DELETE_USER })
+                        
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+  
     const usersFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,
@@ -142,6 +159,11 @@ export const updateUser = async (req: NextApiRequest, res: NextApiResponse<adapt
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
 
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.EDIT_USER })
+                        
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+  
     const userFormatted = httpToUpdateBase<userModel>({
       httpParamId: req.query?.id as string ?? '',
       httpData: req.body as never,
@@ -183,6 +205,11 @@ export const anulateUser = async (req: NextApiRequest, res: NextApiResponse<adap
     if (jwt.hasError) res.status(400).json(jwt)
     if (!jwt.payload) res.status(400).json(adapterResponse({ message: 'JWT parser no has payload', hasError: true }))
     
+    const hasPermission = await checkUserPermissionInternal({ user_id: jwt.payload!.userId, permission_id: permissionIds.ANULATE_USER })
+                        
+    if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
+    if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
+  
     const usersFormatted = httpToId({
       ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
       isOptional: false,
@@ -276,47 +303,3 @@ export const logout = async (req: NextApiRequest, res: NextApiResponse<adapterRe
 export const errorMethod = (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   res.status(400).json(adapterResponse({ message: 'Method not available', hasError: true }))
 }
-
-
-
-
-export const test = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
-  try {
-    const loginFormatted = httpToLogin({
-      httpData: { email: 'joseemundop@gmail.com', pass: '123456789JM@' } as never,
-      optionalFieldObligatory: false
-    })
-
-    if (loginFormatted.hasError) res.status(400).json(loginFormatted)
-    if (!loginFormatted.payload) res.status(400).json(adapterResponse({
-      message: 'LoginFormatted parser no has payload',
-      hasError: true
-    }))
-
-    const _loginUseCase = await loginUseCase({
-      loginData: loginFormatted.payload!,
-      dbManager,
-      encryptManager,
-      cookieManager,
-      jwtManager
-    })
-
-    if (_loginUseCase.hasError) res.status(_loginUseCase.statusHttp).json({ message: _loginUseCase.message, hasError: true })
-    if (!_loginUseCase.payload) res.status(_loginUseCase.statusHttp).json(adapterResponse({
-      message: 'LoginUseCase parser no has payload',
-      hasError: true
-    }))
-    
-    res.setHeader('Set-Cookie', _loginUseCase.payload!).status(_loginUseCase.statusHttp).json(adapterResponse({
-      message: 'Logged succesfully',
-      hasError: _loginUseCase.hasError,
-      payload: {token: _loginUseCase.payload}
-    }))
-  } catch (err) {
-    console.error(err)
-    res.status(500).json(adapterResponse({
-      message: 'Unexpected error, please try again later: ' + (err instanceof Error ? err.message : 'Unexpected error'),
-      hasError: true,
-    }))
-  }
-} 
