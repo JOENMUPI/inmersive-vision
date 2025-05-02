@@ -1,7 +1,6 @@
 import { NextApiRequest } from "next";
-import { adapterResponseI, cookieManagerI, encryptManagerI, jwtManagerI, tokenI, userPermissionId } from "@/server/utilities/interfaces";
+import { adapterResponseI, cookieManagerI, encryptManagerI, jwtManagerI, tokenI } from "@/server/utilities/interfaces";
 import { adapterResponse } from "@/server/utilities/adapters";
-import { getUserPermissionInternal } from "@/server/modules/userPermission/infraestructure/userPermission.controller";
 
 export const checkPhone = (val: string): boolean => {
   return /^\+([1-9]{1}[0-9]{0,2})\s?([0-9]{8,14})$/.test(val)
