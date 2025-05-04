@@ -8,16 +8,16 @@ import {
   methodPaymentModel,
   projectDescriptionModel,
   projectModel,
-  updateBaseI
+  updateBaseI,
 } from "@/server/utilities/interfaces";
 
-export interface completeInvoice {
+export interface completeInvoiceI {
   invoices: invoiceModel
-  installments: installmentModel[]
+  installments: installmentModel
   projectDescription: projectDescriptionModel[]
-  project?: projectModel
-  client?: clientModel
-  methodPatment?: methodPaymentModel
+  project: projectModel
+  client: clientModel
+  methodPayment: methodPaymentModel
 }
 
 export interface dbInvoice {

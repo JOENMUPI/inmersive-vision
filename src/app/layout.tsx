@@ -15,10 +15,42 @@ import { Notifications } from '@mantine/notifications';
 import { Analytics } from "@vercel/analytics/react"
 
 export const metadata: Metadata = {
-  title: "Imersive Vision",
-  description: "LandingPage for Imersive Vision",
+  description: 'Architectural visualization company within virtual reality environments showing fully immersive spaces in each project!',
+  generator: 'Next.js',
+  applicationName: 'Immersive Vision',
+  referrer: 'origin-when-cross-origin',
+  keywords: ['virtual tour', 'Immersive Vision', 'immersive vision', '360 tour'],
+  colorScheme: 'dark',
+  creator: 'jose mundo',
+  publisher: 'jose mundo',
+  openGraph: {
+    title: 'Immersive Vision',
+    description: 'Architectural visualization company within virtual reality environments showing fully immersive spaces in each project',
+    url: 'https://www.goftvisualize.com',
+    siteName: 'Immersive Vision',
+  },
+  alternates: {
+    languages: {
+      'en-US': '/'
+    }
+  },
+  title: {
+    default: 'Immersive Vision',
+    template: 'Immersive Vision | %s'
+  },
   icons: '/favicon.ico',
-};
+  verification: {
+    google: '3GSuiNJvCGPqkMyS3euz0-BjA9SDzTuQrphz14lHPA0',
+    other: {
+      me: ['joseemundop@gmail.com', 'https://www.linkedin.com/in/jose-enrique-mundo-pinto-616b66209/']
+    }
+  },
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false
+  }
+}
 
 export const viewport: Viewport = {
   minimumScale: 1,

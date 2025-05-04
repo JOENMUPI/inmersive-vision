@@ -1,0 +1,6 @@
+# Bloquear todos los bots de rastrear cualquier parte del sitio
+User-agent: *
+Disallow: /
+# Permitir que Googlebot rastree todo
+User-agent: Googlebot
+Disallow:
