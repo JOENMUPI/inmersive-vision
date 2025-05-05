@@ -15,7 +15,7 @@ export interface completeInvoiceI {
   invoices: invoiceModel
   installments: installmentModel
   projectDescription: projectDescriptionModel[]
-  project: projectModel
+  project?: projectModel
   client: clientModel
   methodPayment: methodPaymentModel
 }

@@ -3,7 +3,7 @@ import { adapterResponse } from "@/server/utilities/adapters";
 import { dbManager } from "@/server/modules/methodPayment/infraestructure/supabaseDBManager";
 import { encryptManager } from "@/server/utilities/cryptojs"
 import { validatorManager } from "@/server/modules/methodPayment/infraestructure/zodValidatorManager"
-import { adapterResponseI, methodPaymentModel } from "@/server/utilities/interfaces";
+import { adapterResponseI, methodPaymentModel, updateBaseI } from "@/server/utilities/interfaces";
 import {
   getMethodPaymentUseCase,
   createMethodPaymentUseCase,
@@ -17,6 +17,7 @@ import { jwtManager } from "@/server/utilities/JWTManager";
 import { cookieManager } from "@/server/utilities/cookieManager";
 import { checkUserPermissionInternal } from "../../userPermission/infraestructure/userPermission.controller";
 import { permissionIds } from "@/server/utilities/enums";
+import { methodPaymentInternalManagerI } from "../domain/interfaces";
 
 export const createMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
@@ -102,10 +103,6 @@ export const getMethodPayment = async (req: NextApiRequest, res: NextApiResponse
       hasError: true,
     }))
   }
-}
-
-export const getMethodPaymentInternal = async (ids?: number[]): Promise<adapterResponseI> => {
-  return await getMethodPaymentUseCase({ dbManager, methodPaymentIds: ids, encryptManager, validatorManager })
 }
 
 export const deleteMethodPayment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
@@ -244,4 +241,29 @@ export const anulateMethodPayment = async (req: NextApiRequest, res: NextApiResp
 
 export const errorMethod = (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   res.status(400).json(adapterResponse({ message: 'Method not available', hasError: true }))
+}
+
+const getMethodPaymentInternal = async (ids?: number[]): Promise<adapterResponseI<Array<methodPaymentModel>>> => {
+  return await getMethodPaymentUseCase({ dbManager, methodPaymentIds: ids, encryptManager, validatorManager })
+}
+
+const createMethodPaymentInternal = async (methodPayments: methodPaymentModel[]): Promise<adapterResponseI<Array<methodPaymentModel>>> => {
+  return await createMethodPaymentUseCase({ dbManager, methodPayments, encryptManager, validatorManager })
+}
+
+const deleteMethodPaymentInternal = async (ids: number[]): Promise<adapterResponseI<Array<methodPaymentModel>>> => {
+  return await deleteMethodPaymentUseCase({ dbManager, methodPaymentIds: ids, validatorManager })
+}
+
+const updateMethodPaymentInternal = async (
+  methodPayment: updateBaseI<methodPaymentModel>
+): Promise<adapterResponseI<Array<methodPaymentModel>>> => {
+  return updateMethodPaymentUseCase({ dbManager, methodPayment, encryptManager, validatorManager })
+}
+
+export const methodPaymentInternalManager: methodPaymentInternalManagerI = {
+ getMethodPaymentInternal,
+ createMethodPaymentInternal,
+ deleteMethodPaymentInternal,
+ updateMethodPaymentInternal
 }

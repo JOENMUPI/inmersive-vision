@@ -7,3 +7,11 @@ export interface dbInstallment {
   deleteInstallment: (ids: number[]) => Promise<adapterResponseI<Array<installmentModel>>>;
   anulateInstallment: (ids: anulateProps) => Promise<adapterResponseI<Array<installmentModel>>>
 }
+
+
+export interface installmentInternalManagerI {
+  getInstallmentInternal: (ids?: number[]) => Promise<adapterResponseI<Array<installmentModel>>>;
+  createInstallmentInternal: (installments: installmentModel[]) => Promise<adapterResponseI<Array<installmentModel>>>;
+  updateInstallmentInternal: (installment: updateBaseI<installmentModel>) => Promise<adapterResponseI<Array<installmentModel>>>;
+  deleteInstallmentInternal: (ids: number[]) => Promise<adapterResponseI<Array<installmentModel>>>;
+}

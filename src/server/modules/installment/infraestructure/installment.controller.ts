@@ -8,7 +8,7 @@ import {
   updateInstallmentUseCase,
   anulateInstallmentUseCase
 } from "@/server/modules/installment/aplication/installment.usecase";
-import { adapterResponseI, installmentModel } from "@/server/utilities/interfaces";
+import { adapterResponseI, installmentModel, updateBaseI } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/installment/infraestructure/zodValidatorManager"
 import { httpToId, httpToInstallment, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
 import { checkJWT } from "@/server/utilities/validations";
@@ -17,6 +17,7 @@ import { encryptManager } from "@/server/utilities/cryptojs";
 import { cookieManager } from "@/server/utilities/cookieManager";
 import { permissionIds } from "@/server/utilities/enums";
 import { checkUserPermissionInternal } from "@/server/modules/userPermission/infraestructure/userPermission.controller";
+import { installmentInternalManagerI } from "../domain/interfaces";
 
 export const createInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
@@ -101,10 +102,6 @@ export const getInstallment = async (req: NextApiRequest, res: NextApiResponse<a
       hasError: true,
     }))
   }
-}
-
-export const getInstallmentInternal = async (ids?: number[]): Promise<adapterResponseI> => {
-  return await getInstallmentUseCase({ dbManager, installmentIds: ids, validatorManager })
 }
 
 export const deleteInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
@@ -243,3 +240,26 @@ export const anulateInstallment = async (req: NextApiRequest, res: NextApiRespon
 export const errorMethod = (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   res.status(400).json(adapterResponse({ message: 'Method not available', hasError: true }))
 }
+
+const getInstallmentInternal = async (ids?: number[]): Promise<adapterResponseI<Array<installmentModel>>> => {
+  return await getInstallmentUseCase({ dbManager, installmentIds: ids, validatorManager })
+}
+
+const createInstallmentInternal = async (installments: installmentModel[]): Promise<adapterResponseI<Array<installmentModel>>> => {
+  return await createInstallmentUseCase({ dbManager, installments, validatorManager })
+}
+
+const deleteInstallmentInternal = async (ids: number[]): Promise<adapterResponseI<Array<installmentModel>>> => {
+  return await deleteInstallmentUseCase({ dbManager, installmentIds: ids, validatorManager })
+}
+
+const updateInstallmentInternal = async (installment: updateBaseI<installmentModel>): Promise<adapterResponseI<Array<installmentModel>>> => {
+  return updateInstallmentUseCase({ dbManager, installment, validatorManager })
+}
+
+export const installmentInternalManager: installmentInternalManagerI = {
+ getInstallmentInternal,
+ createInstallmentInternal,
+ deleteInstallmentInternal,
+ updateInstallmentInternal
+} 

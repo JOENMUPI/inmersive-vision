@@ -13,7 +13,7 @@ export const getClientUseCase = async ({
   dbManager: dbClient,
   encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<clientModel>
-}): Promise<adapterResponseHttpI> => {
+}): Promise<adapterResponseHttpI<Array<clientModel>>> => {
   if (!dbManager) {
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!validatorManager) {

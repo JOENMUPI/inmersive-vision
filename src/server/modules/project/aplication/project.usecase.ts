@@ -13,7 +13,7 @@ export const getProjectUseCase = async ({
   projectIds?: number[],
   dbManager: dbProject,
   validatorManager: validatorManagerI<projectModel>
-}): Promise<adapterResponseHttpI> => {
+}): Promise<adapterResponseHttpI<Array<projectModel>>> => {
   if (!dbManager) {
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!validatorManager) {
@@ -21,7 +21,7 @@ export const getProjectUseCase = async ({
   }
 
   const validator = validatorManager.validateGet(projectIds)
-  if (validator.hasError) return adapterResponseHttp({ statusHttp: 400, ...validator })
+  if (validator.hasError) return adapterResponseHttp({ statusHttp: 400,  hasError: true, message: validator.message })
   
   const dbData = await dbManager.getProject(projectIds);
   

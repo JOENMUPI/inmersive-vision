@@ -13,7 +13,7 @@ export const getMethodPaymentUseCase = async ({
   dbManager: dbMethodPayment,
   encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<methodPaymentModel>
-}): Promise<adapterResponseHttpI> => {
+}): Promise<adapterResponseHttpI<Array<methodPaymentModel>>> => {
   if (!validatorManager) {
     return adapterResponseHttp({ message: 'Validator manager is undefined', hasError: true, statusHttp: 500 })
   } else if (!dbManager) {

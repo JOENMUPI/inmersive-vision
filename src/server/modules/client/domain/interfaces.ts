@@ -7,3 +7,10 @@ export interface dbClient {
   deleteClient: (ids: number[]) => Promise<adapterResponseI<Array<clientModel>>>;
   anulateClient: (ids: anulateProps) => Promise<adapterResponseI<Array<clientModel>>>
 }
+
+export interface clientInternalManagerI {
+  getClientInternal: (ids?: number[]) => Promise<adapterResponseI<Array<clientModel>>>
+  createClientInternal: (clients: clientModel[]) => Promise<adapterResponseI<Array<clientModel>>>
+  deleteClientInternal: (ids: number[]) => Promise<adapterResponseI<Array<clientModel>>>
+  updateClientInternal: (client: updateBaseI<clientModel>) => Promise<adapterResponseI<Array<clientModel>>>
+}

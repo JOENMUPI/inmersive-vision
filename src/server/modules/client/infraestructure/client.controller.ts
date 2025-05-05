@@ -9,7 +9,7 @@ import {
   updateClientUseCase,
   anulateClientUseCase
 } from "@/server/modules/client/aplication/client.usecase";
-import { adapterResponseI, clientModel } from "@/server/utilities/interfaces";
+import { adapterResponseI, clientModel, updateBaseI } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/client/infraestructure/zodValidatorManager"
 import { httpToClient, httpToId, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
 import { checkJWT } from "@/server/utilities/validations";
@@ -17,6 +17,7 @@ import { jwtManager } from "@/server/utilities/JWTManager";
 import { permissionIds } from "@/server/utilities/enums";
 import { cookieManager } from "@/server/utilities/cookieManager";
 import { checkUserPermissionInternal } from "@/server/modules/userPermission/infraestructure/userPermission.controller";
+import { clientInternalManagerI } from "../domain/interfaces";
 
 export const createClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
@@ -102,10 +103,6 @@ export const getClient = async (req: NextApiRequest, res: NextApiResponse<adapte
       hasError: true,
     }))
   }
-}
-
-export const getClientInternal = async (ids?: number[]): Promise<adapterResponseI> => {
-  return await getClientUseCase({ dbManager, clientIds: ids, encryptManager, validatorManager })
 }
 
 export const deleteClient = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
@@ -244,4 +241,28 @@ export const anulateClient = async (req: NextApiRequest, res: NextApiResponse<ad
 
 export const errorMethod = (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   res.status(400).json(adapterResponse({ message: 'Method not available', hasError: true }))
+}
+
+
+const getClientInternal = async (ids?: number[]): Promise<adapterResponseI<Array<clientModel>>> => {
+  return await getClientUseCase({ dbManager, clientIds: ids, encryptManager, validatorManager })
+}
+
+const createClientInternal = async (clients: clientModel[]): Promise<adapterResponseI<Array<clientModel>>> => {
+  return await createClientUseCase({ dbManager, clients, encryptManager, validatorManager })
+}
+
+const deleteClientInternal = async (ids: number[]): Promise<adapterResponseI<Array<clientModel>>> => {
+  return await deleteClientUseCase({ dbManager, clientIds: ids, validatorManager })
+}
+
+const updateClientInternal = async (client: updateBaseI<clientModel>): Promise<adapterResponseI<Array<clientModel>>> => {
+  return updateClientUseCase({ dbManager, client, encryptManager, validatorManager })
+}
+
+export const clientInternalManager: clientInternalManagerI = {
+ getClientInternal,
+ createClientInternal,
+ deleteClientInternal,
+ updateClientInternal
 }

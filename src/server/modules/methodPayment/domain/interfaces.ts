@@ -7,3 +7,10 @@ export interface dbMethodPayment {
   deleteMethodPayment: (ids: number[]) => Promise<adapterResponseI<Array<methodPaymentModel>>>;
   anulateMethodPayment: (ids: anulateProps) => Promise<adapterResponseI<Array<methodPaymentModel>>>
 }
+
+export interface methodPaymentInternalManagerI {
+  getMethodPaymentInternal: (ids?: number[]) => Promise<adapterResponseI<Array<methodPaymentModel>>>
+  createMethodPaymentInternal: (methodPayments: methodPaymentModel[]) => Promise<adapterResponseI<Array<methodPaymentModel>>>
+  deleteMethodPaymentInternal: (ids: number[]) => Promise<adapterResponseI<Array<methodPaymentModel>>>
+  updateMethodPaymentInternal: (methodPayment: updateBaseI<methodPaymentModel>) => Promise<adapterResponseI<Array<methodPaymentModel>>>
+}

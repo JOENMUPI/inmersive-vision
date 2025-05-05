@@ -17,7 +17,7 @@ export const getInstallmentUseCase = async ({
   installmentIds?: number[],
   dbManager: dbInstallment,
   validatorManager: validatorManagerI<installmentModel>
-}): Promise<adapterResponseHttpI> => {
+}): Promise<adapterResponseHttpI<Array<installmentModel>>> => {
   if (!dbManager) {
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!validatorManager) {

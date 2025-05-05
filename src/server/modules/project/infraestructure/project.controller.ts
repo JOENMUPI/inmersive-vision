@@ -8,7 +8,7 @@ import {
   updateProjectUseCase,
   anulateProjectUseCase
 } from "@/server/modules/project/aplication/project.usecase";
-import { adapterResponseI, projectModel } from "@/server/utilities/interfaces";
+import { adapterResponseI, projectModel, updateBaseI } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/project/infraestructure/zodValidatorManager"
 import { httpToId, httpToProject, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
 import { checkJWT } from "@/server/utilities/validations";
@@ -17,6 +17,7 @@ import { encryptManager } from "@/server/utilities/cryptojs";
 import { cookieManager } from "@/server/utilities/cookieManager";
 import { permissionIds } from "@/server/utilities/enums";
 import { checkUserPermissionInternal } from "@/server/modules/userPermission/infraestructure/userPermission.controller";
+import { projectInternalManagerI } from "../domain/interfaces";
 
 export const createProject = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
@@ -100,10 +101,6 @@ export const getProject = async (req: NextApiRequest, res: NextApiResponse<adapt
       hasError: true,
     }))
   }
-}
-
-export const getProjectInternal = async (ids?: number[]): Promise<adapterResponseI> => {
-  return await getProjectUseCase({ dbManager, projectIds: ids, validatorManager })
 }
 
 export const deleteProject = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
@@ -241,4 +238,27 @@ export const anulateProject = async (req: NextApiRequest, res: NextApiResponse<a
 
 export const errorMethod = (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   res.status(400).json(adapterResponse({ message: 'Method not available', hasError: true }))
+}
+
+const getProjectInternal = async (ids?: number[]): Promise<adapterResponseI<Array<projectModel>>> => {
+  return await getProjectUseCase({ dbManager, projectIds: ids, validatorManager })
+}
+
+const createProjectInternal = async (projects: projectModel[]): Promise<adapterResponseI<Array<projectModel>>> => {
+  return await createProjectUseCase({ dbManager, projects, validatorManager })
+}
+
+const deleteProjectInternal = async (ids: number[]): Promise<adapterResponseI<Array<projectModel>>> => {
+  return await deleteProjectUseCase({ dbManager, projectIds: ids, validatorManager })
+}
+
+const updateProjectInternal = async (project: updateBaseI<projectModel>): Promise<adapterResponseI<Array<projectModel>>> => {
+  return updateProjectUseCase({ dbManager, project, validatorManager })
+}
+
+export const projectInternalManager: projectInternalManagerI = {
+ getProjectInternal,
+ createProjectInternal,
+ deleteProjectInternal,
+ updateProjectInternal
 }

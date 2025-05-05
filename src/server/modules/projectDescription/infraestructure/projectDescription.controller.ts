@@ -8,7 +8,7 @@ import {
   updateProjectDescriptionUseCase,
   anulateProjectDescriptionUseCase
 } from "@/server/modules/projectDescription/aplication/projectDescription.usecase";
-import { adapterResponseI, projectDescriptionModel } from "@/server/utilities/interfaces";
+import { adapterResponseI, projectDescriptionModel, updateBaseI } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/projectDescription/infraestructure/zodValidatorManager"
 import { httpToId, httpToProjectDescription, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
 import { checkJWT } from "@/server/utilities/validations";
@@ -17,6 +17,7 @@ import { encryptManager } from "@/server/utilities/cryptojs";
 import { cookieManager } from "@/server/utilities/cookieManager";
 import { checkUserPermissionInternal } from "@/server/modules/userPermission/infraestructure/userPermission.controller";
 import { permissionIds } from "@/server/utilities/enums";
+import { projectDescriptionInternalManagerI } from "../domain/interfaces";
 
 export const createProjectDescription = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
@@ -106,10 +107,6 @@ export const getProjectDescription = async (req: NextApiRequest, res: NextApiRes
       hasError: true,
     }))
   }
-}
-
-export const getProjectDescriptionInternal = async (ids?: number[]): Promise<adapterResponseI> => {
-  return await getProjectDescriptionUseCase({ dbManager, projectDescriptionIds: ids, validatorManager })
 }
 
 export const deleteProjectDescription = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
@@ -256,4 +253,27 @@ export const anulateProjectDescription = async (req: NextApiRequest, res: NextAp
 
 export const errorMethod = (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   res.status(400).json(adapterResponse({ message: 'Method not available', hasError: true }))
+}
+
+const getProjectDescriptionInternal = async (ids?: number[]): Promise<adapterResponseI<Array<projectDescriptionModel>>> => {
+  return await getProjectDescriptionUseCase({ dbManager, projectDescriptionIds: ids, validatorManager })
+}
+
+const createProjectDescriptionInternal = async (projectDescriptions: projectDescriptionModel[]): Promise<adapterResponseI<Array<projectDescriptionModel>>> => {
+  return await createProjectDescriptionUseCase({ dbManager, projectDescriptions, validatorManager })
+}
+
+const deleteProjectDescriptionInternal = async (ids: number[]): Promise<adapterResponseI<Array<projectDescriptionModel>>> => {
+  return await deleteProjectDescriptionUseCase({ dbManager, projectDescriptionIds: ids, validatorManager })
+}
+
+const updateProjectDescriptionInternal = async (projectDescription: updateBaseI<projectDescriptionModel>): Promise<adapterResponseI<Array<projectDescriptionModel>>> => {
+  return updateProjectDescriptionUseCase({ dbManager, projectDescription, validatorManager })
+}
+
+export const projectDescriptionInternalManager: projectDescriptionInternalManagerI = {
+ getProjectDescriptionInternal,
+ createProjectDescriptionInternal,
+ deleteProjectDescriptionInternal,
+ updateProjectDescriptionInternal
 }

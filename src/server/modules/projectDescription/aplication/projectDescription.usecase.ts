@@ -17,7 +17,7 @@ export const getProjectDescriptionUseCase = async ({
   projectDescriptionIds?: number[],
   dbManager: dbProjectDescription,
   validatorManager: validatorManagerI<projectDescriptionModel>
-}): Promise<adapterResponseHttpI> => {
+}): Promise<adapterResponseHttpI<Array<projectDescriptionModel>>> => {
   if (!dbManager) {
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!validatorManager) {

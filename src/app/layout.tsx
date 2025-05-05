@@ -24,9 +24,9 @@ export const metadata: Metadata = {
   creator: 'jose mundo',
   publisher: 'jose mundo',
   openGraph: {
-    title: 'Immersive Vision',
+    title: 'Immersive Vision Landing Page',
     description: 'Architectural visualization company within virtual reality environments showing fully immersive spaces in each project',
-    url: 'https://www.goftvisualize.com',
+    url: 'https://immersivevision.us',
     siteName: 'Immersive Vision',
   },
   alternates: {
