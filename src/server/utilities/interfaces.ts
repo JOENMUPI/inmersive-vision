@@ -156,3 +156,12 @@ export interface projectDescriptionModel extends commonColsModel {
   element_num: number
   invoice_public_id: string 
 }
+
+export interface completeInvoiceI {
+  invoice: invoiceModel
+  installment: installmentModel
+  projectDescriptions: projectDescriptionModel[]
+  project: projectModel
+  client: clientModel
+  methodPayment: methodPaymentModel
+}

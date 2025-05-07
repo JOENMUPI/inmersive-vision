@@ -1,24 +1,10 @@
 import {
   adapterResponseI,
   anulateProps,
-  clientModel,
-  installmentModel,
   invoiceId,
   invoiceModel,
-  methodPaymentModel,
-  projectDescriptionModel,
-  projectModel,
   updateBaseI,
 } from "@/server/utilities/interfaces";
-
-export interface completeInvoiceI {
-  invoices: invoiceModel
-  installments: installmentModel
-  projectDescription: projectDescriptionModel[]
-  project?: projectModel
-  client: clientModel
-  methodPayment: methodPaymentModel
-}
 
 export interface dbInvoice {
   getInvoice: (ids?: invoiceId[]) => Promise<adapterResponseI<Array<invoiceModel>>>
@@ -27,4 +13,11 @@ export interface dbInvoice {
   deleteInvoice: (ids: invoiceId[]) => Promise<adapterResponseI<Array<invoiceModel>>>
   anulateInvoice: (ids: anulateProps<invoiceId>) => Promise<adapterResponseI<Array<invoiceModel>>>
   getLastInvoice: () => Promise<adapterResponseI<Array<invoiceModel>>>
+}
+
+export interface invoiceInternalManagerI {
+  getInvoiceInternal: (ids?: invoiceId[]) => Promise<adapterResponseI<Array<invoiceModel>>>
+  createInvoiceInternal: (invoices: invoiceModel[]) => Promise<adapterResponseI<Array<invoiceModel>>>
+  deleteInvoiceInternal: (ids: invoiceId[]) => Promise<adapterResponseI<Array<invoiceModel>>>
+  updateInvoiceInternal: (invoice: updateBaseI<invoiceModel, invoiceId>) => Promise<adapterResponseI<Array<invoiceModel>>>
 }

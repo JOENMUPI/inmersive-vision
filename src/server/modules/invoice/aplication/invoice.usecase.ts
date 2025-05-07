@@ -20,7 +20,7 @@ export const getInvoiceUseCase = async ({
   invoiceIds?: invoiceId[],
   dbManager: dbInvoice,
   validatorManager: validatorManagerI<invoiceModel, invoiceId>
-}): Promise<adapterResponseHttpI> => {
+}): Promise<adapterResponseHttpI<Array<invoiceModel>>> => {
   if (!dbManager) {
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!validatorManager) {

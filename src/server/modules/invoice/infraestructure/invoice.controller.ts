@@ -8,58 +8,17 @@ import {
   updateInvoiceUseCase,
   anulateInvoiceUseCase
 } from "@/server/modules/invoice/aplication/invoice.usecase";
-import { adapterResponseI, invoiceId, invoiceModel } from "@/server/utilities/interfaces";
+import { adapterResponseI, invoiceId, invoiceModel, updateBaseI } from "@/server/utilities/interfaces";
 import { validatorManager } from "@/server/modules/invoice/infraestructure/zodValidatorManager"
-import { httpToId, httpToInvoice, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
+import { httpToInvoice, httpToUpdateBase, reqQueryToArray } from "@/server/utilities/formatters";
 import { checkJWT } from "@/server/utilities/validations";
 import { jwtManager } from "@/server/utilities/JWTManager";
 import { encryptManager } from "@/server/utilities/cryptojs";
 import { cookieManager } from "@/server/utilities/cookieManager";
 import { checkUserPermissionInternal } from "@/server/modules/userPermission/infraestructure/userPermission.controller";
 import { permissionIds } from "@/server/utilities/enums";
-
-const invoiceIdHandler = ({
-  installmentIds,
-  projectIds
-}: { installmentIds: string[], projectIds: string[]}): adapterResponseI<Array<invoiceId>> => {
-  const invoiceIds: invoiceId[] = [] 
-  
-  if(installmentIds?.length !== projectIds?.length) {
-    return adapterResponse({
-      message: 'Installment_ids and project_ids no have same lenthg',
-      hasError: true,
-    })
-  } 
-
-  const installmentIdsFormatted = httpToId({ ids: installmentIds, isOptional: false, isNumber: true })
-  
-  if (installmentIdsFormatted.hasError) return adapterResponse({ message: installmentIdsFormatted.message, hasError: true })
-  if (!installmentIdsFormatted.payload) adapterResponse({
-    message: 'InstallmentIdsFormatted parser no has payload',
-    hasError: true
-  })
-
-  const projectIdsFormatted = httpToId({ ids: projectIds, isOptional: false, isNumber: true })
-  
-  if (projectIdsFormatted.hasError) return adapterResponse({ message: projectIdsFormatted.message, hasError: true })
-  if (!projectIdsFormatted.payload) adapterResponse({
-    message: 'ProjectIdsFormatted parser no has payload',
-    hasError: true
-  })
-
-  for(let i = 0; i < projectIdsFormatted.payload!.length; i++) {
-    invoiceIds.push({
-      installment_id: installmentIdsFormatted.payload![i],
-      project_id: projectIdsFormatted.payload![i]
-    })
-  }
-
-  return adapterResponse({
-    message: 'All done',
-    hasError: false,
-    payload: invoiceIds
-  }) 
-}
+import { invoiceInternalManagerI } from "@/server/modules/invoice/domain/interfaces";
+import { invoiceIdHandler } from "@/server/modules/invoice/infraestructure/utilities/formatters";
 
 export const createInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
@@ -145,10 +104,6 @@ export const getInvoice = async (req: NextApiRequest, res: NextApiResponse<adapt
       hasError: true,
     }))
   }
-}
-
-export const getInvoiceInternal = async (ids?: invoiceId[]): Promise<adapterResponseI> => {
-  return await getInvoiceUseCase({ dbManager, invoiceIds: ids, validatorManager })
 }
 
 export const deleteInvoice = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
@@ -288,4 +243,27 @@ export const anulateInvoice = async (req: NextApiRequest, res: NextApiResponse<a
 
 export const errorMethod = (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   res.status(400).json(adapterResponse({ message: 'Method not available', hasError: true }))
+}
+
+const getInvoiceInternal = async (ids?: invoiceId[]): Promise<adapterResponseI<Array<invoiceModel>>> => {
+  return await getInvoiceUseCase({ dbManager, invoiceIds: ids, validatorManager })
+}
+
+const createInvoiceInternal = async (invoices: invoiceModel[]): Promise<adapterResponseI<Array<invoiceModel>>> => {
+  return await createInvoiceUseCase({ dbManager, invoices, validatorManager })
+}
+
+const deleteInvoiceInternal = async (ids: invoiceId[]): Promise<adapterResponseI<Array<invoiceModel>>> => {
+  return await deleteInvoiceUseCase({ dbManager, invoiceIds: ids, validatorManager })
+}
+
+const updateInvoiceInternal = async (invoice: updateBaseI<invoiceModel, invoiceId>): Promise<adapterResponseI<Array<invoiceModel>>> => {
+  return updateInvoiceUseCase({ dbManager, invoice, validatorManager })
+}
+
+export const invoiceInternalManager: invoiceInternalManagerI = {
+ getInvoiceInternal,
+ createInvoiceInternal,
+ deleteInvoiceInternal,
+ updateInvoiceInternal
 }
