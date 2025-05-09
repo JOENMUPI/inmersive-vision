@@ -2,7 +2,7 @@ import { TextInput, NumberInput, FileInput, Textarea } from "@mantine/core";
 import { CustomTooltip } from "./customTooltip";
 import { IconEye, IconEyeOff, IconPaperclip } from "@tabler/icons-react";
 import { IMaskInput } from 'react-imask';
-import { DateInput, DateStringValue } from '@mantine/dates';
+import { DateInput, DateValue } from '@mantine/dates';
 
 import { INPUT_BORDER_BOTTOM } from "@/utils/consts";
 import { useState } from "react";
@@ -293,7 +293,7 @@ export const CustomDateInput = ({
   disabled,
   extprops,
   placeholder = label
-}: CustomInputI<DateStringValue, HTMLDataElement>) => {
+}: CustomInputI<DateValue, HTMLDataElement>) => {
   const borderColor = isError ? 'red' : INPUT_BORDER_BOTTOM
 
   return <CustomTooltip position='top-start' label={label}>

@@ -223,8 +223,8 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
             showLabel={true}
             readOnly={true}
             disabled={true} 
-            value={String(form.getValues().updated_at) ?? new Date().toISOString()}
-            onChange={(data => form.setFieldValue('updated_at', new Date(data)))}
+            value={form.getValues().updated_at ?? new Date()}
+            onChange={(data => form.setFieldValue('updated_at', data!))}
             errorText={form.errors?.updated_at ? String(form.errors?.updated_at) : undefined}
             isError={!!form.errors?.updated_at}
           />
