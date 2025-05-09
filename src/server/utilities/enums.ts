@@ -119,7 +119,6 @@ export enum userPermissionTableKeys {
   UPDATED_AT = 'updated_at'
 }
 
-
 export enum permissionIds {
   CREATE_USER = 1,
   EDIT_USER = 2,

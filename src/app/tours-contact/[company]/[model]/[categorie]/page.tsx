@@ -4,7 +4,7 @@ import { CustomInputTextArea, CustomPhoneInput, CustomTextInput } from '@/compon
 import { CustomText } from '@/components/customText';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
 import { useFetch } from '@/hooks/useFetch';
-import { TEXT_COLOR_GRAY_2 } from '@/utils/consts';
+import { TEXT_COLOR_GRAY_2, TOURS_CONTACT_URL_SERVER } from '@/utils/consts';
 import { fetchMethod } from '@/utils/enums';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
 import { checkEmail, checkPhone } from '@/utils/validations';
@@ -69,7 +69,7 @@ export default function ToursContact() {
       message: 'Wait a momment..',
       loading: true
     })
-    const responseServer = await sendF({ endpoint: 'tours-contact', body: form.values, method: fetchMethod.POST })
+    const responseServer = await sendF({ endpoint: TOURS_CONTACT_URL_SERVER, body: form.values, method: fetchMethod.POST })
 
     if (!responseServer.hasError) form.reset()
     notifyUpdateBase({

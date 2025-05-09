@@ -1,7 +1,16 @@
 import { dbUser, loginI } from "@/server/modules/user/domain/interfaces"
 import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { dateToUTC, hexToString } from "@/server/utilities/formatters"
-import { adapterResponseHttpI, anulateProps, userModel, encryptManagerI, updateBaseI, validatorManagerI, jwtManagerI, cookieManagerI } from "@/server/utilities/interfaces";
+import {
+  adapterResponseHttpI,
+  anulateProps,
+  userModel,
+  encryptManagerI,
+  updateBaseI,
+  validatorManagerI,
+  jwtManagerI,
+  cookieManagerI
+} from "@/server/utilities/interfaces";
 
 export const getUserUseCase = async ({
   userIds,
@@ -232,7 +241,7 @@ export const loginUseCase = async ({
   
   if (dbData.hasError) return adapterResponseHttp({ message: dbData.message, hasError: dbData.hasError, statusHttp: 500 })
   else if (!dbData.payload || dbData.payload.length === 0) {
-    return adapterResponseHttp({ message: 'No users found with email: ' + loginData.email, hasError: false, statusHttp: 200 })
+    return adapterResponseHttp({ message: 'No users found with email: ' + loginData.email, hasError: false, statusHttp: 200, })
   }
 
   if (dbData.payload.length !== 1) {

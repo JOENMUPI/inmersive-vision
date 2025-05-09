@@ -9,7 +9,6 @@ export interface dbProject {
   getLastProject: () => Promise<adapterResponseI<Array<projectModel>>>
 }
 
-
 export interface projectInternalManagerI {
   getProjectInternal: (ids?: number[]) => Promise<adapterResponseI<Array<projectModel>>>
   createProjectInternal: (projects: projectModel[]) => Promise<adapterResponseI<Array<projectModel>>>

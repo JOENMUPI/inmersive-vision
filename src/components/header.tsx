@@ -29,7 +29,8 @@ const links: linksProps[] = [
 ];
 
 const noShowheaderlist = [
-  'tours-contact'
+  'tours-contact',
+  'app'
 ]
 
 export function HeaderMenu() {

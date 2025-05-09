@@ -6,6 +6,7 @@ export const PRIMARY_COLOR_RGB = (opacity?: number) => `rgba(0, 184, 214, ${opac
 export const TEXT_COLOR = '#dfdfe0'
 export const TEXT_COLOR_GRAY = '#888989'
 export const TEXT_COLOR_GRAY_2 = '#333333'
+export const INPUT_BORDER_BOTTOM = '#353535'
 export const DELAY_ANIMATION = 200
 
 export const PAGE_1_ID = 'page-1'
@@ -14,3 +15,16 @@ export const PAGE_3_ID = 'page-3'
 export const PAGE_4_ID = 'page-4'
 export const PAGE_5_ID = 'page-5'
 export const PAGE_6_ID = 'page-6'
+
+export const BASE_URL_SERVER = process.env.NEXT_PUBLIC_SERVER_URL
+const USER_URL_SERVER = BASE_URL_SERVER + '/user'
+const INVOICE_URL_SERVER = BASE_URL_SERVER + '/invoice'
+export const PROJECT_URL_SERVER = BASE_URL_SERVER + '/project'
+export const CLIENT_URL_SERVER = BASE_URL_SERVER + '/client'
+export const INSTALLMENT_URL_SERVER = BASE_URL_SERVER + '/installment'
+export const INVOICE_COMPLETE_URL_SERVER = INVOICE_URL_SERVER + '/complete'
+export const METHOD_PAYMENT_URL_SERVER = BASE_URL_SERVER + '/method-payment'
+export const LOGIN_URL_SERVER = USER_URL_SERVER + '/login'
+export const LOGOUT_URL_SERVER = BASE_URL_SERVER + '/logout'
+export const FORM_URL_SERVER = BASE_URL_SERVER + '/form'
+export const TOURS_CONTACT_URL_SERVER = BASE_URL_SERVER + '/tours-contact'

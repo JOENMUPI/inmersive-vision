@@ -1,16 +1,23 @@
 import { TextInput, NumberInput, FileInput, Textarea } from "@mantine/core";
 import { CustomTooltip } from "./customTooltip";
-import { IconPaperclip } from "@tabler/icons-react";
+import { IconEye, IconEyeOff, IconPaperclip } from "@tabler/icons-react";
 import { IMaskInput } from 'react-imask';
+import { DateInput, DateStringValue } from '@mantine/dates';
+
+import { INPUT_BORDER_BOTTOM } from "@/utils/consts";
+import { useState } from "react";
 
 interface CustomInputI<T, Y = HTMLInputElement> {
-  errorText?: string,
-  isError?: boolean,
-  ref?: React.Ref<Y>,
-  onEnter?: () => void,
-  label: string,
-  style?: React.CSSProperties,
-  onChange: (event: T) => void,
+  errorText?: string
+  isError?: boolean
+  disabled?: boolean
+  ref?: React.Ref<Y>
+  onEnter?: () => void
+  readOnly?: boolean
+  showLabel?: boolean
+  label: string
+  style?: React.CSSProperties
+  onChange: (event: T) => void
   placeholder?: string
   component?: unknown
   extprops?: object
@@ -27,33 +34,37 @@ interface CustomNumberInputI extends CustomInputI<number> {
   decimalScale?: number,
 }
 
-const TEXT_BORDER_BOTTOM = '#353535'
-
 export function CustomNumberInput({
   errorText = 'Error',
   isError = false,
   suffix,
   thousandSeparator = ',',
   min,
+  disabled = false,
   max,
+  readOnly = false,
   prefix,
   decimalScale = 2,
   label,
   allowDecimal = false,
   value,
   style,
+  showLabel = false,
   onChange,
   placeholder = label
 }: CustomNumberInputI) {
-  const borderColor = isError ? 'red' : TEXT_BORDER_BOTTOM
+  const borderColor = isError ? 'red' : INPUT_BORDER_BOTTOM
 
   return (
     <CustomTooltip position='top-start' label={label}>
       <NumberInput
         variant="unstyled"
         placeholder={placeholder}
+        disabled={disabled}
         allowNegative={true}
+        label={showLabel ? label : undefined}
         hideControls
+        readOnly={readOnly}
         allowDecimal={allowDecimal}
         aria-label={label}
         onChange={e => onChange(Number(e))}
@@ -67,6 +78,11 @@ export function CustomNumberInput({
         prefix={prefix}
         suffix={suffix}
         styles={{
+          input: {
+            fontSize: '1.3rem',
+            marginBottom: '.5rem',
+            backgroundColor: 'transparent',
+          },  
           wrapper: {
             transition: 'all .2s ease',
             borderBottom: `1px solid ${borderColor}`,
@@ -84,14 +100,17 @@ export function CustomTextInput({
   label,
   value,
   onEnter,
+  disabled = false,
   style,
   ref,
   component,
   onChange,
+  showLabel = false,
   extprops,
+  readOnly = false,
   placeholder = label,
 }: CustomInputI<string>) {
-  const borderColor = isError ? 'red' : TEXT_BORDER_BOTTOM
+  const borderColor = isError ? 'red' : INPUT_BORDER_BOTTOM
   
   return (
     <CustomTooltip position='top-start' label={label}>
@@ -104,13 +123,17 @@ export function CustomTextInput({
         variant="unstyled"
         placeholder={placeholder}
         aria-label={label}
+        disabled={disabled}
+        readOnly={readOnly}
         onChange={e => onChange(e.currentTarget.value)}
         value={value}
+        label={showLabel ? label : undefined}
         error={isError ? errorText : undefined}
         styles={{
           input: {
             fontSize: '1.3rem',
             marginBottom: '.5rem',
+            backgroundColor: 'transparent',
           },
           wrapper: {
             transition: 'all .2s ease',
@@ -129,6 +152,7 @@ export function CustomPhoneInput({
   onChange,
   value,
   ref,
+  disabled = false,
   errorText,
   isError,
   style,
@@ -143,6 +167,7 @@ export function CustomPhoneInput({
     onChange,
     value,
     errorText,
+    disabled,
     isError,
     placeholder: label + ' (optional)',
     style,
@@ -154,19 +179,21 @@ export function CustomFileInput({
   errorText = 'Error',
   isError = false,
   ref,
+  disabled = false,
   placeholder = label,
   onEnter,
   style,
   onChange,
   value,
 }: CustomInputI<File | null, HTMLButtonElement>) {
-  const borderColor = isError ? 'red' : TEXT_BORDER_BOTTOM
+  const borderColor = isError ? 'red' : INPUT_BORDER_BOTTOM
 
   return  <CustomTooltip position='top-start' label={label}>
     <FileInput
       leftSection={<IconPaperclip />}
       label={label}
       ref={ref}
+      disabled={disabled}
       aria-label={label}
       error={isError ? errorText : undefined}
       onKeyDown={(e) => {
@@ -210,6 +237,7 @@ export const CustomInputTextArea = ({
   label,
   ref,
   value,
+  disabled,
   style,
   component,
   onEnter,
@@ -217,12 +245,13 @@ export const CustomInputTextArea = ({
   extprops,
   placeholder = label,
 }: CustomInputI<string, HTMLTextAreaElement>) => {
-
-  const borderColor = isError ? 'red' : TEXT_BORDER_BOTTOM
+  const borderColor = isError ? 'red' : INPUT_BORDER_BOTTOM
+  
   return (
     <CustomTooltip position='top-start' label={label}>
       <Textarea
         ref={ref}
+        disabled={disabled}
         error={isError ? errorText : undefined}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && onEnter) onEnter()
@@ -245,6 +274,113 @@ export const CustomInputTextArea = ({
         value={value}
         component={component}
         onChange={e => onChange(e.currentTarget.value)}
+        {...extprops}
+      />
+    </CustomTooltip>
+  )
+}
+
+export const CustomDateInput = ({
+  style,
+  isError = false,
+  showLabel = false,
+  label,
+  value,
+  onChange,
+  readOnly,
+  errorText,
+  component,
+  disabled,
+  extprops,
+  placeholder = label
+}: CustomInputI<DateStringValue, HTMLDataElement>) => {
+  const borderColor = isError ? 'red' : INPUT_BORDER_BOTTOM
+
+  return <CustomTooltip position='top-start' label={label}>
+    <DateInput
+      variant="unstyled"
+      valueFormat="DD MMM YYYY"
+      value={value}
+      disabled={disabled}
+      component={component}
+      error={isError ? errorText : undefined}
+      onChange={onChange}
+      label={showLabel ? label : undefined}
+      placeholder={placeholder}
+      readOnly={readOnly}
+      styles={{
+        input: { 
+          fontSize: '1.3rem',
+          marginBottom: '.5rem',
+          transition: 'all .2s ease',
+          border: 0,
+          backgroundColor: 'transparent',
+        },
+        wrapper: {
+          transition: 'all .2s ease',
+          borderBottom: `1px solid ${borderColor}`,
+          ...style,
+        }
+      }}
+      {...extprops}
+    />
+  </CustomTooltip> 
+}
+
+export function CustomPassInput({
+  errorText = 'Error',
+  isError = false,
+  label,
+  value,
+  onEnter,
+  disabled = false,
+  style,
+  ref,
+  component,
+  onChange,
+  showLabel = false,
+  extprops,
+  readOnly = false,
+  placeholder = label,
+}: CustomInputI<string>) {
+  const borderColor = isError ? 'red' : INPUT_BORDER_BOTTOM
+  const [isVisible, setIsVisible] = useState<boolean>(false)
+
+  return (
+    <CustomTooltip position='top-start' label={label}>
+      <TextInput
+        component={component}
+        ref={ref}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && onEnter) onEnter()
+        }}
+        rightSection={
+          isVisible
+            ? <IconEyeOff onClick={() => setIsVisible(!isVisible)} size={20} />
+            : <IconEye onClick={() => setIsVisible(!isVisible)} size={20} />
+        }
+        variant="unstyled"
+        type={isVisible ? 'text' : 'password'}
+        placeholder={placeholder}
+        aria-label={label}
+        disabled={disabled}
+        readOnly={readOnly}
+        onChange={e => onChange(e.currentTarget.value)}
+        value={value}
+        label={showLabel ? label : undefined}
+        error={isError ? errorText : undefined}
+        styles={{
+          input: {
+            fontSize: '1.3rem',
+            marginBottom: '.5rem',
+            backgroundColor: 'transparent',
+          },
+          wrapper: {
+            transition: 'all .2s ease',
+            borderBottom: `1px solid ${borderColor}`,
+            ...style,
+          }
+        }}
         {...extprops}
       />
     </CustomTooltip>

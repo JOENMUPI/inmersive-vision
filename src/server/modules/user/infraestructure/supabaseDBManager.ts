@@ -94,7 +94,7 @@ const anulateUser = async (props: anulateProps): Promise<adapterResponseI<Array<
 const getUserByEmail = async (email: string): Promise<adapterResponseI<Array<userModel>>> => {
   const { data, error } = await supabaseClient.from(tableNames.USERS)
     .select()
-    .eq(userTableKeys.EMAIL, email)
+    .ilike(userTableKeys.EMAIL, email)
     .overrideTypes<Array<userModel>>()
 
   if (error) {
