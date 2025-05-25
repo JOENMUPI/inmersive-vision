@@ -1,0 +1,38 @@
+"filename", "language", "TypeScript", "TypeScript JSX", "comment", "blank", "total"
+"c:\dev\imersive vision\client\src\app\app\calculator\page.tsx", "TypeScript JSX", 0, 263, 0, 8, 271
+"c:\dev\imersive vision\client\src\app\app\calculator\utilities\calculate.ts", "TypeScript", 22, 0, 0, 4, 26
+"c:\dev\imersive vision\client\src\app\app\calculator\utilities\interfaces.ts", "TypeScript", 15, 0, 0, 2, 17
+"c:\dev\imersive vision\client\src\app\app\client\[id]\page.tsx", "TypeScript JSX", 0, 14, 0, 3, 17
+"c:\dev\imersive vision\client\src\app\app\client\components\clientListPage.tsx", "TypeScript JSX", 0, 94, 1, 8, 103
+"c:\dev\imersive vision\client\src\app\app\client\components\clientPage.tsx", "TypeScript JSX", 0, 239, 1, 21, 261
+"c:\dev\imersive vision\client\src\app\app\client\list\page.tsx", "TypeScript JSX", 0, 13, 0, 3, 16
+"c:\dev\imersive vision\client\src\app\app\client\page.tsx", "TypeScript JSX", 0, -5, 0, 0, -5
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\[id]\page.tsx", "TypeScript JSX", 0, 14, 0, 3, 17
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\components\completeInvoiceListPage.tsx", "TypeScript JSX", 0, 112, 1, 8, 121
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\components\completeInvoicePage.tsx", "TypeScript JSX", 0, 190, 61, 21, 272
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\list\page.tsx", "TypeScript JSX", 0, 13, 0, 3, 16
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\page.tsx", "TypeScript JSX", 0, -5, 0, 0, -5
+"c:\dev\imersive vision\client\src\app\app\components\shell.tsx", "TypeScript JSX", 0, 62, 0, 1, 63
+"c:\dev\imersive vision\client\src\app\app\login\page.tsx", "TypeScript JSX", 0, 4, 0, 0, 4
+"c:\dev\imersive vision\client\src\app\app\method-payment\[id]\page.tsx", "TypeScript JSX", 0, 14, 0, 3, 17
+"c:\dev\imersive vision\client\src\app\app\method-payment\components\methodPayment.tsx", "TypeScript JSX", 0, 264, 1, 21, 286
+"c:\dev\imersive vision\client\src\app\app\method-payment\components\methodPaymentListPage.tsx", "TypeScript JSX", 0, 99, 1, 9, 109
+"c:\dev\imersive vision\client\src\app\app\method-payment\list\page.tsx", "TypeScript JSX", 0, 13, 0, 3, 16
+"c:\dev\imersive vision\client\src\app\app\method-payment\page.tsx", "TypeScript JSX", 0, -5, 0, 0, -5
+"c:\dev\imersive vision\client\src\app\app\project\components\projectListPage.tsx", "TypeScript JSX", 0, 90, 1, 8, 99
+"c:\dev\imersive vision\client\src\app\app\project\components\projectPage.tsx", "TypeScript JSX", 0, -1, 0, 0, -1
+"c:\dev\imersive vision\client\src\app\app\project\list\page.tsx", "TypeScript JSX", 0, 13, 0, 3, 16
+"c:\dev\imersive vision\client\src\app\app\utilities\inputs.ts", "TypeScript", 145, 0, 2, 17, 164
+"c:\dev\imersive vision\client\src\components\customInput.tsx", "TypeScript JSX", 0, 65, 0, 4, 69
+"c:\dev\imersive vision\client\src\server\modules\client\aplication\client.usecase.ts", "TypeScript", 35, 0, 0, 2, 37
+"c:\dev\imersive vision\client\src\server\modules\invoice\aplication\invoiceComplete.usecase.ts", "TypeScript", 1, 0, 0, 0, 1
+"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\completeInvoice.controller.ts", "TypeScript", 2, 0, 0, 0, 2
+"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\invoice.controller.ts", "TypeScript", 2, 0, 0, 0, 2
+"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\supabaseDBManager.ts", "TypeScript", 3, 0, 0, 0, 3
+"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\utilities\formatters.ts", "TypeScript", 11, 0, 0, 2, 13
+"c:\dev\imersive vision\client\src\server\modules\methodPayment\aplication\methodPayment.usecase.ts", "TypeScript", 39, 0, 0, 2, 41
+"c:\dev\imersive vision\client\src\server\utilities\interfaces.ts", "TypeScript", 1, 0, 0, 0, 1
+"c:\dev\imersive vision\client\src\utils\consts.ts", "TypeScript", 10, 0, 0, 1, 11
+"c:\dev\imersive vision\client\src\utils\formater.ts", "TypeScript", 0, 0, 0, -1, -1
+"c:\dev\imersive vision\client\src\utils\validations.ts", "TypeScript", 6, 0, 0, 2, 8
+"Total", "-", 292, 1560, 69, 161, 2082

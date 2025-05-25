@@ -132,7 +132,6 @@ const INSTRUCTION_FONT_SIZE: string = '1.3rem'
 
 export default function CalculatorPage() {
   const [car, setCar] = useState<calculatorFormI[]>([])
-  
   const form = useForm({
     mode: 'controlled',
     initialValues: INIT_VALUES,
@@ -231,7 +230,7 @@ export default function CalculatorPage() {
                 Result: 
               </CustomText>
               <CustomText style={{ fontSize: INSTRUCTION_FONT_SIZE }}>
-                {numberToUSD(form.getValues().mount)}
+                {numberToUSD(form.getValues().result)}
               </CustomText>
             </Box>
           </Grid.Col> 
@@ -246,7 +245,7 @@ export default function CalculatorPage() {
                 Total car: 
               </CustomText>
               <CustomText style={{ fontSize: INSTRUCTION_FONT_SIZE }}>
-                {numberToUSD(car.reduce((acc, val) => acc + val.mount, 0))}
+                {numberToUSD(car.reduce((acc, val) => acc + val.result, 0))}
               </CustomText>
             </Box>
           </Grid.Col> 
