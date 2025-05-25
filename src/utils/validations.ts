@@ -13,3 +13,11 @@ export const checkTotalInstallment = (val: number): boolean => {
 export const checkPass = (val: string): boolean => {
   return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{12}$/.test(val)
 }
+
+export const checkString = (val: string): boolean => {
+  return val.trim().length > 0
+}
+
+export const checkNumber = (val: number): boolean => {
+  return !isNaN(val)
+}

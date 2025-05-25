@@ -6,11 +6,11 @@ import Page from '@/app/app/complete-invoice/components/completeInvoicePage';
 
 export default function ProjectPages() {
   const { isValid } = useCredential()
-    
+  
   if (!isValid) return <></> 
   return (
     <Shell>
-      <Page initialState={statePage.CREATE}/>
+      <Page initialState={statePage.VIEW} />
     </Shell>
   )
 }

@@ -1,7 +1,14 @@
 import { dbClient } from "@/server/modules/client/domain/interfaces"
 import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { dateToUTC, hexToString } from "@/server/utilities/formatters"
-import { adapterResponseHttpI, anulateProps, clientModel, encryptManagerI, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
+import {
+  adapterResponseHttpI,
+  anulateProps,
+  clientModel,
+  encryptManagerI,
+  updateBaseI,
+  validatorManagerI
+} from "@/server/utilities/interfaces";
 
 export const getClientUseCase = async ({
   clientIds,
@@ -81,6 +88,21 @@ export const createClientUseCase = async ({
 
   const res = await dbManager.createClient(_clients);
 
+  if (res.payload && res.payload.length > 0) {
+    res.payload = res.payload.map(client => {
+      return {
+        name: client.name,
+        address: encryptManager.decryptAES(hexToString(client.address)),
+        email: encryptManager.decryptAES(hexToString(client.email)),
+        phone: encryptManager.decryptAES(hexToString(client.phone)),
+        id: client.id,
+        soft_deleted: client.soft_deleted,
+        created_at: client.created_at,
+        updated_at: client.updated_at
+      }
+    })
+  }
+
   if (res.hasError) return adapterResponseHttp({ message: res.message, hasError: res.hasError, statusHttp: 500 })
   else return adapterResponseHttp({ payload: res.payload, message: res.message, hasError: res.hasError, statusHttp: 200 })
 }
@@ -146,7 +168,7 @@ export const updateClientUseCase = async ({
     newData: {
       address: encryptManager.encryptAES(client.newData.address),
       email: encryptManager.encryptAES(client.newData.email),
-      phone: encryptManager.encryptAES(client.newData.name),
+      phone: encryptManager.encryptAES(client.newData.phone),
       id: client.newData.id,
       name: client.newData.name,
       created_at: client.newData.created_at,
@@ -156,6 +178,21 @@ export const updateClientUseCase = async ({
   }
 
   const res = await dbManager.updateClient(_client);
+
+  if (res.payload && res.payload.length > 0) {
+    res.payload = res.payload.map(client => {
+      return {
+        name: client.name,
+        address: encryptManager.decryptAES(hexToString(client.address)),
+        email: encryptManager.decryptAES(hexToString(client.email)),
+        phone: encryptManager.decryptAES(hexToString(client.phone)),
+        id: client.id,
+        soft_deleted: client.soft_deleted,
+        created_at: client.created_at,
+        updated_at: client.updated_at
+      }
+    })
+  }
 
   if (res.hasError) return adapterResponseHttp({ message: res.message, hasError: res.hasError, statusHttp: 500 })
   else return adapterResponseHttp({ payload: res.payload, message: res.message, hasError: res.hasError, statusHttp: 200 })

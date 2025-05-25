@@ -86,6 +86,7 @@ export const getCompleteInvoiceUseCase = async ({
   }
 
   if (!projectDescriptionsData.payload) {
+    console.error(projectDescriptionsData)
     return adapterResponseHttp({ message: 'projectDescriptionsData no has payload', hasError: true, statusHttp: 400 })
   }
 

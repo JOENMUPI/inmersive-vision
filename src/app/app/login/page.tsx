@@ -2,6 +2,7 @@
 import bgImg from '@/../public/page6/Background_contact_form.webp';
 import logoImg from '@/../public/page6/LOGO_IMVI.webp';
 import { CustomPassInput, CustomTextInput } from '@/components/customInput';
+import { CustomText } from '@/components/customText';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
 import { useFetch } from '@/hooks/useFetch';
 import { loginI } from '@/server/modules/user/domain/interfaces';
@@ -112,10 +113,13 @@ export default function LoginPage() {
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center', height:'20%', gap: '.8rem' }}>
                 <Image
                   src={logoImg.src}
-                  style={{ width: '100%', height: isXS ? '50%' : '80%' }}
+                  style={{ width: '100%', height: isXS ? '40%' : '60%' }}
                   alt='logo img inmersive vision'
                 />
               </Box>
+                <CustomText style={{ fontSize: isXS ? '2rem' : '1.5rem' }}>
+                  Welcome back!
+                </CustomText>
               <Space h="xl" />
               <Box style={{
                 display: 'flex',
@@ -129,7 +133,7 @@ export default function LoginPage() {
                   value={form.getValues().email}
                   onEnter={passInputRef?.current?.focus}
                   onChange={(data => form.setFieldValue('email', data))}
-                  label='Email'
+                  label='User'
                   errorText={form.errors?.email ? String(form.errors?.email) : undefined}
                   isError={!!form.errors?.email}
                 />
@@ -143,7 +147,7 @@ export default function LoginPage() {
                   isError={!!form.errors?.pass}
                 />
                 <Button color={TEXT_COLOR_GRAY_2} onClick={sendForm}>
-                  Send
+                  Log In
                 </Button>
               </Box>
             </Box>

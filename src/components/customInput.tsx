@@ -1,4 +1,4 @@
-import { TextInput, NumberInput, FileInput, Textarea } from "@mantine/core";
+import { TextInput, NumberInput, FileInput, Textarea, Select } from "@mantine/core";
 import { CustomTooltip } from "./customTooltip";
 import { IconEye, IconEyeOff, IconPaperclip } from "@tabler/icons-react";
 import { IMaskInput } from 'react-imask';
@@ -7,7 +7,12 @@ import { DateInput, DateValue } from '@mantine/dates';
 import { INPUT_BORDER_BOTTOM } from "@/utils/consts";
 import { useState } from "react";
 
-interface CustomInputI<T, Y = HTMLInputElement> {
+export interface selectData {
+  label: string
+  value: string
+}
+
+export interface CustomInputI<T, Y = HTMLInputElement> {
   errorText?: string
   isError?: boolean
   disabled?: boolean
@@ -22,6 +27,10 @@ interface CustomInputI<T, Y = HTMLInputElement> {
   component?: unknown
   extprops?: object
   value: T
+}
+
+export interface customSelectI extends CustomInputI<string | null> {
+  data: selectData[]
 }
 
 interface CustomNumberInputI extends CustomInputI<number> {
@@ -154,6 +163,7 @@ export function CustomPhoneInput({
   ref,
   disabled = false,
   errorText,
+  showLabel,
   isError,
   style,
 }: CustomInputI<string>) {
@@ -166,11 +176,14 @@ export function CustomPhoneInput({
     },
     onChange,
     value,
+    showLabel,
     errorText,
     disabled,
     isError,
     placeholder: label + ' (optional)',
-    style,
+    style:{
+      ...style
+    },
   })
 }
 
@@ -300,7 +313,7 @@ export const CustomDateInput = ({
     <DateInput
       variant="unstyled"
       valueFormat="DD MMM YYYY"
-      value={value}
+      value={new Date(value!)}
       disabled={disabled}
       component={component}
       error={isError ? errorText : undefined}
@@ -369,6 +382,62 @@ export function CustomPassInput({
         value={value}
         label={showLabel ? label : undefined}
         error={isError ? errorText : undefined}
+        styles={{
+          input: {
+            fontSize: '1.3rem',
+            marginBottom: '.5rem',
+            backgroundColor: 'transparent',
+          },
+          wrapper: {
+            transition: 'all .2s ease',
+            borderBottom: `1px solid ${borderColor}`,
+            ...style,
+          }
+        }}
+        {...extprops}
+      />
+    </CustomTooltip>
+  )
+}
+
+export function CustomSelectInput({
+  errorText = 'Error',
+  isError = false,
+  label,
+  value,
+  onEnter,
+  disabled = false,
+  style,
+  ref,
+  component,
+  onChange,
+  data,
+  showLabel = false,
+  extprops,
+  readOnly = false,
+  placeholder = label,
+}: customSelectI) {
+  const borderColor = isError ? 'red' : INPUT_BORDER_BOTTOM
+  
+  return (
+    <CustomTooltip position='top-start' label={label}>
+      <Select
+        component={component}
+        ref={ref}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && onEnter) onEnter()
+        }}
+        variant="unstyled"
+        placeholder={placeholder}
+        aria-label={label}
+        disabled={disabled}
+        data={data}
+        readOnly={readOnly}
+        onChange={e => onChange(e)}
+        value={value}
+        label={showLabel ? label : undefined}
+        error={isError ? errorText : undefined}
+        comboboxProps={{ transitionProps: { transition: 'pop', duration: 200 } }}
         styles={{
           input: {
             fontSize: '1.3rem',

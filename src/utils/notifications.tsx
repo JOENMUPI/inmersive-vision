@@ -18,7 +18,7 @@ export const notifyShowBase = ({
     id,
     title,
     message,
-    autoClose: true,
+    autoClose: 10000,
     style: { marginTop: '20%'  },
     loading,
   });

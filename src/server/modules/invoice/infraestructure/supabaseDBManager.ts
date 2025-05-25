@@ -11,12 +11,15 @@ const getInvoice = async (invoiceIds?: invoiceId[]): Promise<adapterResponseI<Ar
   if (invoiceIds && invoiceIds.length > 0) {
     const projectsIds: number[] = []
     const installmentsIds: number[] = []
+    const publicIds: string[] = []
 
     invoiceIds.forEach(invoiceId => {
       projectsIds.push(invoiceId.project_id)
       installmentsIds.push(invoiceId.installment_id)
+      if (invoiceId.public_id) publicIds.push(invoiceId.public_id)
     })
     
+    query.in(invoiceTableKeys.PUBLIC_ID, publicIds)
     query.in(invoiceTableKeys.PROJECT_ID, projectsIds)
     query.in(invoiceTableKeys.INSTALLMENT_ID, installmentsIds)
   }

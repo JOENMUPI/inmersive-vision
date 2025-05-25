@@ -1,31 +1,36 @@
 'use client'
-import { CustomNumberInput, CustomTextInput, CustomDateInput } from '@/components/customInput';
+import { CustomNumberInput, CustomTextInput, CustomDateInput, CustomPhoneInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
 import { useFetch } from '@/hooks/useFetch';
-import { projectModel } from '@/server/utilities/interfaces';
-import { PROJECT_URL_SERVER } from '@/utils/consts';
+import { clientModel } from '@/server/utilities/interfaces';
+import { BG_COLOR, CLIENT_URL_SERVER } from '@/utils/consts';
 import { fetchMethod, statePage } from '@/utils/enums';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
-import { checkTotalInstallment } from '@/utils/validations';
+import { checkEmail, checkPhone, checkString } from '@/utils/validations';
 import { Box, Container, Grid, Space } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useEffect, useState } from 'react';
 import { VarActions } from '@/app/app/components/varAcctions';
-import { httpToProject } from '@/server/utilities/formatters';
+import { httpToClient } from '@/server/utilities/formatters';
 
-const INIT_FORM_VALUES: projectModel = {
-  public_id: 'Generate on creation',
-  total_installment: 0,
+const INIT_VALUES: clientModel = {
+  address: '',
+  email: '',
+  name: '',
+  phone: ''
 }
 
-export default function ProjectPage({ initialState }: { initialState: statePage }) {
+export default function ClientPage({ initialState }: { initialState: statePage }) {
   const [state, setState] = useState<statePage>(initialState)
   const { sendF } = useFetch()
   const form = useForm({
     mode: 'controlled',
-    initialValues: INIT_FORM_VALUES,
+    initialValues: INIT_VALUES,
     validate: {
-      total_installment: (val) => (checkTotalInstallment(val) ? null : 'Total installment not valid') 
+      address: (val) => (checkString(val) ? null : 'Address not valid'), 
+      email: (val) => (checkEmail(val) ? null : 'Email not valid'), 
+      name: (val) => (checkString(val) ? null : 'Name not valid'),
+      phone: (val) => (checkPhone(val) ? null : 'Phone not valid') 
     },
   })
 
@@ -39,15 +44,15 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
         loading: true
       })
   
-      const responseServer = await sendF<projectModel[], projectModel[]>({
-        endpoint: PROJECT_URL_SERVER + '?id=' + id,
+      const responseServer = await sendF<clientModel[], clientModel[]>({
+        endpoint: CLIENT_URL_SERVER + '?id=' + id,
         method: fetchMethod.GET
       })
-      
+
       if (!responseServer.hasError && responseServer.payload && responseServer.payload.length !== 0) {
-        const projectFormatted = httpToProject({ httpData: responseServer.payload! as never[], optionalFieldObligatory: true })
+        const clientFormatted = httpToClient({ httpData: responseServer.payload! as never[], optionalFieldObligatory: true })
         
-        if (!projectFormatted.hasError && projectFormatted.payload && projectFormatted.payload.length !== 0) {
+        if (!clientFormatted.hasError && clientFormatted.payload && clientFormatted.payload.length !== 0) {
           form.setValues(responseServer.payload![0])
           setState(statePage.VIEW)
           notifyUpdateBase({
@@ -60,7 +65,7 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
           notifyUpdateBase({
             id: 'test',
             title: 'Error',
-            message: projectFormatted.message,
+            message: clientFormatted.message,
             loading: false
           })
         }
@@ -75,7 +80,7 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
     }
     
     if (process) {
-      const id = window.location.href.split('/project/')[1]
+      const id = window.location.href.split('/client/')[1]
       
       if (!id || Number.isNaN(Number(id))) return
       sendGet(Number(id))
@@ -92,8 +97,8 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
       loading: true
     })
 
-    const responseServer = await sendF<projectModel[], projectModel[]>({
-      endpoint: PROJECT_URL_SERVER,
+    const responseServer = await sendF<clientModel[], clientModel[]>({
+      endpoint: CLIENT_URL_SERVER,
       body: [form.values],
       method: fetchMethod.POST
     })
@@ -120,8 +125,8 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
       loading: true
     })
 
-    const responseServer = await sendF<projectModel[], projectModel>({
-      endpoint: PROJECT_URL_SERVER + '/' + form.values.id,
+    const responseServer = await sendF<clientModel[], clientModel>({
+      endpoint: CLIENT_URL_SERVER + '/' + form.values.id,
       body: form.values,
       method: fetchMethod.PUT
     })
@@ -147,8 +152,8 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
       loading: true
     })
 
-    const responseServer = await sendF<projectModel[]>({
-      endpoint: PROJECT_URL_SERVER + '/' + form.values.id,
+    const responseServer = await sendF<clientModel[]>({
+      endpoint: CLIENT_URL_SERVER + '/' + form.values.id,
       method: fetchMethod.DELETE
     })
     
@@ -165,10 +170,10 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
   }
   
   return (
-    <Container style={{ minWidth:'100%', minHeight:'87vh' }}>
+    <Container style={{ minWidth:'100%', minHeight:'87vh', backgroundColor: BG_COLOR }}>
       <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <CustomText style={{ fontSize: '3rem', fontWeight: 'bold' }}>
-          PROJECT
+          CLIENT
         </CustomText>
         <VarActions
           onClickSave={state === statePage.EDIT ? sendEdit : sendSave}
@@ -195,25 +200,46 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
         </Grid.Col>
         <Grid.Col span={6}>
           <CustomTextInput
-            label='Public id'
+            label='Address'
             readOnly={state === statePage.VIEW} 
-            disabled={state === statePage.CREATE}
             showLabel={true}
-            value={form.getValues().public_id}
-            onChange={(data => form.setFieldValue('public_id', data))}
-            errorText={form.errors?.public_id ? String(form.errors?.public_id) : undefined}
-            isError={!!form.errors?.public_id}
+            value={form.getValues().address}
+            onChange={(data => form.setFieldValue('address', data))}
+            errorText={form.errors?.address ? String(form.errors?.address) : undefined}
+            isError={!!form.errors?.address}
           />
         </Grid.Col>
         <Grid.Col span={6}>
-          <CustomNumberInput  
-            label='Total installment'
+          <CustomPhoneInput  
+            label='Phone'
             showLabel={true}
             readOnly={state === statePage.VIEW} 
-            value={form.getValues().total_installment}
-            onChange={(data => form.setFieldValue('total_installment', data))}
-            errorText={form.errors?.total_installment ? String(form.errors?.total_installment) : undefined}
-            isError={!!form.errors?.total_installment}
+            value={form.getValues().phone}
+            onChange={(data => form.setFieldValue('phone', data))}
+            errorText={form.errors?.phone ? String(form.errors?.phone) : undefined}
+            isError={!!form.errors?.phone}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <CustomTextInput  
+            label='Name'
+            showLabel={true}
+            readOnly={state === statePage.VIEW} 
+            value={form.getValues().name}
+            onChange={(data => form.setFieldValue('name', data))}
+            errorText={form.errors?.name ? String(form.errors?.name) : undefined}
+            isError={!!form.errors?.name}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <CustomTextInput  
+            label='Email'
+            showLabel={true}
+            readOnly={state === statePage.VIEW} 
+            value={form.getValues().email}
+            onChange={(data => form.setFieldValue('email', data))}
+            errorText={form.errors?.email ? String(form.errors?.email) : undefined}
+            isError={!!form.errors?.email}
           />
         </Grid.Col>
         <Grid.Col span={6}>

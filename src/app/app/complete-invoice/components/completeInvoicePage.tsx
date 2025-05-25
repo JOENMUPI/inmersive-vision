@@ -1,36 +1,49 @@
 'use client'
-import { CustomNumberInput, CustomTextInput, CustomDateInput } from '@/components/customInput';
+import { CustomDateInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
 import { useFetch } from '@/hooks/useFetch';
-import { projectModel } from '@/server/utilities/interfaces';
-import { PROJECT_URL_SERVER } from '@/utils/consts';
+import { BG_COLOR, INVOICE_COMPLETE_URL_SERVER } from '@/utils/consts';
 import { fetchMethod, statePage } from '@/utils/enums';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
-import { checkTotalInstallment } from '@/utils/validations';
 import { Box, Container, Grid, Space } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useEffect, useState } from 'react';
 import { VarActions } from '@/app/app/components/varAcctions';
-import { httpToProject } from '@/server/utilities/formatters';
+import { httpToCompleteInvoice } from '@/server/utilities/formatters';
+import {
+  clientModel,
+  completeInvoiceI,
+  installmentModel,
+  invoiceModel,
+  methodPaymentModel,
+  projectModel
+} from '@/server/utilities/interfaces';
 
-const INIT_FORM_VALUES: projectModel = {
-  public_id: 'Generate on creation',
-  total_installment: 0,
+const INIT_VALUES: completeInvoiceI = {
+  client: {} as clientModel,
+  installment: {} as installmentModel,
+  invoice: {} as invoiceModel,
+  project: {} as projectModel,
+  projectDescriptions: [],
+  methodPayment: {} as methodPaymentModel
 }
 
-export default function ProjectPage({ initialState }: { initialState: statePage }) {
+export default function CompleteInvoicePage({ initialState }: { initialState: statePage }) {
   const [state, setState] = useState<statePage>(initialState)
   const { sendF } = useFetch()
   const form = useForm({
     mode: 'controlled',
-    initialValues: INIT_FORM_VALUES,
+    initialValues: INIT_VALUES,
     validate: {
-      total_installment: (val) => (checkTotalInstallment(val) ? null : 'Total installment not valid') 
+      // address: (val) => (checkString(val) ? null : 'Address not valid'), 
+      // email: (val) => (checkEmail(val) ? null : 'Email not valid'), 
+      // name: (val) => (checkString(val) ? null : 'Name not valid'),
+      // phone: (val) => (checkPhone(val) ? null : 'Phone not valid') 
     },
   })
 
   useEffect(() => {
-    const sendGet = async (id?: number) => {
+    const sendGet = async (id?: string) => {
       if (!id) return;
       notifyShowBase({
         id: 'test',
@@ -39,15 +52,18 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
         loading: true
       })
   
-      const responseServer = await sendF<projectModel[], projectModel[]>({
-        endpoint: PROJECT_URL_SERVER + '?id=' + id,
+      const responseServer = await sendF<completeInvoiceI[], completeInvoiceI[]>({
+        endpoint: INVOICE_COMPLETE_URL_SERVER + '?public_id=' + id,
         method: fetchMethod.GET
       })
-      
+
       if (!responseServer.hasError && responseServer.payload && responseServer.payload.length !== 0) {
-        const projectFormatted = httpToProject({ httpData: responseServer.payload! as never[], optionalFieldObligatory: true })
+        const invoiceCompleteFormatted = httpToCompleteInvoice({
+          httpData: responseServer.payload! as never[],
+          optionalFieldObligatory: true
+        })
         
-        if (!projectFormatted.hasError && projectFormatted.payload && projectFormatted.payload.length !== 0) {
+        if (!invoiceCompleteFormatted.hasError && invoiceCompleteFormatted.payload && invoiceCompleteFormatted.payload.length !== 0) {
           form.setValues(responseServer.payload![0])
           setState(statePage.VIEW)
           notifyUpdateBase({
@@ -60,7 +76,7 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
           notifyUpdateBase({
             id: 'test',
             title: 'Error',
-            message: projectFormatted.message,
+            message: invoiceCompleteFormatted.message,
             loading: false
           })
         }
@@ -75,10 +91,10 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
     }
     
     if (process) {
-      const id = window.location.href.split('/project/')[1]
+      const id = window.location.href.split('/complete-invoice/')[1]
       
-      if (!id || Number.isNaN(Number(id))) return
-      sendGet(Number(id))
+      if (!id) return
+      sendGet(id)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -92,8 +108,8 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
       loading: true
     })
 
-    const responseServer = await sendF<projectModel[], projectModel[]>({
-      endpoint: PROJECT_URL_SERVER,
+    const responseServer = await sendF<completeInvoiceI[], completeInvoiceI[]>({
+      endpoint: INVOICE_COMPLETE_URL_SERVER,
       body: [form.values],
       method: fetchMethod.POST
     })
@@ -120,8 +136,8 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
       loading: true
     })
 
-    const responseServer = await sendF<projectModel[], projectModel>({
-      endpoint: PROJECT_URL_SERVER + '/' + form.values.id,
+    const responseServer = await sendF<completeInvoiceI[], completeInvoiceI>({
+      endpoint: INVOICE_COMPLETE_URL_SERVER + '/' + form.values.invoice.project_id + '/' + form.values.invoice.installment_id,
       body: form.values,
       method: fetchMethod.PUT
     })
@@ -147,8 +163,8 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
       loading: true
     })
 
-    const responseServer = await sendF<projectModel[]>({
-      endpoint: PROJECT_URL_SERVER + '/' + form.values.id,
+    const responseServer = await sendF<completeInvoiceI[]>({
+      endpoint: INVOICE_COMPLETE_URL_SERVER + '/' + form.values.invoice.public_id,
       method: fetchMethod.DELETE
     })
     
@@ -165,10 +181,10 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
   }
   
   return (
-    <Container style={{ minWidth:'100%', minHeight:'87vh' }}>
+    <Container style={{ minWidth:'100%', minHeight:'87vh', backgroundColor: BG_COLOR }}>
       <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <CustomText style={{ fontSize: '3rem', fontWeight: 'bold' }}>
-          PROJECT
+          COMPLETE INVOICE
         </CustomText>
         <VarActions
           onClickSave={state === statePage.EDIT ? sendEdit : sendSave}
@@ -181,7 +197,7 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
       </Box>
       <Space h="xl" />
       <Grid>
-        <Grid.Col span={6}>
+        {/* <Grid.Col span={6}>
           <CustomNumberInput  
             label='Id'
             showLabel={true}
@@ -192,38 +208,59 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
             readOnly={state === statePage.VIEW} 
             disabled={state === statePage.CREATE}
           />
-        </Grid.Col>
-        <Grid.Col span={6}>
+        </Grid.Col> */}
+        {/* <Grid.Col span={6}>
           <CustomTextInput
-            label='Public id'
+            label='Address'
             readOnly={state === statePage.VIEW} 
-            disabled={state === statePage.CREATE}
             showLabel={true}
-            value={form.getValues().public_id}
-            onChange={(data => form.setFieldValue('public_id', data))}
-            errorText={form.errors?.public_id ? String(form.errors?.public_id) : undefined}
-            isError={!!form.errors?.public_id}
+            value={form.getValues().address}
+            onChange={(data => form.setFieldValue('address', data))}
+            errorText={form.errors?.address ? String(form.errors?.address) : undefined}
+            isError={!!form.errors?.address}
           />
         </Grid.Col>
         <Grid.Col span={6}>
-          <CustomNumberInput  
-            label='Total installment'
+          <CustomPhoneInput  
+            label='Phone'
             showLabel={true}
             readOnly={state === statePage.VIEW} 
-            value={form.getValues().total_installment}
-            onChange={(data => form.setFieldValue('total_installment', data))}
-            errorText={form.errors?.total_installment ? String(form.errors?.total_installment) : undefined}
-            isError={!!form.errors?.total_installment}
+            value={form.getValues().phone}
+            onChange={(data => form.setFieldValue('phone', data))}
+            errorText={form.errors?.phone ? String(form.errors?.phone) : undefined}
+            isError={!!form.errors?.phone}
           />
         </Grid.Col>
+        <Grid.Col span={6}>
+          <CustomTextInput  
+            label='Name'
+            showLabel={true}
+            readOnly={state === statePage.VIEW} 
+            value={form.getValues().name}
+            onChange={(data => form.setFieldValue('name', data))}
+            errorText={form.errors?.name ? String(form.errors?.name) : undefined}
+            isError={!!form.errors?.name}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <CustomTextInput  
+            label='Email'
+            showLabel={true}
+            readOnly={state === statePage.VIEW} 
+            value={form.getValues().email}
+            onChange={(data => form.setFieldValue('email', data))}
+            errorText={form.errors?.email ? String(form.errors?.email) : undefined}
+            isError={!!form.errors?.email}
+          />
+        </Grid.Col> */}
         <Grid.Col span={6}>
           <CustomDateInput
             label='Last change'
             showLabel={true}
             readOnly={true}
             disabled={true} 
-            value={form.getValues().updated_at ?? new Date()} 
-            onChange={(data => form.setFieldValue('updated_at', data!))}
+            value={form.getValues().invoice.updated_at ?? new Date()} 
+            onChange={(data => form.setFieldValue('invoice.updated_at', data!))}
             errorText={form.errors?.updated_at ? String(form.errors?.updated_at) : undefined}
             isError={!!form.errors?.updated_at}
           />

@@ -1,21 +1,25 @@
 'use client'
-import { CustomNumberInput, CustomTextInput, CustomDateInput } from '@/components/customInput';
+import { CustomDateInput, CustomNumberInput, CustomTextInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
 import { useFetch } from '@/hooks/useFetch';
-import { projectModel } from '@/server/utilities/interfaces';
-import { PROJECT_URL_SERVER } from '@/utils/consts';
+import { methodPaymentModel } from '@/server/utilities/interfaces';
+import { METHOD_PAYMENT_URL_SERVER } from '@/utils/consts';
 import { fetchMethod, statePage } from '@/utils/enums';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
-import { checkTotalInstallment } from '@/utils/validations';
+import { checkString } from '@/utils/validations';
 import { Box, Container, Grid, Space } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useEffect, useState } from 'react';
 import { VarActions } from '@/app/app/components/varAcctions';
-import { httpToProject } from '@/server/utilities/formatters';
+import { httpToMethodPayment } from '@/server/utilities/formatters';
 
-const INIT_FORM_VALUES: projectModel = {
-  public_id: 'Generate on creation',
-  total_installment: 0,
+const INIT_VALUES: methodPaymentModel = {
+  account_num: '',
+  routing_num: '',
+  bank_name: '',
+  company_name: '',
+  zelle: '',
+  url_qr: undefined
 }
 
 export default function ProjectPage({ initialState }: { initialState: statePage }) {
@@ -23,9 +27,13 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
   const { sendF } = useFetch()
   const form = useForm({
     mode: 'controlled',
-    initialValues: INIT_FORM_VALUES,
+    initialValues: INIT_VALUES,
     validate: {
-      total_installment: (val) => (checkTotalInstallment(val) ? null : 'Total installment not valid') 
+      account_num: (val) => checkString(val) ? null : 'Account num is field is required',
+      routing_num: (val) => checkString(val) ? null : 'Routing num field is required',
+      bank_name: (val) => checkString(val) ? null : 'Bank name field is required',
+      zelle: (val) => checkString(val) ? null : 'Bank name field is required',
+      company_name: (val) => checkString(val) ? null : 'Bank name field is required'
     },
   })
 
@@ -39,15 +47,15 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
         loading: true
       })
   
-      const responseServer = await sendF<projectModel[], projectModel[]>({
-        endpoint: PROJECT_URL_SERVER + '?id=' + id,
+      const responseServer = await sendF<methodPaymentModel[], methodPaymentModel[]>({
+        endpoint: METHOD_PAYMENT_URL_SERVER + '?id=' + id,
         method: fetchMethod.GET
       })
-      
+
       if (!responseServer.hasError && responseServer.payload && responseServer.payload.length !== 0) {
-        const projectFormatted = httpToProject({ httpData: responseServer.payload! as never[], optionalFieldObligatory: true })
+        const methodPaymentFormatted = httpToMethodPayment({ httpData: responseServer.payload! as never[], optionalFieldObligatory: true })
         
-        if (!projectFormatted.hasError && projectFormatted.payload && projectFormatted.payload.length !== 0) {
+        if (!methodPaymentFormatted.hasError && methodPaymentFormatted.payload && methodPaymentFormatted.payload.length !== 0) {
           form.setValues(responseServer.payload![0])
           setState(statePage.VIEW)
           notifyUpdateBase({
@@ -55,12 +63,12 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
             title: 'All done',
             message: responseServer.message,
             loading: false
-          })
+          }) 
         } else {
           notifyUpdateBase({
             id: 'test',
             title: 'Error',
-            message: projectFormatted.message,
+            message: methodPaymentFormatted.message,
             loading: false
           })
         }
@@ -75,7 +83,7 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
     }
     
     if (process) {
-      const id = window.location.href.split('/project/')[1]
+      const id = window.location.href.split('/method-payment/')[1]
       
       if (!id || Number.isNaN(Number(id))) return
       sendGet(Number(id))
@@ -92,8 +100,8 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
       loading: true
     })
 
-    const responseServer = await sendF<projectModel[], projectModel[]>({
-      endpoint: PROJECT_URL_SERVER,
+    const responseServer = await sendF<methodPaymentModel[], methodPaymentModel[]>({
+      endpoint: METHOD_PAYMENT_URL_SERVER,
       body: [form.values],
       method: fetchMethod.POST
     })
@@ -120,8 +128,8 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
       loading: true
     })
 
-    const responseServer = await sendF<projectModel[], projectModel>({
-      endpoint: PROJECT_URL_SERVER + '/' + form.values.id,
+    const responseServer = await sendF<methodPaymentModel[], methodPaymentModel>({
+      endpoint: METHOD_PAYMENT_URL_SERVER + '/' + form.values.id,
       body: form.values,
       method: fetchMethod.PUT
     })
@@ -147,8 +155,8 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
       loading: true
     })
 
-    const responseServer = await sendF<projectModel[]>({
-      endpoint: PROJECT_URL_SERVER + '/' + form.values.id,
+    const responseServer = await sendF<methodPaymentModel[]>({
+      endpoint: METHOD_PAYMENT_URL_SERVER + '/' + form.values.id,
       method: fetchMethod.DELETE
     })
     
@@ -168,7 +176,7 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
     <Container style={{ minWidth:'100%', minHeight:'87vh' }}>
       <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <CustomText style={{ fontSize: '3rem', fontWeight: 'bold' }}>
-          PROJECT
+          PAYMENT METHOD 
         </CustomText>
         <VarActions
           onClickSave={state === statePage.EDIT ? sendEdit : sendSave}
@@ -195,25 +203,68 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
         </Grid.Col>
         <Grid.Col span={6}>
           <CustomTextInput
-            label='Public id'
+            label='Account num'
             readOnly={state === statePage.VIEW} 
-            disabled={state === statePage.CREATE}
             showLabel={true}
-            value={form.getValues().public_id}
-            onChange={(data => form.setFieldValue('public_id', data))}
-            errorText={form.errors?.public_id ? String(form.errors?.public_id) : undefined}
+            value={form.getValues().account_num}
+            onChange={(data => form.setFieldValue('account_num', data))}
+            errorText={form.errors?.public_id ? String(form.errors?.account_num) : undefined}
             isError={!!form.errors?.public_id}
           />
         </Grid.Col>
         <Grid.Col span={6}>
-          <CustomNumberInput  
-            label='Total installment'
-            showLabel={true}
+          <CustomTextInput
+            label='Routing num'
             readOnly={state === statePage.VIEW} 
-            value={form.getValues().total_installment}
-            onChange={(data => form.setFieldValue('total_installment', data))}
-            errorText={form.errors?.total_installment ? String(form.errors?.total_installment) : undefined}
-            isError={!!form.errors?.total_installment}
+            showLabel={true}
+            value={form.getValues().routing_num}
+            onChange={(data => form.setFieldValue('routing_num', data))}
+            errorText={form.errors?.public_id ? String(form.errors?.routing_num) : undefined}
+            isError={!!form.errors?.public_id}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <CustomTextInput
+            label='Bank name'
+            readOnly={state === statePage.VIEW} 
+            showLabel={true}
+            value={form.getValues().bank_name}
+            onChange={(data => form.setFieldValue('bank_name', data))}
+            errorText={form.errors?.public_id ? String(form.errors?.bank_name) : undefined}
+            isError={!!form.errors?.public_id}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <CustomTextInput
+            label='Company name'
+            readOnly={state === statePage.VIEW} 
+            showLabel={true}
+            value={form.getValues().company_name}
+            onChange={(data => form.setFieldValue('company_name', data))}
+            errorText={form.errors?.public_id ? String(form.errors?.company_name) : undefined}
+            isError={!!form.errors?.public_id}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <CustomTextInput
+            label='Zelle'
+            readOnly={state === statePage.VIEW} 
+            showLabel={true}
+            value={form.getValues().zelle}
+            onChange={(data => form.setFieldValue('zelle', data))}
+            errorText={form.errors?.public_id ? String(form.errors?.zelle) : undefined}
+            isError={!!form.errors?.public_id}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <CustomTextInput
+            label='url_qr'
+            readOnly={state === statePage.VIEW} 
+            showLabel={true}
+            value={form.getValues().url_qr ?? ''}
+            onChange={(data => form.setFieldValue('url_qr', data))}
+            errorText={form.errors?.public_id ? String(form.errors?.url_qr) : undefined}
+            isError={!!form.errors?.public_id}
           />
         </Grid.Col>
         <Grid.Col span={6}>
@@ -222,7 +273,7 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
             showLabel={true}
             readOnly={true}
             disabled={true} 
-            value={form.getValues().updated_at ?? new Date()} 
+            value={form.getValues().updated_at ?? new Date()}
             onChange={(data => form.setFieldValue('updated_at', data!))}
             errorText={form.errors?.updated_at ? String(form.errors?.updated_at) : undefined}
             isError={!!form.errors?.updated_at}

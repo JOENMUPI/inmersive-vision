@@ -1,43 +1,86 @@
 'use client';
-import { Anchor, AppShell, AppShellNavbar, AppShellSection, Burger } from '@mantine/core';
+import { Anchor, AppShell, AppShellNavbar, AppShellSection, Burger, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Image from 'next/image';
 import logoComppany from '@/../public/page6/LOGO_IMVI.webp';
 import { useEffect, useState } from 'react';
-import { BG_COLOR, LOGOUT_URL_SERVER, PRIMARY_COLOR_RGB } from '@/utils/consts';
 import { CustomText } from '@/components/customText';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
 import { useFetch } from '@/hooks/useFetch';
 import { fetchMethod } from '@/utils/enums';
 import { useRouter } from 'next/navigation';
+import {
+  BASE_URL_CLIENT,
+  BG_COLOR,
+  CALCULATOR_URL_CLIENT,
+  CLIENT_URL_CLIENT,
+  INVOICE_COMPLETE_URL_CLIENT,
+  LOGOUT_URL_SERVER,
+  METHOD_PAYMENT_URL_CLIENT,
+  PRIMARY_COLOR_RGB,
+  PROJECT_URL_CLIENT
+} from '@/utils/consts';
 
-
-interface configI {
+interface linkI {
   href: string;
   title: string;
 }
 
-const hrefbase = '/app'
-const config: configI[] = [
+interface wrapperI {
+  label: string
+  href?: string
+  links: linkI[]
+}
+
+const config: wrapperI[] = [
   {
-    href: hrefbase + '/calculator',
-    title: 'Calculator'
+    label: 'Calculator',
+    href: CALCULATOR_URL_CLIENT,
+    links: []
   }, {
-    href: hrefbase + '/method-payment',
-    title: 'Method payment'
+    label: 'Payment method',
+    links: [{
+      href: METHOD_PAYMENT_URL_CLIENT,
+      title: 'Payment method managment'
+    },{
+      href: METHOD_PAYMENT_URL_CLIENT + '/list',
+      title: 'Payment method list'
+    }]
   }, {
-    href: hrefbase + '/client',
-    title: 'Client'
+    label: 'Client',
+    links: [{
+      href: CLIENT_URL_CLIENT,
+      title: 'Client managment'
+    },{
+      href: CLIENT_URL_CLIENT + '/list',
+      title: 'Client list'
+    }]
   }, {
-    href: hrefbase + '/project',
-    title: 'Project'
+    label: 'Project',
+    links: [{
+      href: PROJECT_URL_CLIENT,
+      title: 'Project managment'
+    },{
+      href: PROJECT_URL_CLIENT + '/list',
+      title: 'Project list'
+    }]
   }, {
-    href: hrefbase + '/complete-invoice',
-    title: 'Complete invoice'
+    label: 'Complete invoice',
+    links: [{
+      href: INVOICE_COMPLETE_URL_CLIENT,
+      title: 'Complete invoice managment'
+    },{
+      href: INVOICE_COMPLETE_URL_CLIENT + '/list',
+      title: 'Complete invoice list'
+    }]
   }
 ]
 
-const ElementNavBar = ({ item, url, onClick = () => {} }: { url: string, onClick?: () => void, item: configI}) => {
+const ElementNavBar = ({
+  item,
+  url,
+  onClick = () => {}
+}: { url: string, onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void, item: linkI }) => {
   return <Anchor
     onClick={onClick} 
     href={item.href}
@@ -61,17 +104,19 @@ const ElementNavBar = ({ item, url, onClick = () => {} }: { url: string, onClick
 
 export default function Shell({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure();
-  const [url, setUrl] = useState<string>(hrefbase)
+  const [url, setUrl] = useState<string>(BASE_URL_CLIENT)
   const { sendF } = useFetch()
   const router = useRouter()
 
-  const logout = async() => {
+  const logout = async(e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     notifyShowBase({
       id: 'test',
       title: 'Sending login',
       message: 'Wait a momment..',
       loading: true
     })
+
     const responseServer = await sendF({ endpoint: LOGOUT_URL_SERVER, method: fetchMethod.GET })
     
     if (!responseServer.hasError) {
@@ -86,9 +131,9 @@ export default function Shell({ children }: { children: React.ReactNode }) {
   }
   
   const checkUrl = (url: string) => {
-    const endpoint: string | undefined = url.split(hrefbase)[1]
+    const endpoint: string | undefined = url.split(BASE_URL_CLIENT)[1]
 
-    if (endpoint) setUrl(hrefbase + endpoint)
+    if (endpoint) setUrl(BASE_URL_CLIENT + endpoint)
   }
 
   useEffect(() => {
@@ -121,11 +166,29 @@ export default function Shell({ children }: { children: React.ReactNode }) {
         />
       </AppShell.Header>
       <AppShell.Navbar p="2rem" >
-        <AppShellNavbar p="md">
+        <AppShellNavbar p="md"> 
           <AppShellSection grow mt="md">
-            {config.map((item) => (
-              <ElementNavBar item={item} url={url} key={item.href} />
-            ))}
+            {config.map((item) => {
+              const isSelected: boolean = item.links.filter(val => val.href === url).length > 0
+              if (item.href) return <ElementNavBar item={{ href: item.href, title: item.label }} url={url} key={item.href}/>
+              else return <NavLink
+                key={item.label}
+                label={item.label}
+                style={{
+                  backgroundColor: isSelected ? PRIMARY_COLOR_RGB(.1) : 'transparent',
+                }}
+                styles={{
+                  label: {
+                    fontSize: '1.2rem',
+                    marginTop: '1vh',
+                  }
+                }}
+              >
+              {item.links.map((link) => (
+                <ElementNavBar item={link} url={url} key={link.href}/>
+              ))}
+              </NavLink>
+            })}
             <ElementNavBar item={{ href:'',  title: 'Logout' }} url={url} onClick={logout} />
           </AppShellSection>
         </AppShellNavbar>

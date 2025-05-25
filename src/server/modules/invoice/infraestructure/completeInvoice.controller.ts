@@ -78,13 +78,15 @@ export const getCompleteInvoice = async (req: NextApiRequest, res: NextApiRespon
     if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
 
     const installmentIds: string[] | undefined = req.query?.installment_id ? reqQueryToArray(req.query.installment_id) : undefined  
+    const publicIds: string[] | undefined = req.query?.public_id ? reqQueryToArray(req.query.public_id) : undefined  
     const projectIds: string[] | undefined = req.query?.project_id ? reqQueryToArray(req.query.project_id) : undefined 
     let invoiceIds: invoiceId[] | undefined
-
+    
     if (installmentIds && projectIds) {
       const { hasError, message, payload } = invoiceIdHandler({
         installmentIds,
-        projectIds
+        projectIds,
+        publicIds
       })
   
       if (hasError) res.status(400).json(adapterResponse({ message, hasError }))
@@ -99,7 +101,7 @@ export const getCompleteInvoice = async (req: NextApiRequest, res: NextApiRespon
       installmentManager: installmentInternalManager,
       projectDescriptionManager: projectDescriptionInternalManager,
       projectManager: projectInternalManager,
-    })
+    }); console.log(response)
   
     res.status(response.statusHttp).json(adapterResponse({
       message: response.message,

@@ -138,6 +138,7 @@ export interface userPermissionModel extends Omit<commonColsModel, 'id'> {
 export interface invoiceId {
   installment_id: number
   project_id: number
+  public_id?: string
 }
 
 export interface invoiceModel extends Omit<commonColsModel, 'id'>, invoiceId  {

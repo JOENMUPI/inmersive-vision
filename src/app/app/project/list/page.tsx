@@ -1,8 +1,7 @@
 'use client'
 import Shell from '@/app/app/components/shell';
-import { statePage } from '@/utils/enums';
 import { useCredential } from '@/app/app/hooks/useCredentials';
-import Page from '@/app/app/complete-invoice/components/completeInvoicePage';
+import Page from '@/app/app/project/components/projectListPage';
 
 export default function ProjectPages() {
   const { isValid } = useCredential()
@@ -10,7 +9,7 @@ export default function ProjectPages() {
   if (!isValid) return <></> 
   return (
     <Shell>
-      <Page initialState={statePage.CREATE}/>
+      <Page />
     </Shell>
   )
 }

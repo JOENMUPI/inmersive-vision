@@ -1,7 +1,14 @@
 import { dbMethodPayment } from "@/server/modules/methodPayment/domain/interfaces"
 import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { dateToUTC, hexToString } from "@/server/utilities/formatters"
-import { adapterResponseHttpI, anulateProps, methodPaymentModel, encryptManagerI, updateBaseI, validatorManagerI } from "@/server/utilities/interfaces";
+import {
+  adapterResponseHttpI,
+  anulateProps,
+  methodPaymentModel,
+  encryptManagerI,
+  updateBaseI,
+  validatorManagerI
+} from "@/server/utilities/interfaces";
 
 export const getMethodPaymentUseCase = async ({
   methodPaymentIds,
@@ -87,6 +94,23 @@ export const createMethodPaymentUseCase = async ({
 
   const res = await dbManager.createMethodPayment(_methodPayments);
 
+  if (res.payload && res.payload.length > 0) {
+    res.payload = res.payload.map(methodPayment => {
+      return {
+        bank_name: encryptManager.decryptAES(hexToString(methodPayment.bank_name)),
+        zelle: encryptManager.decryptAES(hexToString(methodPayment.zelle)),
+        url_qr: methodPayment.url_qr ? encryptManager.decryptAES(hexToString(methodPayment.url_qr)) : undefined,
+        routing_num: encryptManager.decryptAES(hexToString(methodPayment.routing_num)),
+        account_num: encryptManager.decryptAES(hexToString(methodPayment.account_num)),
+        company_name: encryptManager.decryptAES(hexToString(methodPayment.company_name)),
+        id: methodPayment.id,
+        soft_deleted: methodPayment.soft_deleted,
+        created_at: methodPayment.created_at,
+        updated_at: methodPayment.updated_at
+      }
+    })
+  }
+
   if (res.hasError) return adapterResponseHttp({ message: res.message, hasError: res.hasError, statusHttp: 500 })
   else return adapterResponseHttp({ payload: res.payload, message: res.message, hasError: res.hasError, statusHttp: 200 })
 }
@@ -164,6 +188,23 @@ export const updateMethodPaymentUseCase = async ({
   }
   
   const res = await dbManager.updateMethodPayment(_methodPayments);
+
+  if (res.payload && res.payload.length > 0) {
+    res.payload = res.payload.map(methodPayment => {
+      return {
+        bank_name: encryptManager.decryptAES(hexToString(methodPayment.bank_name)),
+        zelle: encryptManager.decryptAES(hexToString(methodPayment.zelle)),
+        url_qr: methodPayment.url_qr ? encryptManager.decryptAES(hexToString(methodPayment.url_qr)) : undefined,
+        routing_num: encryptManager.decryptAES(hexToString(methodPayment.routing_num)),
+        account_num: encryptManager.decryptAES(hexToString(methodPayment.account_num)),
+        company_name: encryptManager.decryptAES(hexToString(methodPayment.company_name)),
+        id: methodPayment.id,
+        soft_deleted: methodPayment.soft_deleted,
+        created_at: methodPayment.created_at,
+        updated_at: methodPayment.updated_at
+      }
+    })
+  }
 
   if (res.hasError) return adapterResponseHttp({ message: res.message, hasError: res.hasError, statusHttp: 500 })
   else return adapterResponseHttp({ payload: res.payload, message: res.message, hasError: res.hasError, statusHttp: 200 })
