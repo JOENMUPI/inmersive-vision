@@ -18,7 +18,8 @@ import {
   LOGOUT_URL_SERVER,
   METHOD_PAYMENT_URL_CLIENT,
   PRIMARY_COLOR_RGB,
-  PROJECT_URL_CLIENT
+  PROJECT_URL_CLIENT,
+  TEXT_COLOR
 } from '@/utils/consts';
 
 interface linkI {
@@ -179,6 +180,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
                 }}
                 styles={{
                   label: {
+                    color: TEXT_COLOR,
                     fontSize: '1.2rem',
                     marginTop: '1vh',
                   }
@@ -193,7 +195,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           </AppShellSection>
         </AppShellNavbar>
       </AppShell.Navbar>
-      <AppShell.Main >
+      <AppShell.Main style={{ backgroundColor: BG_COLOR }}>
         {children}
       </AppShell.Main>
     </AppShell>

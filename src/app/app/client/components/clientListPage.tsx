@@ -2,7 +2,7 @@
 import { CustomText } from '@/components/customText';
 import { useFetch } from '@/hooks/useFetch';
 import { clientModel } from '@/server/utilities/interfaces';
-import { BG_COLOR, CLIENT_URL_SERVER, PRIMARY_COLOR_HEX } from '@/utils/consts';
+import { BG_COLOR, CLIENT_URL_SERVER, PRIMARY_COLOR_HEX, TEXT_COLOR } from '@/utils/consts';
 import { fetchMethod } from '@/utils/enums';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
 import { Box, Button, Container, Space, Table } from '@mantine/core';
@@ -73,8 +73,11 @@ export default function ListPage() {
         </Button>
       </Box>
       <Space h="xl" />
-      <Table stickyHeader stickyHeaderOffset={60}>
-        <Table.Thead styles={{ thead: { backgroundColor: 'transparent', fontSize: '1.5rem' } }}>
+      <Table stickyHeader stickyHeaderOffset={60} styles={{
+        tbody: { color: TEXT_COLOR, fontSize: '1.3rem' },
+        thead: { backgroundColor: 'transparent', fontSize: '1.5rem', color: TEXT_COLOR }
+      }}>
+        <Table.Thead>
           <Table.Tr>
             <Table.Th>Id</Table.Th>
             <Table.Th>Name</Table.Th>
@@ -84,7 +87,7 @@ export default function ListPage() {
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{data.map(element => {
-          return <Table.Tr key={element.id} style={{ fontSize: '1.3rem' }}>
+          return <Table.Tr key={element.id}>
             <Table.Td>
               <Link style={{ color: PRIMARY_COLOR_HEX }} href={String(element.id)}>
                 {element.id}

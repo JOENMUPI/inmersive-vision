@@ -1,7 +1,7 @@
 'use client'
 import { CustomNumberInput, CustomSelectInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
-import { BG_COLOR } from '@/utils/consts';
+import { BG_COLOR, INVOICE_COMPLETE_URL_CLIENT, TEXT_COLOR } from '@/utils/consts';
 import { Box, Button, Container, Grid, Space, Table } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { checkNumber } from '@/utils/validations';
@@ -12,6 +12,7 @@ import { calculate } from './utilities/calculate';
 import { numberToUSD } from '@/server/utilities/formatters';
 import { IconTrash } from '@tabler/icons-react';
 import { CustomTooltip } from '@/components/customTooltip';
+import { useRouter } from 'next/navigation'
 
 interface calculatorFormI {
   mount: number,
@@ -132,6 +133,7 @@ const INSTRUCTION_FONT_SIZE: string = '1.3rem'
 
 export default function CalculatorPage() {
   const [car, setCar] = useState<calculatorFormI[]>([])
+  const router = useRouter()
   const form = useForm({
     mode: 'controlled',
     initialValues: INIT_VALUES,
@@ -155,6 +157,10 @@ export default function CalculatorPage() {
     setCar(prev => prev.filter(el => el !== element))
   }
 
+  const createNewInvoice = () => {
+    router.push(INVOICE_COMPLETE_URL_CLIENT, )
+  }
+
   return (
     <Shell>
       <Container style={{ minWidth:'100%', minHeight:'87vh', backgroundColor: BG_COLOR }}>
@@ -162,7 +168,7 @@ export default function CalculatorPage() {
           <CustomText style={{ fontSize: '3rem', fontWeight: 'bold' }}>
             Calculator
           </CustomText>
-          <Button disabled={car.length < 1}>
+          <Button disabled={car.length < 1} onClick={createNewInvoice}>
             Create a complete invoice
           </Button>
         </Box>
@@ -251,8 +257,11 @@ export default function CalculatorPage() {
           </Grid.Col> 
         </Grid>
         <Space h="xl" />
-        <Table stickyHeader stickyHeaderOffset={60}>
-          <Table.Thead styles={{ thead: { backgroundColor: 'transparent', fontSize: '1.5rem' } }}>
+        <Table stickyHeader stickyHeaderOffset={60} styles={{
+          tbody: { color: TEXT_COLOR, fontSize: '1.3rem' },
+          thead: { backgroundColor: 'transparent', fontSize: '1.5rem', color: TEXT_COLOR }
+        }}>
+          <Table.Thead>
             <Table.Tr>
               <Table.Th />
               <Table.Th>Service</Table.Th>
@@ -262,7 +271,7 @@ export default function CalculatorPage() {
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{car.map((element, index) => {
-            return <Table.Tr key={index} style={{ fontSize: '1.3rem' }}>
+            return <Table.Tr key={index}>
               <Table.Td>
                 <CustomTooltip label='Delete row'>
                   <Button color='red' variant='subtle' onClick={() => deleteRow(element)}>

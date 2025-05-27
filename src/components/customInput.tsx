@@ -4,7 +4,7 @@ import { IconEye, IconEyeOff, IconPaperclip } from "@tabler/icons-react";
 import { IMaskInput } from 'react-imask';
 import { DateInput, DateValue } from '@mantine/dates';
 
-import { INPUT_BORDER_BOTTOM } from "@/utils/consts";
+import { INPUT_BORDER_BOTTOM, TEXT_COLOR } from "@/utils/consts";
 import { useState } from "react";
 
 export interface selectData {
@@ -92,6 +92,9 @@ export function CustomNumberInput({
             marginBottom: '.5rem',
             backgroundColor: 'transparent',
           },  
+          label: {
+            color: TEXT_COLOR,
+          },
           wrapper: {
             transition: 'all .2s ease',
             borderBottom: `1px solid ${borderColor}`,
@@ -143,6 +146,9 @@ export function CustomTextInput({
             fontSize: '1.3rem',
             marginBottom: '.5rem',
             backgroundColor: 'transparent',
+          },
+          label: {
+            color: TEXT_COLOR,
           },
           wrapper: {
             transition: 'all .2s ease',
@@ -218,6 +224,7 @@ export function CustomFileInput({
         label: {
           fontSize: '1.3rem',
           marginBottom: '1rem',
+          color: TEXT_COLOR,
         },
         input: {
           backgroundColor:'transparent',
@@ -277,6 +284,9 @@ export const CustomInputTextArea = ({
             border: 0,
             backgroundColor: 'transparent',
           },
+          label: {
+            color: TEXT_COLOR,
+          },
           wrapper: {
             transition: 'all .2s ease',
             borderBottom: `1px solid ${borderColor}`,
@@ -328,6 +338,9 @@ export const CustomDateInput = ({
           transition: 'all .2s ease',
           border: 0,
           backgroundColor: 'transparent',
+        },
+        label: {
+          color: TEXT_COLOR,
         },
         wrapper: {
           transition: 'all .2s ease',
@@ -388,6 +401,9 @@ export function CustomPassInput({
             marginBottom: '.5rem',
             backgroundColor: 'transparent',
           },
+          label: {
+            color: TEXT_COLOR,
+          },
           wrapper: {
             transition: 'all .2s ease',
             borderBottom: `1px solid ${borderColor}`,
@@ -443,6 +459,9 @@ export function CustomSelectInput({
             fontSize: '1.3rem',
             marginBottom: '.5rem',
             backgroundColor: 'transparent',
+          },
+          label: {
+            color: TEXT_COLOR,
           },
           wrapper: {
             transition: 'all .2s ease',

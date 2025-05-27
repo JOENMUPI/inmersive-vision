@@ -15,7 +15,8 @@ import {
   INVOICE_COMPLETE_URL_SERVER,
   METHOD_PAYMENT_URL_CLIENT,
   PRIMARY_COLOR_HEX,
-  PROJECT_URL_CLIENT
+  PROJECT_URL_CLIENT,
+  TEXT_COLOR
 } from '@/utils/consts';
 
 export default function ListPage() {
@@ -81,8 +82,11 @@ export default function ListPage() {
         </Button>
       </Box>
       <Space h="xl" />
-      <Table stickyHeader stickyHeaderOffset={60}>
-        <Table.Thead styles={{ thead: { backgroundColor: 'transparent', fontSize: '1.5rem' } }}>
+        <Table stickyHeader stickyHeaderOffset={60} styles={{
+          tbody: { color: TEXT_COLOR, fontSize: '1.3rem' },
+          thead: { backgroundColor: 'transparent', fontSize: '1.5rem', color: TEXT_COLOR }
+        }}>
+        <Table.Thead>
           <Table.Tr>
             <Table.Th>Invoice public id</Table.Th>
             <Table.Th>Project public id</Table.Th>
@@ -91,7 +95,7 @@ export default function ListPage() {
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{data.map(element => {
-          return <Table.Tr key={element.invoice.public_id} style={{ fontSize: '1.3rem' }}>
+          return <Table.Tr key={element.invoice.public_id}>
             <Table.Td>
               <Link style={{ color: PRIMARY_COLOR_HEX }} href={INVOICE_COMPLETE_URL_CLIENT + '/' + element.invoice.public_id}>
                 {element.invoice.public_id}

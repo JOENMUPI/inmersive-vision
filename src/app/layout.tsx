@@ -36,7 +36,6 @@ export const montserrat = Montserrat({
 
 export const ThemeMantine = createTheme({
   primaryColor: 'blue',
-  
   colors: {
     dark: [
       '#d5d7e0',
