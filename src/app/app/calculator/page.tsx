@@ -145,6 +145,7 @@ export default function CalculatorPage() {
     },
   })
 
+  const totalCar = car.reduce((acc, val) => acc + val.result, 0)
   const addToCar = () => {
     if (form.validate().hasErrors) return
     const newCar = [...car, form.getValues()]
@@ -158,7 +159,7 @@ export default function CalculatorPage() {
   }
 
   const createNewInvoice = () => {
-    router.push(INVOICE_COMPLETE_URL_CLIENT, )
+    router.push(INVOICE_COMPLETE_URL_CLIENT + '/calculator/' + totalCar)
   }
 
   return (
@@ -251,7 +252,7 @@ export default function CalculatorPage() {
                 Total car: 
               </CustomText>
               <CustomText style={{ fontSize: INSTRUCTION_FONT_SIZE }}>
-                {numberToUSD(car.reduce((acc, val) => acc + val.result, 0))}
+                {numberToUSD(totalCar)}
               </CustomText>
             </Box>
           </Grid.Col> 
@@ -289,7 +290,7 @@ export default function CalculatorPage() {
                   {element.mount}
               </Table.Td>
               <Table.Td>
-                  {numberToUSD(element.mount)}
+                  {numberToUSD(element.result)}
               </Table.Td>
             </Table.Tr>
           })}</Table.Tbody>

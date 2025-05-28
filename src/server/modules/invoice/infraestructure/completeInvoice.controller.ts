@@ -34,7 +34,7 @@ export const createCompleteInvoice = async (req: NextApiRequest, res: NextApiRes
     if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
         
     const copleteInvoicesFormatted = httpToCompleteInvoice({ httpData: req.body, optionalFieldObligatory: true })
-            
+        
     if (copleteInvoicesFormatted.hasError) res.status(400).json(copleteInvoicesFormatted)
     if (!copleteInvoicesFormatted.payload) res.status(400).json(adapterResponse({
       message: 'CopleteInvoicesFormatted parser no has payload',
@@ -101,7 +101,7 @@ export const getCompleteInvoice = async (req: NextApiRequest, res: NextApiRespon
       installmentManager: installmentInternalManager,
       projectDescriptionManager: projectDescriptionInternalManager,
       projectManager: projectInternalManager,
-    }); console.log(response)
+    })
   
     res.status(response.statusHttp).json(adapterResponse({
       message: response.message,

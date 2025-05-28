@@ -3,7 +3,7 @@ import { CustomTooltip } from "./customTooltip";
 import { IconEye, IconEyeOff, IconPaperclip } from "@tabler/icons-react";
 import { IMaskInput } from 'react-imask';
 import { DateInput, DateValue } from '@mantine/dates';
-
+import '@mantine/dates/styles.css';
 import { INPUT_BORDER_BOTTOM, TEXT_COLOR } from "@/utils/consts";
 import { useState } from "react";
 
