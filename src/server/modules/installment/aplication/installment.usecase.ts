@@ -1,4 +1,4 @@
-import { dbInstallment } from "@/server/modules/installment/domain/interfaces"
+import { dbInstallment, installmenteGetPropI } from "@/server/modules/installment/domain/interfaces"
 import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { dateToUTC } from "@/server/utilities/formatters"
 import {
@@ -10,11 +10,11 @@ import {
 } from "@/server/utilities/interfaces";
 
 export const getInstallmentUseCase = async ({
-  installmentIds,
+  installmentProps = {} as installmenteGetPropI,
   dbManager,
   validatorManager
 }:{
-  installmentIds?: number[],
+  installmentProps?: installmenteGetPropI,
   dbManager: dbInstallment,
   validatorManager: validatorManagerI<installmentModel>
 }): Promise<adapterResponseHttpI<Array<installmentModel>>> => {
@@ -24,10 +24,16 @@ export const getInstallmentUseCase = async ({
     return adapterResponseHttp({ message: 'validatorManager is undefined', hasError: true, statusHttp: 500 })
   }
 
-  const validator = validatorManager.validateGet(installmentIds)
-  if (validator.hasError) return adapterResponseHttp({ statusHttp: 400, ...validator })
+  const validatorId = validatorManager.validateGet(installmentProps.installmentIds)
+  if (validatorId.hasError) return adapterResponseHttp({ statusHttp: 400, ...validatorId })
   
-  const dbData = await dbManager.getInstallment(installmentIds);
+  const validatorProjectId = validatorManager.validateGet(installmentProps.projectId)
+  if (validatorProjectId.hasError) return adapterResponseHttp({ statusHttp: 400, ...validatorId })
+
+    const validatorInstallmentNum = validatorManager.validateGet(installmentProps.installmentNum)
+  if (validatorInstallmentNum.hasError) return adapterResponseHttp({ statusHttp: 400, ...validatorId })
+
+  const dbData = await dbManager.getInstallment(installmentProps);
   
   if (dbData.hasError) return adapterResponseHttp({ message: dbData.message, hasError: dbData.hasError, statusHttp: 500 })
   else if (!dbData.payload || dbData.payload.length === 0) {

@@ -17,7 +17,7 @@ import { encryptManager } from "@/server/utilities/cryptojs";
 import { cookieManager } from "@/server/utilities/cookieManager";
 import { permissionIds } from "@/server/utilities/enums";
 import { checkUserPermissionInternal } from "@/server/modules/userPermission/infraestructure/userPermission.controller";
-import { installmentInternalManagerI } from "../domain/interfaces";
+import { installmenteGetPropI, installmentInternalManagerI } from "../domain/interfaces";
 
 export const createInstallment = async (req: NextApiRequest, res: NextApiResponse<adapterResponseI>) => {
   try {
@@ -84,8 +84,38 @@ export const getInstallment = async (req: NextApiRequest, res: NextApiResponse<a
       hasError: true
     }))
 
-    const response = await getInstallmentUseCase({
+    const projectIdsFormatted = httpToId({
+      ids: req.query?.project_id ? reqQueryToArray(req.query.project_id) : [],
+      isOptional: !!req.query?.id,
+      isNumber: true
+    })
+    
+    if (projectIdsFormatted.hasError) res.status(400).json(projectIdsFormatted)
+    if (!projectIdsFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'ProjectIdsFormatted parser no has payload',
+      hasError: true
+    }))
+
+    const installmentNumFormatted = httpToId({
+      ids: req.query?.id ? reqQueryToArray(req.query.id) : [],
+      isOptional: !!req.query?.id,
+      isNumber: true
+    })
+    
+    if (installmentNumFormatted.hasError) res.status(400).json(installmentNumFormatted)
+    if (!installmentNumFormatted.payload) res.status(400).json(adapterResponse({
+      message: 'InstallmentNumFormatted parser no has payload',
+      hasError: true
+    }))
+
+    const installmentProps: installmenteGetPropI = {
       installmentIds: idsFormatted.payload!,
+      installmentNum: installmentNumFormatted.payload!,
+      projectId: projectIdsFormatted.payload!
+    } 
+
+    const response = await getInstallmentUseCase({
+      installmentProps,
       dbManager,
       validatorManager
     })
@@ -241,8 +271,8 @@ export const errorMethod = (req: NextApiRequest, res: NextApiResponse<adapterRes
   res.status(400).json(adapterResponse({ message: 'Method not available', hasError: true }))
 }
 
-const getInstallmentInternal = async (ids?: number[]): Promise<adapterResponseI<Array<installmentModel>>> => {
-  return await getInstallmentUseCase({ dbManager, installmentIds: ids, validatorManager })
+const getInstallmentInternal = async (props?: installmenteGetPropI): Promise<adapterResponseI<Array<installmentModel>>> => {
+  return await getInstallmentUseCase({ dbManager, installmentProps: props, validatorManager })
 }
 
 const createInstallmentInternal = async (installments: installmentModel[]): Promise<adapterResponseI<Array<installmentModel>>> => {

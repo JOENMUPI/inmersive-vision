@@ -50,7 +50,7 @@ export const getCompleteInvoiceUseCase = async ({
 
   const [clientsData, installmentsData, methodPaymentsData, projectsData, projectDescriptionsData] = await Promise.all([
     clientManager.getClientInternal(),
-    installmentManager.getInstallmentInternal(),
+    installmentManager.getInstallmentInternal({}),
     methodPaymentManager.getMethodPaymentInternal(),
     projectManager.getProjectInternal(),
     projectDescriptionManager.getProjectDescriptionInternal()
@@ -202,6 +202,23 @@ export const createCompleteInvoiceUseCase = async ({
     return adapterResponseHttp({ message: 'projectDescriptionManager is undefined', hasError: true, statusHttp: 500 })
   }
 
+  const projectBase = completeInvoices[0].invoice.project_id
+  const installmmentNums = []
+
+  for (const element of completeInvoices) {
+    if (projectBase !== element.installment.project_id || projectBase !== element.invoice.project_id) {
+      return adapterResponseHttp({ message: 'Project id is not the same on all rows', hasError: true, statusHttp: 400 })
+    }
+    
+    for (const projectDescription of element.projectDescriptions) {
+      if (projectBase !== projectDescription.project_id) {
+        return adapterResponseHttp({ message: 'Project id is not the same on all rows', hasError: true, statusHttp: 400 })
+      }
+    }
+      
+    installmmentNums.push(element.installment.installment_num)  
+  }
+
   const [clientsData, methodPaymentsData, projectsData] = await Promise.all([
     clientManager.getClientInternal(),
     methodPaymentManager.getMethodPaymentInternal(),
@@ -232,7 +249,23 @@ export const createCompleteInvoiceUseCase = async ({
 
   const projectsDataMap = new Map<number, projectModel>(projectsData.payload.map(obj => [obj.id!, obj]))
   const res: completeInvoiceI[] = []
-  
+  const searchInstallment = await installmentManager.getInstallmentInternal({
+    installmentNum: [...installmmentNums],
+    projectId: [projectBase]
+  })
+
+  if (searchInstallment.hasError) return adapterResponseHttp({ message: searchInstallment.message, hasError: true, statusHttp: 400 })
+  else if (searchInstallment.payload && searchInstallment.payload.length > 0) {
+    const currentintallmentNum = searchInstallment.payload[0].installment_num
+    const currentProjectId = searchInstallment.payload[0].project_id
+    
+    return adapterResponseHttp({
+      message: `Installment number ${currentintallmentNum} exist for the project ${currentProjectId}`,
+      hasError: true,
+      statusHttp: 400
+    })
+  }
+
   for(const completeInvoice of completeInvoices) {
     const completeInvoiceRes: completeInvoiceI = {} as completeInvoiceI 
 

@@ -2,14 +2,23 @@
 import { CustomDateInput, CustomNumberInput, CustomTextInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
 import { useFetch } from '@/hooks/useFetch';
-import { BG_COLOR, INVOICE_COMPLETE_URL_SERVER, TEXT_COLOR, TEXT_COLOR_GRAY_2 } from '@/utils/consts';
+import { BG_COLOR, INVOICE_COMPLETE_URL_SERVER, PDF_URL_SERVER, TEXT_COLOR, TEXT_COLOR_GRAY_2 } from '@/utils/consts';
 import { fetchMethod, statePage } from '@/utils/enums';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
 import { Box, Button, Container, Grid, Space, Table } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useEffect, useState } from 'react';
 import { VarActions } from '@/app/app/components/varAcctions';
-import { httpToCompleteInvoice, numberToUSD } from '@/server/utilities/formatters';
+import {
+  httpToClient,
+  httpToCompleteInvoice,
+  httpToInstallment,
+  httpToInvoice,
+  httpToMethodPayment,
+  httpToProject,
+  httpToProjectDescription,
+  numberToUSD
+} from '@/server/utilities/formatters';
 import { completeInvoiceI, projectDescriptionModel } from '@/server/utilities/interfaces';
 import { ClientInput, MethodPaymentInput, ProjectInput } from '../../utilities/inputs';
 import { LineBottom } from '@/components/lineBotton';
@@ -87,7 +96,26 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
   const form = useForm({
     mode: 'controlled',
     initialValues: INIT_VALUES,
-    validate: {},
+    validate: {
+      client: (val) => httpToClient({ httpData: [val] as never[], optionalFieldObligatory: false }).hasError
+        ? 'Invalid client'
+        : null,
+      installment: (val) => httpToInstallment({ httpData: [val] as never[], optionalFieldObligatory: false }).hasError
+        ? 'Invalid installment'
+        : null,
+      invoice: (val) => httpToInvoice({ httpData: [val] as never[], optionalFieldObligatory: false }).hasError
+        ? 'Invalid invoice'
+        : null,
+      methodPayment: (val) => httpToMethodPayment({ httpData: [val] as never[], optionalFieldObligatory: false }).hasError
+        ? 'Invalid method payment'
+        : null,
+      project: (val) => httpToProject({ httpData: [val] as never[], optionalFieldObligatory: false }).hasError
+        ? 'Invalid project'
+        : null,
+      projectDescriptions: (val) => httpToProjectDescription({ httpData: val as never[], optionalFieldObligatory: false }).hasError
+        ? 'Invalid project description'
+        : null
+    },
   })
 
   useEffect(() => {
@@ -146,6 +174,41 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const sendPdf = async () => {
+    if (form.validate().hasErrors) return
+    notifyShowBase({
+      id: 'test',
+      title: 'Generatinf PDF',
+      message: 'Wait a momment..',
+      loading: true
+    })
+    
+    const responseServer = await sendF<{ data: string }, completeInvoiceI & { isInvoice: boolean }>({
+      endpoint: PDF_URL_SERVER,
+      body: { ...form.values, isInvoice: state === statePage.VIEW },
+      method: fetchMethod.POST
+    })
+    
+    if (!responseServer.hasError && responseServer.payload) {
+      const url = responseServer.payload!.data
+      window.open(url, '_blank')
+  
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'documento.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    notifyUpdateBase({
+      id: 'test',
+      title: responseServer.hasError ? 'Error' : 'All done',
+      message: responseServer.message,
+      loading: false
+    })
+  }
 
   const sendSave = async () => {
     if (form.validate().hasErrors) return
@@ -287,14 +350,19 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
         <CustomText style={{ fontSize: '3rem', fontWeight: 'bold' }}>
           COMPLETE INVOICE
         </CustomText>
-        <VarActions
-          onClickSave={state === statePage.EDIT ? sendEdit : sendSave}
-          disanbledSave = {state === statePage.VIEW}
-          onClickEdit={() => setState(statePage.EDIT)}
-          disanbledEdit = {true}
-          onClickDelete={sendDelete}
-          disanbledDelete = {state !== statePage.VIEW}
-        />
+        <Box style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <Button onClick={sendPdf}>
+            Generate PDF
+          </Button>
+          <VarActions
+            onClickSave={state === statePage.EDIT ? sendEdit : sendSave}
+            disanbledSave = {state === statePage.VIEW}
+            onClickEdit={() => setState(statePage.EDIT)}
+            disanbledEdit = {true}
+            onClickDelete={sendDelete}
+            disanbledDelete = {state !== statePage.VIEW}
+          />
+        </Box>
       </Box>
       <Space h="xl" />
       <Grid>
@@ -413,8 +481,8 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
             showLabel={true}
             value={form.getValues().installment.mount_pay}
             onChange={(data => form.setFieldValue('installment.mount_pay', data))}
-            errorText={form.errors?.installment ? String(form.errors?.installment) : undefined}
-            isError={!!form.errors?.installment}
+            // errorText={form.errors?.installment ? String(form.errors?.installment) : undefined}
+            // isError={!!form.errors?.installment}
           />
         </Grid.Col>
         <Grid.Col span={6}>

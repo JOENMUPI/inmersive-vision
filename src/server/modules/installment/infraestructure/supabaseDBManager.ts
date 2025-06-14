@@ -1,15 +1,23 @@
-import { dbInstallment } from '@/server/modules/installment/domain/interfaces';
+import { dbInstallment, installmenteGetPropI } from '@/server/modules/installment/domain/interfaces';
 import { adapterResponse } from '@/server/utilities/adapters';
 import { supabaseClient } from '@/server/utilities/supabaseClient'
 import { anulateProps, installmentModel, updateBaseI, adapterResponseI } from '@/server/utilities/interfaces';
 import { installmentTableKeys, tableNames } from '@/server/utilities/enums';
 
-const getInstallment = async (installmentIds?: number[]): Promise<adapterResponseI<Array<installmentModel>>> => {
+const getInstallment = async (props: installmenteGetPropI): Promise<adapterResponseI<Array<installmentModel>>> => {
   const query = supabaseClient.from(tableNames.INSTALLMENT)
     .select()
 
-  if (installmentIds && installmentIds.length > 0) {
-    query.in(installmentTableKeys.ID, installmentIds)
+  if (props.installmentIds && props.installmentIds.length > 0) {
+    query.in(installmentTableKeys.ID, props.installmentIds)
+  }
+
+  if (props.installmentNum && props.installmentNum.length > 0) {
+    query.in(installmentTableKeys.INSTALLMENT_NUM, props.installmentNum)
+  }
+
+  if (props.projectId && props.projectId.length > 0) {
+    query.in(installmentTableKeys.PROJECT_ID, props.projectId)
   }
 
   const { data, error } = await query
