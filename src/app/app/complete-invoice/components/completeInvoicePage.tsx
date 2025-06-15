@@ -2,7 +2,7 @@
 import { CustomDateInput, CustomNumberInput, CustomTextInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
 import { useFetch } from '@/hooks/useFetch';
-import { BG_COLOR, INVOICE_COMPLETE_URL_SERVER, PDF_URL_SERVER, TEXT_COLOR, TEXT_COLOR_GRAY_2 } from '@/utils/consts';
+import { BG_COLOR, INVOICE_COMPLETE_URL_SERVER, TEXT_COLOR, TEXT_COLOR_GRAY_2 } from '@/utils/consts';
 import { fetchMethod, statePage } from '@/utils/enums';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
 import { Box, Button, Container, Grid, Group, Space, Table } from '@mantine/core';
@@ -373,7 +373,7 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
           COMPLETE INVOICE
         </CustomText>
         <Box style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Group>
+          <Group> 
             <Button onClick={() => PdfHandler(true)}>
               Preview PDF
             </Button>
