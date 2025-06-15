@@ -1,9 +1,9 @@
-import { imgToBytes, formatDateToDDMMYYYY, numberToUSD, base64ToByteArray } from "@/server/utilities/formatters"
+import { formatDateToDDMMYYYY, numberToUSD, base64ToByteArray, imgToBytes } from "@/server/utilities/formatters"
 import bgImg from '@/../public/pdf/background_CLIENT_PAIN.jpg';
 import logoImg from '@/../public/pdf/LOGO_IMVI.png';
-import { PDFDocument, PDFImage, PDFPage, RGB, rgb, RotationTypes, StandardFonts } from "pdf-lib";
-import { generateQR } from "@/server/modules/invoice/aplication/utils/generateQr";
-import { generatePdfI } from "@/server/modules/invoice/domain/interfaces";
+import { PDFDocument, PDFImage, PDFPage, RGB, rgb, RotationTypes, StandardFonts } from "pdf-lib"
+import { generateQR } from "@/app/app/utilities/generateQr"
+import { generatePdfI } from "@/app/app/utilities/interfaces"
 
 export const generatePdf = async (data: generatePdfI): Promise<string> => {
   // img logic coverted to bytes
@@ -29,8 +29,8 @@ export const generatePdf = async (data: generatePdfI): Promise<string> => {
   const [fontBase, fontBold, bgImage, logoImage] = await Promise.all([
     pdfDoc.embedFont(StandardFonts.Helvetica),
     pdfDoc.embedFont(StandardFonts.HelveticaBold),
-    pdfDoc.embedJpg(bgImgByt),
-    pdfDoc.embedPng(logoImgByt)
+    pdfDoc.embedJpg(bgImgByt!),
+    pdfDoc.embedPng(logoImgByt!)
   ])
 
   let qrImage: PDFImage | undefined = undefined

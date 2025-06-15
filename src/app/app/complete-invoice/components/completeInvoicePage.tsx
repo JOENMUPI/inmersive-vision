@@ -5,7 +5,7 @@ import { useFetch } from '@/hooks/useFetch';
 import { BG_COLOR, INVOICE_COMPLETE_URL_SERVER, PDF_URL_SERVER, TEXT_COLOR, TEXT_COLOR_GRAY_2 } from '@/utils/consts';
 import { fetchMethod, statePage } from '@/utils/enums';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
-import { Box, Button, Container, Grid, Space, Table } from '@mantine/core';
+import { Box, Button, Container, Grid, Group, Space, Table } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useEffect, useState } from 'react';
 import { VarActions } from '@/app/app/components/varAcctions';
@@ -25,6 +25,8 @@ import { LineBottom } from '@/components/lineBotton';
 import { IconTrash } from '@tabler/icons-react';
 import { CustomTooltip } from '@/components/customTooltip';
 import { DateValue } from '@mantine/dates';
+import { generatePdf } from '../../utilities/generatePDF';
+import { clientI, mountInvoiceI, paymentInfoI, pdfDataI } from '../../utilities/interfaces';
 
 const INIT_VALUES: completeInvoiceI = {
   client: {
@@ -175,39 +177,59 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sendPdf = async () => {
+  const PdfHandler = async (isPreview: boolean) => {
     if (form.validate().hasErrors) return
-    notifyShowBase({
-      id: 'test',
-      title: 'Generatinf PDF',
-      message: 'Wait a momment..',
-      loading: true
-    })
-    
-    const responseServer = await sendF<{ data: string }, completeInvoiceI & { isInvoice: boolean }>({
-      endpoint: PDF_URL_SERVER,
-      body: { ...form.values, isInvoice: state === statePage.VIEW },
-      method: fetchMethod.POST
-    })
-    
-    if (!responseServer.hasError && responseServer.payload) {
-      const url = responseServer.payload!.data
-      window.open(url, '_blank')
+    const _form = form.getValues()
+    const pdfData: pdfDataI = {
+      dateCreation: new Date(_form.invoice.creation_date),
+      dateExpiration: new Date(_form.invoice.expiration_date),
+      descriptions: _form.projectDescriptions.map(data => ({ amount: data.unitary_price, description: data.description })),
+      id: _form.invoice.public_id,
+      idProject: _form.project.public_id,
+      isInvoice: state === statePage.VIEW,
+    }
   
+    const client: clientI = {
+      address: _form.client.address,
+      email: _form.client.email,
+      name: _form.client.name,
+      phone: _form.client.phone,
+      id: _form.client.id ? String(_form.client.id) : '',
+    }
+  
+    const paymentInfo: paymentInfoI = {
+      accountNumber: _form.methodPayment.account_num,
+      bankName: _form.methodPayment.bank_name,
+      companyName: _form.methodPayment.company_name,
+      id: String(_form.methodPayment.id),
+      routingNumber: _form.methodPayment.routing_num,
+      urlQr: _form.methodPayment.url_qr,
+      zelle: _form.methodPayment.zelle,
+    }
+  
+    const mountInvoice: mountInvoiceI = {
+      currentInstallment: _form.installment.installment_num,
+      paidMount: _form.projectDescriptions.map((el) => el.unitary_price * el.element_num).reduce((acc, val) => acc + val),
+      pendingMount: 10,
+      totalInstallment: _form.project.total_installment    
+    }
+    
+    const pdf = await generatePdf({
+      client,
+      mountInvoice,
+      paymentInfo,
+      pdfData
+    })
+
+    if (isPreview) window.open(pdf, '_blank')
+    else {
       const a = document.createElement('a');
-      a.href = url;
+      a.href = pdf;
       a.download = 'documento.pdf';
       document.body.appendChild(a);
       a.click();
       a.remove();
     }
-
-    notifyUpdateBase({
-      id: 'test',
-      title: responseServer.hasError ? 'Error' : 'All done',
-      message: responseServer.message,
-      loading: false
-    })
   }
 
   const sendSave = async () => {
@@ -351,9 +373,14 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
           COMPLETE INVOICE
         </CustomText>
         <Box style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Button onClick={sendPdf}>
-            Generate PDF
-          </Button>
+          <Group>
+            <Button onClick={() => PdfHandler(true)}>
+              Preview PDF
+            </Button>
+            <Button onClick={() => PdfHandler(false)}>
+              Download PDF
+            </Button>
+          </Group>
           <VarActions
             onClickSave={state === statePage.EDIT ? sendEdit : sendSave}
             disanbledSave = {state === statePage.VIEW}
