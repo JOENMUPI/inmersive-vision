@@ -72,14 +72,14 @@ export const getInvoice = async (req: NextApiRequest, res: NextApiResponse<adapt
     if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
     if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
 
-    const installmentIds: string[] | undefined = req.query?.installment_id ? reqQueryToArray(req.query.installment_id) : undefined  
+    const installmentNums: string[] | undefined = req.query?.installmentNums ? reqQueryToArray(req.query.installmentNums) : undefined  
     const publicIds: string[] | undefined = req.query?.public_id ? reqQueryToArray(req.query.public_id) : undefined  
     const projectIds: string[] | undefined = req.query?.project_id ? reqQueryToArray(req.query.project_id) : undefined 
     let invoiceIds: invoiceId[] | undefined
 
-    if (installmentIds && projectIds) {
+    if (installmentNums && projectIds) {
       const { hasError, message,  payload } = invoiceIdHandler({
-        installmentIds,
+        installmentNums,
         projectIds,
         publicIds
       })
@@ -121,7 +121,7 @@ export const deleteInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
     if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
 
     const { hasError, message, payload } = invoiceIdHandler({
-      installmentIds: req.query?.installment_id ? reqQueryToArray(req.query.installment_id) : [],
+      installmentNums: req.query?.installmentNums ? reqQueryToArray(req.query.installmentNums) : [],
       projectIds: req.query?.project_id ? reqQueryToArray(req.query.project_id) : []
     })
 
@@ -169,7 +169,7 @@ export const updateInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
       dataHandler: httpToInvoice,
       idHandler: () => {
         return invoiceIdHandler({
-          installmentIds: req.query?.installment_id ? reqQueryToArray(req.query?.installment_id) : [],
+          installmentNums: req.query?.installmentNums ? reqQueryToArray(req.query?.installmentNums) : [],
           projectIds: req.query?.project_id ? reqQueryToArray(req.query?.project_id) : []
         })
       }
@@ -214,7 +214,7 @@ export const anulateInvoice = async (req: NextApiRequest, res: NextApiResponse<a
     if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
   
     const { hasError, message, payload } = invoiceIdHandler({
-      installmentIds: req.query?.installment_id ? reqQueryToArray(req.query?.installment_id) : [],
+      installmentNums: req.query?.installmentNums ? reqQueryToArray(req.query?.installmentNums) : [],
       projectIds: req.query?.project_id ? reqQueryToArray(req.query?.project_id) : []
     })
 

@@ -42,7 +42,8 @@ export const getInvoiceUseCase = async ({
       client_id: invoice.client_id,
       creation_date: invoice.creation_date,
       expiration_date: invoice.expiration_date,
-      installment_id: invoice.installment_id,
+      installment_num: invoice.installment_num,
+      mount_pay: invoice.mount_pay,
       method_payment_id: invoice.method_payment_id,
       ref_num_paid: invoice.ref_num_paid,
       project_id: invoice.project_id,
@@ -76,31 +77,37 @@ export const createInvoiceUseCase = async ({
   }
 
   const validator = validatorManager.validateInsert(invoices)
+  
   if (validator.hasError) return adapterResponseHttp({ statusHttp: 400, ...validator })
   
-  const lastInvoice = await dbManager.getLastInvoice()
-
-  if(lastInvoice.hasError) return adapterResponseHttp({ message: lastInvoice.message, hasError: true, statusHttp: 400 }) 
-  
   let lastPublicId: string | undefined
-  if(lastInvoice.payload && lastInvoice.payload.length > 0) lastPublicId = lastInvoice.payload[0].public_id
-
-  const publicId = generatePublicId({ typePublicId: typePublicId.INVOICE, lastPublicId })
-  if(publicId.hasError) return adapterResponseHttp({ message: publicId.message, hasError: true, statusHttp: 400 }) 
-  if(!publicId.payload || publicId.payload.length === 0) {
-    return adapterResponseHttp({ message: "PublicId no has payload", hasError: true, statusHttp: 400 }) 
-  }
+  let errResArr  
+  const lastInvoice = await dbManager.getLastInvoice()
   
-  const _invoices: invoiceModel[] = invoices.map(invoice => ({
-    client_id: invoice.client_id,
-    creation_date: invoice.creation_date,
-    expiration_date: invoice.expiration_date,
-    installment_id: invoice.installment_id,
-    method_payment_id: invoice.method_payment_id,
-    project_id: invoice.project_id,
-    public_id: publicId.payload!,
-    ref_num_paid: invoice.ref_num_paid,
-  }))
+  if(lastInvoice.hasError) return adapterResponseHttp({ message: lastInvoice.message, hasError: true, statusHttp: 400 }) 
+  if(lastInvoice.payload && lastInvoice.payload.length > 0) lastPublicId = lastInvoice.payload[0].public_id
+  
+  const _invoices: invoiceModel[] = invoices.map(invoice => {
+    const publicId = generatePublicId({ typePublicId: typePublicId.INVOICE, lastPublicId })
+    
+    if (publicId.hasError) errResArr = adapterResponseHttp({ statusHttp: 500, message: publicId.message, hasError: true })
+    else if (!publicId.payload) errResArr = adapterResponseHttp({ statusHttp: 500, message: 'publicId no has payload', hasError: true })
+    
+    lastPublicId = publicId.payload!
+    return {
+      client_id: invoice.client_id,
+      creation_date: invoice.creation_date,
+      expiration_date: invoice.expiration_date,
+      installment_num: invoice.installment_num,
+      mount_pay: invoice.mount_pay,
+      method_payment_id: invoice.method_payment_id,
+      project_id: invoice.project_id,
+      public_id: publicId.payload!,
+      ref_num_paid: invoice.ref_num_paid,
+    }
+  })
+
+  if (errResArr) return errResArr
 
   const res = await dbManager.createInvoice(_invoices);
 
@@ -166,7 +173,8 @@ export const updateInvoiceUseCase = async ({
       client_id: invoice.newData.client_id,
       creation_date: invoice.newData.creation_date,
       expiration_date: invoice.newData.expiration_date,
-      installment_id: invoice.newData.installment_id,
+      installment_num: invoice.newData.installment_num,
+      mount_pay: invoice.newData.mount_pay,
       method_payment_id: invoice.newData.method_payment_id,
       project_id: invoice.newData.project_id,
       public_id: invoice.newData.public_id,

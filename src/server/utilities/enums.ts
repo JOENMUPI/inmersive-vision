@@ -5,7 +5,6 @@ export enum tableNames {
   USER_PERMISSION = 'user_permission',
   PERMISSION = 'permission',
   METHOD_PAYMENT = 'method_payment',
-  INSTALLMENT = 'installment',
   INVOICE = 'invoice',
   PROJECT_DESCIPTION = 'project_description',
 }
@@ -50,21 +49,12 @@ export enum invoiceTableKeys {
   PROJECT_ID = 'project_id',
   METHOD_PAYMENT_ID = 'method_payment_id',
   CLIENT_ID = 'client_id',
-  INSTALLMENT_ID = 'installment_id',
+  INSTALLMENT_NUM = 'installment_num',
+  MOUNT_PAY = 'mount_pay',
   EXPIRATION_DATE = 'expiration_date',
   CREATION_DATE = 'creation_date',
   REF_NUM_PAID = 'ref_num_paid',
   PUBLIC_ID = 'public_id',
-  SOFT_DELETED = 'soft_deleted',
-  CREATED_AT = 'created_at',
-  UPDATED_AT = 'updated_at'
-}
-
-export enum installmentTableKeys {
-  PROJECT_ID = 'project_id',
-  MOUNT_PAY = 'mount_pay',
-  INSTALLMENT_NUM = 'installment_num',
-  ID = 'id',
   SOFT_DELETED = 'soft_deleted',
   CREATED_AT = 'created_at',
   UPDATED_AT = 'updated_at'
@@ -144,11 +134,12 @@ export enum permissionIds {
   ANULATE_CLIENT = 19,
   GET_CLIENT = 20,
 
-  CREATE_INSTALLMENT = 21,
-  EDIT_INSTALLMENT = 22,
-  DELETE_INSTALLMENT = 23,
-  ANULATE_INSTALLMENT = 24,
-  GET_INSTALLMENT = 25,
+  // usadlos para nuevos roles a futuro, installment ya no existe
+  // CREATE_INSTALLMENT = 21,
+  // EDIT_INSTALLMENT = 22,
+  // DELETE_INSTALLMENT = 23,
+  // ANULATE_INSTALLMENT = 24,
+  // GET_INSTALLMENT = 25,
 
   CREATE_INVOICE = 26,
   EDIT_INVOICE = 27,

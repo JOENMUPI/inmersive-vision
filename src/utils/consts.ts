@@ -31,7 +31,6 @@ export const TOURS_CONTACT_URL_SERVER = BASE_URL_SERVER + '/tours-contact'
 
 export const BASE_URL_CLIENT = '/app'
 export const CALCULATOR_URL_CLIENT = BASE_URL_CLIENT + '/calculator'
-export const PROJECT_URL_CLIENT = BASE_URL_CLIENT + '/project'
 export const CLIENT_URL_CLIENT = BASE_URL_CLIENT + '/client'
 export const INSTALLMENT_URL_CLIENT = BASE_URL_CLIENT + '/installment'
 export const INVOICE_COMPLETE_URL_CLIENT = BASE_URL_CLIENT + '/complete-invoice'

@@ -5,7 +5,7 @@ import {
   deleteCompleteInvoiceUseCase,
   getCompleteInvoiceUseCase,
 } from "@/server/modules/invoice/aplication/invoiceComplete.usecase";
-import { adapterResponseI, invoiceId } from "@/server/utilities/interfaces";
+import { adapterResponseI } from "@/server/utilities/interfaces";
 import { httpToCompleteInvoice, reqQueryToArray } from "@/server/utilities/formatters";
 import { checkJWT } from "@/server/utilities/validations";
 import { jwtManager } from "@/server/utilities/JWTManager";
@@ -16,7 +16,6 @@ import { permissionIds } from "@/server/utilities/enums";
 import { clientInternalManager } from "@/server/modules/client/infraestructure/client.controller";
 import { invoiceInternalManager } from "@/server/modules/invoice/infraestructure/invoice.controller";
 import { methodPaymentInternalManager } from "@/server/modules/methodPayment/infraestructure/methodPayment.controller";
-import { installmentInternalManager } from "@/server/modules/installment/infraestructure/installment.controller";
 import { projectDescriptionInternalManager } from "@/server/modules/projectDescription/infraestructure/projectDescription.controller";
 import { projectInternalManager } from "@/server/modules/project/infraestructure/project.controller";
 import { invoiceIdHandler } from "@/server/modules/invoice/infraestructure/utilities/formatters";
@@ -40,13 +39,12 @@ export const createCompleteInvoice = async (req: NextApiRequest, res: NextApiRes
       message: 'CopleteInvoicesFormatted parser no has payload',
       hasError: true
     }))
-
+    
     const response = await createCompleteInvoiceUseCase({
       completeInvoices: copleteInvoicesFormatted.payload!,
       clientManager: clientInternalManager,
       invoiceManager: invoiceInternalManager,
       methodPaymentManager: methodPaymentInternalManager,
-      installmentManager: installmentInternalManager,
       projectDescriptionManager: projectDescriptionInternalManager,
       projectManager: projectInternalManager,
     })
@@ -77,28 +75,12 @@ export const getCompleteInvoice = async (req: NextApiRequest, res: NextApiRespon
     if (hasPermission.hasError) res.status(400).json(adapterResponse({ message: hasPermission.message, hasError: true }))
     if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
 
-    const installmentIds: string[] | undefined = req.query?.installment_id ? reqQueryToArray(req.query.installment_id) : undefined  
-    const publicIds: string[] | undefined = req.query?.public_id ? reqQueryToArray(req.query.public_id) : undefined  
-    const projectIds: string[] | undefined = req.query?.project_id ? reqQueryToArray(req.query.project_id) : undefined 
-    let invoiceIds: invoiceId[] | undefined
-    
-    if (installmentIds && projectIds) {
-      const { hasError, message, payload } = invoiceIdHandler({
-        installmentIds,
-        projectIds,
-        publicIds
-      })
-  
-      if (hasError) res.status(400).json(adapterResponse({ message, hasError }))
-      invoiceIds = payload
-    }
-    
+    const projectIds: string[] | undefined = req.query?.project_public_id ? reqQueryToArray(req.query.project_public_id) : undefined 
     const response = await getCompleteInvoiceUseCase({
-      invoiceIds,
+      projectPublicIds: projectIds,
       clientManager: clientInternalManager,
       invoiceManager: invoiceInternalManager,
       methodPaymentManager: methodPaymentInternalManager,
-      installmentManager: installmentInternalManager,
       projectDescriptionManager: projectDescriptionInternalManager,
       projectManager: projectInternalManager,
     })
@@ -130,7 +112,7 @@ export const deleteCompleteInvoice = async (req: NextApiRequest, res: NextApiRes
     if (!hasPermission.payload) res.status(401).json(adapterResponse({ message: 'User no have permission for this action', hasError: true }))
 
     const { hasError, message, payload } = invoiceIdHandler({
-      installmentIds: req.query?.installment_id ? reqQueryToArray(req.query.installment_id) : [],
+      installmentNums: req.query?.installment_num ? reqQueryToArray(req.query.installment_num) : [],
       projectIds: req.query?.project_id ? reqQueryToArray(req.query.project_id) : []
     })
 
@@ -141,7 +123,7 @@ export const deleteCompleteInvoice = async (req: NextApiRequest, res: NextApiRes
 
     const response = await deleteCompleteInvoiceUseCase({
       invoiceIds: payload!,
-      installmentManager: installmentInternalManager,
+      invoiceManager: invoiceInternalManager,
     })
   
     res.status(response.statusHttp).json(adapterResponse({

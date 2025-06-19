@@ -18,7 +18,6 @@ import {
   LOGOUT_URL_SERVER,
   METHOD_PAYMENT_URL_CLIENT,
   PRIMARY_COLOR_RGB,
-  PROJECT_URL_CLIENT,
   TEXT_COLOR
 } from '@/utils/consts';
 
@@ -55,15 +54,6 @@ const config: wrapperI[] = [
     },{
       href: CLIENT_URL_CLIENT + '/list',
       title: 'Client list'
-    }]
-  }, {
-    label: 'Project',
-    links: [{
-      href: PROJECT_URL_CLIENT,
-      title: 'Project managment'
-    },{
-      href: PROJECT_URL_CLIENT + '/list',
-      title: 'Project list'
     }]
   }, {
     label: 'Complete invoice',

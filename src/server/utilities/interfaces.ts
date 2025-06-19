@@ -103,12 +103,6 @@ export interface methodPaymentModel extends commonColsModel {
   url_qr?: string 
 }
 
-export interface installmentModel extends commonColsModel {
-  project_id: number
-  mount_pay: number
-  installment_num: number
-}
-
 export interface projectModel extends commonColsModel {
   public_id: string
   total_installment: number
@@ -136,7 +130,7 @@ export interface userPermissionModel extends Omit<commonColsModel, 'id'> {
 }
 
 export interface invoiceId {
-  installment_id: number
+  installment_num: number
   project_id: number
   public_id?: string
 }
@@ -147,6 +141,7 @@ export interface invoiceModel extends Omit<commonColsModel, 'id'>, invoiceId  {
   public_id: string
   expiration_date: Date
   creation_date: Date
+  mount_pay: number
   ref_num_paid?: string
 }
 
@@ -159,8 +154,7 @@ export interface projectDescriptionModel extends commonColsModel {
 }
 
 export interface completeInvoiceI {
-  invoice: invoiceModel
-  installment: installmentModel
+  invoices: invoiceModel[]
   projectDescriptions: projectDescriptionModel[]
   project: projectModel
   client: clientModel

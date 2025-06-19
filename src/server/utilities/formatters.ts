@@ -7,7 +7,6 @@ import {
   completeInvoiceI,
   httpToDataI,
   httpToIdI,
-  installmentModel,
   invoiceModel,
   methodPaymentModel,
   permissionModel,
@@ -19,10 +18,12 @@ import {
 } from "@/server/utilities/interfaces";
 import { loginI } from "../modules/user/domain/interfaces";
 
-export function formatDateToDDMMYYYY(date: Date) {
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = String(date.getFullYear());
+export function formatDateToDDMMYYYY(date: Date | string) {
+  const dateObj: Date = date instanceof Date ? date : dateToUTC(new Date(date))
+  
+  const day = String(dateObj.getDate()).padStart(2, '0');
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const year = String(dateObj.getFullYear());
   return `${day}/${month}/${year}`;
 }
 
@@ -207,47 +208,6 @@ export const httpToClient = ({ httpData, optionalFieldObligatory }: httpToDataI)
   return adapterResponse({ message: 'All done', payload: clientsFormatted })
 }
 
-export const httpToInstallment = ({ httpData, optionalFieldObligatory }: httpToDataI): adapterResponseI<Array<installmentModel>> => {
-  if (!Array.isArray(httpData) || httpData.length === 0) {
-    return adapterResponse({ message: 'installmentsHttp is not an array or no have data', hasError: true })
-  }
-
-  const installmentsFormatted: installmentModel[] = []
-
-  for (const installment of httpData) {
-    if (typeof installment !== 'object') {
-      return adapterResponse({ message: 'installmentsHttp no has a objent', hasError: true })
-    }
-
-    const { installment_num, mount_pay, project_id, created_at, id, soft_deleted, updated_at } = installment
-
-    if (!installment_num || !mount_pay || !project_id) {
-      return adapterResponse({ message: 'Obligatory keys is undefined (installment_num, mount_pay, project_id)', hasError: true })
-    }
-
-    const _installment: installmentModel = {
-      installment_num: Number(installment_num),
-      mount_pay: Number(mount_pay),
-      project_id: Number(project_id)
-    }
-
-    if (optionalFieldObligatory) {
-      if (!created_at || !id || soft_deleted === undefined || !updated_at) {
-        return adapterResponse({ message: 'Optional keys is undefined (created_at, id, soft_deleted, updated_at)', hasError: true })
-      }
-
-      _installment.id = Number(id)
-      _installment.created_at = dateToUTC(new Date(created_at))
-      _installment.soft_deleted = stringToBoolean(soft_deleted)
-      _installment.updated_at = dateToUTC(new Date(updated_at))
-    }
-
-    installmentsFormatted.push(_installment)
-  }
-
-  return adapterResponse({ message: 'All done', payload: installmentsFormatted })
-}
-
 export const httpToProject = ({ httpData, optionalFieldObligatory }: httpToDataI): adapterResponseI<Array<projectModel>> => {
   if (!Array.isArray(httpData) || httpData.length === 0) {
     return adapterResponse({ message: 'projectsHttp is not an array or no have data', hasError: true })
@@ -343,9 +303,7 @@ export const httpToInvoice = ({ httpData, optionalFieldObligatory }: httpToDataI
   const invoicesFormatted: invoiceModel[] = []
 
   for (const invoice of httpData) {
-    if (typeof invoice !== 'object') {
-      return adapterResponse({ message: 'InvoicesHttp no has a objent', hasError: true })
-    }
+    if (typeof invoice !== 'object') return adapterResponse({ message: 'InvoicesHttp no has a objent', hasError: true })
 
     const {
       creation_date,
@@ -357,12 +315,13 @@ export const httpToInvoice = ({ httpData, optionalFieldObligatory }: httpToDataI
       method_payment_id,
       soft_deleted,
       updated_at,
-      installment_id,
+      installment_num,
+      mount_pay
     } = invoice
 
-    if (!installment_id || !client_id || !creation_date || !expiration_date || !public_id || !project_id || !method_payment_id) {
+    if (!installment_num || !client_id || !creation_date || !expiration_date || !public_id || !project_id || !method_payment_id || !mount_pay) {
       return adapterResponse({
-        message: 'Obligatory keys is undefined (creation_date, client_id, expiration_date, public_id, project_id, method_payment_id, installment_id)',
+        message: 'Obligatory keys is undefined (creation_date, client_id, expiration_date, public_id, project_id, method_payment_id, installment_num, mount_pay)',
         hasError: true
       })
     }
@@ -374,7 +333,8 @@ export const httpToInvoice = ({ httpData, optionalFieldObligatory }: httpToDataI
       project_id: Number(project_id),
       client_id: Number(client_id),
       method_payment_id: Number(method_payment_id),
-      installment_id: Number(installment_id)
+      installment_num: Number(installment_num),
+      mount_pay: Number(mount_pay)
     }
 
     if (optionalFieldObligatory) {
@@ -643,26 +603,24 @@ export const httpToCompleteInvoice = ({ httpData, optionalFieldObligatory }: htt
     }
 
     const {
-      invoice,
-      installment,
+      invoices,
       projectDescriptions,
       project,
       client,
       methodPayment
     } = completeInvoice
 
-    if (!invoice || !installment || !projectDescriptions || !project || !client || !methodPayment) {
+    if (!invoices || !projectDescriptions || !project || !client || !methodPayment) {
       return adapterResponse({
-        message: 'Obligatory keys is undefined (projectDescriptions, installment, project, client, methodPayment, invoice)',
+        message: 'Obligatory keys is undefined (projectDescriptions, project, client, methodPayment, invoices)',
         hasError: true
       })
     }
 
-    const invoiceFormatted = httpToInvoice({ httpData: [invoice], optionalFieldObligatory })
     const clientFormatted = httpToClient({ httpData: [client], optionalFieldObligatory })
     const methodPaymentFormatted = httpToMethodPayment({ httpData: [methodPayment], optionalFieldObligatory })
-    const installmentFormatted = httpToInstallment({ httpData: [installment], optionalFieldObligatory })
     const projectFormatted = httpToProject({ httpData: [project], optionalFieldObligatory })
+    const invoiceFormatted = httpToInvoice({ httpData: invoices, optionalFieldObligatory })
     const projectDescriptionsFormatted = httpToProjectDescription({ httpData: projectDescriptions, optionalFieldObligatory })
 
     if (invoiceFormatted.hasError) return adapterResponse({ message: invoiceFormatted.message, hasError: true })
@@ -680,11 +638,6 @@ export const httpToCompleteInvoice = ({ httpData, optionalFieldObligatory }: htt
       return adapterResponse({ message: 'methodPaymentFormatted no has payload', hasError: true })
     }
 
-    if (installmentFormatted.hasError) return adapterResponse({ message: installmentFormatted.message, hasError: true })
-    if (!installmentFormatted.payload || installmentFormatted.payload.length === 0) {
-      return adapterResponse({ message: 'installmentFormatted no has payload', hasError: true })
-    }
-
     if (projectFormatted.hasError) return adapterResponse({ message: projectFormatted.message, hasError: true })
     if (!projectFormatted.payload || projectFormatted.payload.length === 0) {
       return adapterResponse({ message: 'projectFormatted no has payload', hasError: true })
@@ -697,10 +650,9 @@ export const httpToCompleteInvoice = ({ httpData, optionalFieldObligatory }: htt
 
     completeInvoicesFormatted.push({
       client: clientFormatted.payload[0],
-      installment: installmentFormatted.payload[0] ,
-      invoice: invoiceFormatted.payload[0],
       methodPayment: methodPaymentFormatted.payload[0],
       project: projectFormatted.payload[0],
+      invoices: invoiceFormatted.payload,
       projectDescriptions: projectDescriptionsFormatted.payload
     })
   }

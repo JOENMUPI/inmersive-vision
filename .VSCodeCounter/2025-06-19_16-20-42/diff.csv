@@ -1,0 +1,27 @@
+"filename", "language", "TypeScript", "TypeScript JSX", "comment", "blank", "total"
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\components\completeInvoiceListPage.tsx", "TypeScript JSX", 0, -7, 0, 0, -7
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\components\completeInvoicePage.tsx", "TypeScript JSX", 0, 51, -2, 7, 56
+"c:\dev\imersive vision\client\src\app\app\components\shell.tsx", "TypeScript JSX", 0, -10, 0, 0, -10
+"c:\dev\imersive vision\client\src\app\app\project\[id]\page.tsx", "TypeScript JSX", 0, -14, 0, -3, -17
+"c:\dev\imersive vision\client\src\app\app\project\components\projectListPage.tsx", "TypeScript JSX", 0, -93, -1, -8, -102
+"c:\dev\imersive vision\client\src\app\app\project\components\projectPage.tsx", "TypeScript JSX", 0, -213, -1, -21, -235
+"c:\dev\imersive vision\client\src\app\app\project\list\page.tsx", "TypeScript JSX", 0, -13, 0, -3, -16
+"c:\dev\imersive vision\client\src\app\app\project\page.tsx", "TypeScript JSX", 0, -14, 0, -3, -17
+"c:\dev\imersive vision\client\src\app\app\utilities\generatePDF.ts", "TypeScript", 9, 0, 0, 0, 9
+"c:\dev\imersive vision\client\src\pages\api\installment\[id]\anulate.ts", "TypeScript", -8, 0, 0, -2, -10
+"c:\dev\imersive vision\client\src\pages\api\installment\[id]\index.ts", "TypeScript", -9, 0, 0, -2, -11
+"c:\dev\imersive vision\client\src\pages\api\installment\index.ts", "TypeScript", -9, 0, 0, -2, -11
+"c:\dev\imersive vision\client\src\server\modules\installment\aplication\installment.usecase.ts", "TypeScript", -168, 0, 0, -28, -196
+"c:\dev\imersive vision\client\src\server\modules\installment\domain\interfaces.ts", "TypeScript", -19, 0, 0, -3, -22
+"c:\dev\imersive vision\client\src\server\modules\installment\infraestructure\installment.controller.ts", "TypeScript", -243, 0, 0, -52, -295
+"c:\dev\imersive vision\client\src\server\modules\installment\infraestructure\supabaseDBManager.ts", "TypeScript", -89, 0, 0, -20, -109
+"c:\dev\imersive vision\client\src\server\modules\installment\infraestructure\zodValidatorManager.ts", "TypeScript", -57, 0, 0, -18, -75
+"c:\dev\imersive vision\client\src\server\modules\invoice\aplication\invoice.usecase.ts", "TypeScript", 6, 0, 0, 2, 8
+"c:\dev\imersive vision\client\src\server\modules\invoice\aplication\invoiceComplete.usecase.ts", "TypeScript", -19, 0, 0, -6, -25
+"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\completeInvoice.controller.ts", "TypeScript", -15, 0, 0, -3, -18
+"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\zodValidatorManager.ts", "TypeScript", 1, 0, 0, 0, 1
+"c:\dev\imersive vision\client\src\server\utilities\enums.ts", "TypeScript", -14, 0, 6, -1, -9
+"c:\dev\imersive vision\client\src\server\utilities\formatters.ts", "TypeScript", -38, 0, 0, -10, -48
+"c:\dev\imersive vision\client\src\server\utilities\interfaces.ts", "TypeScript", -5, 0, 0, -1, -6
+"c:\dev\imersive vision\client\src\utils\consts.ts", "TypeScript", -1, 0, 0, 0, -1
+"Total", "-", -678, -313, 2, -177, -1166

@@ -15,7 +15,6 @@ import {
   INVOICE_COMPLETE_URL_SERVER,
   METHOD_PAYMENT_URL_CLIENT,
   PRIMARY_COLOR_HEX,
-  PROJECT_URL_CLIENT,
   TEXT_COLOR
 } from '@/utils/consts';
 
@@ -75,7 +74,7 @@ export default function ListPage() {
     <Container style={{ minWidth:'100%', minHeight:'87vh', backgroundColor: BG_COLOR }}>
       <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <CustomText style={{ fontSize: '3rem', fontWeight: 'bold' }}>
-          CLIENT LIST
+          COMPLETE INVOICE LIST
         </CustomText>
         <Button onClick={() => setRefresh(val => !val)} >
           Refresh data
@@ -89,20 +88,14 @@ export default function ListPage() {
         <Table.Thead>
           <Table.Tr>
             <Table.Th>Invoice public id</Table.Th>
-            <Table.Th>Project public id</Table.Th>
             <Table.Th>Client name</Table.Th>
             <Table.Th>Payment method</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{data.map(element => {
-          return <Table.Tr key={element.invoice.public_id}>
+          return <Table.Tr key={element.project.public_id}>
             <Table.Td>
-              <Link style={{ color: PRIMARY_COLOR_HEX }} href={INVOICE_COMPLETE_URL_CLIENT + '/' + element.invoice.public_id}>
-                {element.invoice.public_id}
-              </Link>
-            </Table.Td>
-            <Table.Td>
-              <Link style={{ color: PRIMARY_COLOR_HEX }} href={PROJECT_URL_CLIENT + '/' + element.project.id}>
+              <Link style={{ color: PRIMARY_COLOR_HEX }} href={INVOICE_COMPLETE_URL_CLIENT + '/' + element.project.public_id}>
                 {element.project.public_id}
               </Link>
             </Table.Td>

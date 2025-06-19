@@ -7,7 +7,8 @@ const objectSchema = z.object({
   [invoiceTableKeys.REF_NUM_PAID]: z.string().trim().nonempty().optional(),
   [invoiceTableKeys.PUBLIC_ID]: z.string().trim().nonempty() ,
   [invoiceTableKeys.CLIENT_ID]: z.number().min(1),
-  [invoiceTableKeys.INSTALLMENT_ID]: z.number().min(1),
+  [invoiceTableKeys.INSTALLMENT_NUM]: z.number().min(1),
+  [invoiceTableKeys.MOUNT_PAY]: z.number().min(1), 
   [invoiceTableKeys.METHOD_PAYMENT_ID]: z.number().min(1),
   [invoiceTableKeys.PROJECT_ID]: z.number().min(1),
   [invoiceTableKeys.CREATION_DATE]: z.date(),
@@ -22,7 +23,7 @@ const validateUpdate = (models: Array<updateBaseI<invoiceModel, invoiceId>>): ad
     z.object({
       currentId: z.object({
         [invoiceTableKeys.PROJECT_ID]: z.number().min(1),
-        [invoiceTableKeys.INSTALLMENT_ID]: z.number().min(1)
+        [invoiceTableKeys.INSTALLMENT_NUM]: z.number().min(1)
       }), 
       newData: objectSchema,
     }
@@ -39,7 +40,7 @@ const validateUpdate = (models: Array<updateBaseI<invoiceModel, invoiceId>>): ad
 const validateDelete = (ids: invoiceId[]): adapterResponseI<Array<invoiceModel>> => {
   const schema: ZodType<Array<invoiceId>> = z.array(objectSchema.pick({
     [invoiceTableKeys.PROJECT_ID]: true,
-    [invoiceTableKeys.INSTALLMENT_ID]: true
+    [invoiceTableKeys.INSTALLMENT_NUM]: true
   })).min(1) 
 
   const { success, error } = schema.safeParse(ids)
@@ -53,7 +54,7 @@ const validateDelete = (ids: invoiceId[]): adapterResponseI<Array<invoiceModel>>
 const validateGet = (ids?: invoiceId[]): adapterResponseI<Array<invoiceModel>> => {
   const schema: ZodType<Array<invoiceId> | undefined> = z.array(objectSchema.pick({
     [invoiceTableKeys.PROJECT_ID]: true,
-    [invoiceTableKeys.INSTALLMENT_ID]: true
+    [invoiceTableKeys.INSTALLMENT_NUM]: true
   })).optional()
 
   const { success, error } = schema.safeParse(ids)

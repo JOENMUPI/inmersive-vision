@@ -3,13 +3,13 @@ import { httpToId } from "@/server/utilities/formatters"
 import { adapterResponseI, invoiceId } from "@/server/utilities/interfaces"
 
 export const invoiceIdHandler = ({
-  installmentIds,
+  installmentNums,
   projectIds,
   publicIds
-}: { installmentIds: string[], projectIds: string[], publicIds?: string[]}): adapterResponseI<Array<invoiceId>> => {
+}: { installmentNums: string[], projectIds: string[], publicIds?: string[]}): adapterResponseI<Array<invoiceId>> => {
   const invoiceIds: invoiceId[] = [] 
   
-  if(installmentIds?.length !== projectIds?.length) {
+  if(installmentNums?.length !== projectIds?.length) {
     return adapterResponse({
       message: 'Installment_ids and project_ids no have same lenthg',
       hasError: true,
@@ -27,11 +27,11 @@ export const invoiceIdHandler = ({
     })
   }
 
-  const installmentIdsFormatted = httpToId({ ids: installmentIds, isOptional: false, isNumber: true })
+  const installmentNumsFormatted = httpToId({ ids: installmentNums, isOptional: false, isNumber: true })
   
-  if (installmentIdsFormatted.hasError) return adapterResponse({ message: installmentIdsFormatted.message, hasError: true })
-  if (!installmentIdsFormatted.payload) adapterResponse({
-    message: 'InstallmentIdsFormatted parser no has payload',
+  if (installmentNumsFormatted.hasError) return adapterResponse({ message: installmentNumsFormatted.message, hasError: true })
+  if (!installmentNumsFormatted.payload) adapterResponse({
+    message: 'InstallmentNumsFormatted parser no has payload',
     hasError: true
   })
 
@@ -45,7 +45,7 @@ export const invoiceIdHandler = ({
 
   for(let i = 0; i < projectIdsFormatted.payload!.length; i++) {
     invoiceIds.push({
-      installment_id: installmentIdsFormatted.payload![i],
+      installment_num: installmentNumsFormatted.payload![i],
       project_id: projectIdsFormatted.payload![i],
       public_id: publicIdsFormatted?.payload![i]
     })

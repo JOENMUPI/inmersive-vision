@@ -1,32 +1,32 @@
 'use client'
-import { CustomDateInput, CustomNumberInput, CustomTextInput } from '@/components/customInput';
-import { CustomText } from '@/components/customText';
-import { useFetch } from '@/hooks/useFetch';
-import { BG_COLOR, INVOICE_COMPLETE_URL_SERVER, TEXT_COLOR, TEXT_COLOR_GRAY_2 } from '@/utils/consts';
-import { fetchMethod, statePage } from '@/utils/enums';
-import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
-import { Box, Button, Container, Grid, Group, Space, Table } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { useEffect, useState } from 'react';
-import { VarActions } from '@/app/app/components/varAcctions';
+import { CustomDateInput, CustomNumberInput, CustomTextInput } from '@/components/customInput'
+import { CustomText } from '@/components/customText'
+import { useFetch } from '@/hooks/useFetch'
+import { BG_COLOR, INVOICE_COMPLETE_URL_SERVER, TEXT_COLOR, TEXT_COLOR_GRAY_2 } from '@/utils/consts'
+import { fetchMethod, statePage } from '@/utils/enums'
+import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications'
+import { Box, Button, Container, Grid, Group, Space, Table } from '@mantine/core'
+import { useForm } from '@mantine/form'
+import { useEffect, useState } from 'react'
+import { VarActions } from '@/app/app/components/varAcctions'
+import { completeInvoiceI, invoiceModel, projectDescriptionModel } from '@/server/utilities/interfaces'
+import { ClientInput, MethodPaymentInput } from '@/app/app/utilities/inputs'
+import { LineBottom } from '@/components/lineBotton'
+import { IconTrash } from '@tabler/icons-react'
+import { CustomTooltip } from '@/components/customTooltip'
+import { DateValue } from '@mantine/dates'
+import { generatePdf } from '@/app/app/utilities/generatePDF'
+import { clientI, generatePdfI, mountInvoiceI, paymentInfoI, pdfDataI } from '@/app/app/utilities/interfaces'
 import {
+  formatDateToDDMMYYYY,
   httpToClient,
   httpToCompleteInvoice,
-  httpToInstallment,
   httpToInvoice,
   httpToMethodPayment,
   httpToProject,
   httpToProjectDescription,
   numberToUSD
-} from '@/server/utilities/formatters';
-import { completeInvoiceI, projectDescriptionModel } from '@/server/utilities/interfaces';
-import { ClientInput, MethodPaymentInput, ProjectInput } from '../../utilities/inputs';
-import { LineBottom } from '@/components/lineBotton';
-import { IconTrash } from '@tabler/icons-react';
-import { CustomTooltip } from '@/components/customTooltip';
-import { DateValue } from '@mantine/dates';
-import { generatePdf } from '../../utilities/generatePDF';
-import { clientI, mountInvoiceI, paymentInfoI, pdfDataI } from '../../utilities/interfaces';
+} from '@/server/utilities/formatters'
 
 const INIT_VALUES: completeInvoiceI = {
   client: {
@@ -51,31 +51,12 @@ const INIT_VALUES: completeInvoiceI = {
   project: {
     public_id: 'Generated automatically',
     total_installment: 0,
-    created_at: new Date(),
-    updated_at: new Date(),
-    soft_deleted: false,
-  },
-  installment: {
     id: 1, // dont touch is for validation pass, then the logic on server update this value
-    installment_num: 1, // dont touch is for validation pass, then the logic on server update this value
-    mount_pay: 0,
-    project_id: 0, 
     created_at: new Date(),
     updated_at: new Date(),
     soft_deleted: false,
   },
-  invoice: {
-    client_id: 0,
-    creation_date: new Date(),
-    expiration_date: new Date(),
-    installment_id: 1, // dont touch is for validation pass, then the logic on server update this value
-    method_payment_id: 0,
-    project_id: 0,
-    public_id: 'Generated automatically',
-    created_at: new Date(),
-    updated_at: new Date(),
-    soft_deleted: false,
-  },
+  invoices: [],
   projectDescriptions: [],
 }
 
@@ -91,9 +72,24 @@ const INIT_PROJECT_DESCRIPTION: projectDescriptionModel = {
   soft_deleted: false,
 }
 
+const INIT_INVOICE: invoiceModel = {
+  installment_num: 1, // dont touch is for validation pass, then the logic on server update this value
+  client_id: 1, // dont touch is for validation pass, then the logic on server update this value
+  method_payment_id: 1, // dont touch is for validation pass, then the logic on server update this value
+  creation_date: new Date(),
+  expiration_date: new Date(),
+  public_id: 'budget',
+  mount_pay: 0,
+  project_id: 1, // dont touch is for validation pass, then the logic on server update this value
+  created_at: new Date(),
+  updated_at: new Date(),
+  soft_deleted: false,
+}  
+
 export default function CompleteInvoicePage({ initialState }: { initialState: statePage }) {
   const [state, setState] = useState<statePage>(initialState)
   const [projectDescription, setProjectDescription] = useState<projectDescriptionModel>(INIT_PROJECT_DESCRIPTION)
+  const [invoice, setInvoice] = useState<invoiceModel>(INIT_INVOICE)
   const { sendF } = useFetch()
   const form = useForm({
     mode: 'controlled',
@@ -102,11 +98,8 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
       client: (val) => httpToClient({ httpData: [val] as never[], optionalFieldObligatory: false }).hasError
         ? 'Invalid client'
         : null,
-      installment: (val) => httpToInstallment({ httpData: [val] as never[], optionalFieldObligatory: false }).hasError
-        ? 'Invalid installment'
-        : null,
-      invoice: (val) => httpToInvoice({ httpData: [val] as never[], optionalFieldObligatory: false }).hasError
-        ? 'Invalid invoice'
+      invoices: (val) => httpToInvoice({ httpData: val as never[], optionalFieldObligatory: false }).hasError
+        ? 'Invalid invoice' 
         : null,
       methodPayment: (val) => httpToMethodPayment({ httpData: [val] as never[], optionalFieldObligatory: false }).hasError
         ? 'Invalid method payment'
@@ -179,47 +172,63 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
 
   const PdfHandler = async (isPreview: boolean) => {
     if (form.validate().hasErrors) return
+    if (form.getValues().invoices.map(invoice => invoice.mount_pay).reduce((acc, val) => acc + val) !==
+    form.getValues().projectDescriptions.map(projectDescription => projectDescription.unitary_price).reduce((acc, val) => acc + val)) {
+      notifyShowBase({
+        id: 'test',
+        title: 'Error match',
+        message: 'total installments no match with total invoice descriptions',
+        loading: false
+      })
+      return
+    }
+
     const _form = form.getValues()
-    const pdfData: pdfDataI = {
-      dateCreation: new Date(_form.invoice.creation_date),
-      dateExpiration: new Date(_form.invoice.expiration_date),
-      descriptions: _form.projectDescriptions.map(data => ({ amount: data.unitary_price, description: data.description })),
-      id: _form.invoice.public_id,
-      idProject: _form.project.public_id,
-      isInvoice: state === statePage.VIEW,
-    }
-  
-    const client: clientI = {
-      address: _form.client.address,
-      email: _form.client.email,
-      name: _form.client.name,
-      phone: _form.client.phone,
-      id: _form.client.id ? String(_form.client.id) : '',
-    }
-  
-    const paymentInfo: paymentInfoI = {
-      accountNumber: _form.methodPayment.account_num,
-      bankName: _form.methodPayment.bank_name,
-      companyName: _form.methodPayment.company_name,
-      id: String(_form.methodPayment.id),
-      routingNumber: _form.methodPayment.routing_num,
-      urlQr: _form.methodPayment.url_qr,
-      zelle: _form.methodPayment.zelle,
-    }
-  
-    const mountInvoice: mountInvoiceI = {
-      currentInstallment: _form.installment.installment_num,
-      paidMount: _form.projectDescriptions.map((el) => el.unitary_price * el.element_num).reduce((acc, val) => acc + val),
-      pendingMount: 10,
-      totalInstallment: _form.project.total_installment    
-    }
+    const allData: generatePdfI[] = form.getValues().invoices.map(invoice => {
+      const pdfData: pdfDataI = {
+        dateCreation: new Date(invoice.creation_date),
+        dateExpiration: new Date(invoice.expiration_date),
+        descriptions: _form.projectDescriptions.map(data => ({ amount: data.unitary_price, description: data.description })),
+        id: invoice.public_id,
+        idProject: _form.project.public_id,
+        isInvoice: state === statePage.VIEW,
+      }
     
-    const pdf = await generatePdf({
-      client,
-      mountInvoice,
-      paymentInfo,
-      pdfData
+      const client: clientI = {
+        address: _form.client.address,
+        email: _form.client.email,
+        name: _form.client.name,
+        phone: _form.client.phone,
+        id: _form.client.id ? String(_form.client.id) : '',
+      }
+    
+      const paymentInfo: paymentInfoI = {
+        accountNumber: _form.methodPayment.account_num,
+        bankName: _form.methodPayment.bank_name,
+        companyName: _form.methodPayment.company_name,
+        id: String(_form.methodPayment.id),
+        routingNumber: _form.methodPayment.routing_num,
+        urlQr: _form.methodPayment.url_qr,
+        zelle: _form.methodPayment.zelle,
+      }
+    
+      const mount = _form.projectDescriptions.map((el) => el.unitary_price * el.element_num).reduce((acc, val) => acc + val)
+      const mountInvoice: mountInvoiceI = {
+        currentInstallment: 1,
+        paidMount: invoice.ref_num_paid ? mount : 0,
+        pendingMount: mount,
+        totalInstallment: _form.project.total_installment    
+      }
+      
+      return {
+        client,
+        mountInvoice,
+        paymentInfo,
+        pdfData
+      }
     })
+    
+    const pdf = await generatePdf(allData)
 
     if (isPreview) window.open(pdf, '_blank')
     else {
@@ -234,6 +243,16 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
 
   const sendSave = async () => {
     if (form.validate().hasErrors) return
+    if (form.getValues().invoices.map(invoice => invoice.mount_pay).reduce((acc, val) => acc + val) !==
+    form.getValues().projectDescriptions.map(projectDescription => projectDescription.unitary_price).reduce((acc, val) => acc + val)) {
+      notifyShowBase({
+        id: 'test',
+        title: 'Error match',
+        message: 'Total installments no match with total invoice descriptions',
+        loading: false
+      })
+      return
+    }
     notifyShowBase({
       id: 'test',
       title: 'Saving data',
@@ -262,6 +281,17 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
 
   const sendEdit = async () => {
     if (form.validate().hasErrors) return
+    if (form.getValues().invoices.map(invoice => invoice.mount_pay).reduce((acc, val) => acc + val) !==
+    form.getValues().projectDescriptions.map(projectDescription => projectDescription.unitary_price).reduce((acc, val) => acc + val)) {
+      notifyShowBase({
+        id: 'test',
+        title: 'Error match',
+        message: 'total installments no match with total invoice descriptions',
+        loading: false
+      })
+      return
+    }
+
     notifyShowBase({
       id: 'test',
       title: 'Editing data',
@@ -270,7 +300,7 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
     })
 
     const responseServer = await sendF<completeInvoiceI[], completeInvoiceI>({
-      endpoint: INVOICE_COMPLETE_URL_SERVER + '/' + form.values.invoice.project_id + '/' + form.values.invoice.installment_id,
+      endpoint: INVOICE_COMPLETE_URL_SERVER + '/' + form.values.project.public_id,
       body: form.values,
       method: fetchMethod.PUT
     })
@@ -297,7 +327,7 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
     })
 
     const responseServer = await sendF<completeInvoiceI[]>({
-      endpoint: INVOICE_COMPLETE_URL_SERVER + '/' + form.values.invoice.public_id,
+      endpoint: INVOICE_COMPLETE_URL_SERVER + '/' + form.values.project.public_id,
       method: fetchMethod.DELETE
     })
     
@@ -317,36 +347,20 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
     const dataNumber = Number(data)
     
     form.setFieldValue('client.id', dataNumber)
-    form.setFieldValue('invoice.client_id', dataNumber)
-  } 
-
-  const changeProjectInput = (data:  string | null) => {
-    const dataNumber = Number(data)
-    
-    form.setFieldValue('project.id', dataNumber)
-    form.setFieldValue('invoice.project_id', dataNumber)
-    form.setFieldValue('installment.project_id', dataNumber)
   } 
 
   const changeMethodPaymentInput = (data:  string | null) => {
     const dataNumber = Number(data)
     
     form.setFieldValue('methodPayment.id', dataNumber)
-    form.setFieldValue('invoice.method_payment_id', dataNumber)
   }
 
   const changeInvoiceCreationDateInput = (data: DateValue) => {
-    if (data!.getTime() > form.getValues().invoice.expiration_date.getTime()) form.setFieldValue('invoice.expiration_date', data!) 
-    form.setFieldValue('invoice.creation_date', data!)
+    if (data!.getTime() > invoice.expiration_date.getTime()) setInvoice(prev => ({ ...prev, expiration_date: data! })) 
+    
+    setInvoice(prev => ({ ...prev, creation_date: data! })) 
   }
 
-  const updateInstallmentMountPay = (data: projectDescriptionModel[]) => {
-    const unitaryPrices: number[] = data.map(val => val.unitary_price)
-    let acc: number = 0
-
-    if (unitaryPrices.length > 0) acc = unitaryPrices.reduce((acc, val) => acc + val)
-    form.setFieldValue('installment.mount_pay', acc)
-  }
 
   const addProjectDescription = () => {
     const newProjectDescription: projectDescriptionModel[] = [
@@ -355,14 +369,26 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
     ]
     
     form.setFieldValue('projectDescriptions', newProjectDescription)
-    updateInstallmentMountPay(newProjectDescription)
     setProjectDescription(INIT_PROJECT_DESCRIPTION)
+  }
+
+  const addInvoice = () => {
+    const newInvoice: invoiceModel[] = [...form.getValues().invoices, invoice]
+    
+    form.setFieldValue('invoices', newInvoice)
+    setInvoice(INIT_INVOICE)
+  }
+
+
+  const deleteInvoiceRow = (element: invoiceModel) => {
+    const newInvoice = form.getValues().invoices.filter(el => el !== element) 
+    
+    form.setFieldValue('invoices', newInvoice)
   }
 
   const deleteProjectDesciptionRow = (element: projectDescriptionModel) => {
     const newProjectDescription = form.getValues().projectDescriptions.filter(el => el !== element) 
-    
-    updateInstallmentMountPay(newProjectDescription)
+
     form.setFieldValue('projectDescriptions', newProjectDescription)
   }
 
@@ -418,123 +444,153 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
           />
         </Grid.Col>
         <Grid.Col span={6}>
-          <ProjectInput  
-            label='Proyect'
+          <CustomNumberInput  
+            label='Total installment'
             showLabel={true}
-            dataSelected={data => form.setFieldValue('project', data)}
-            value={form.getValues().project.id != undefined ? String(form.getValues().project.id) : ''}
-            onChange={changeProjectInput}
+            readOnly={state === statePage.VIEW}
+            disabled={form.getValues().invoices.length > 0}
+            value={form.getValues().project.total_installment}
+            onChange={data => form.setFieldValue('project.total_installment', data)}
             errorText={form.errors?.project ? String(form.errors?.project) : undefined}
             isError={!!form.errors?.project}
-            readOnly={state === statePage.VIEW} 
           />
-        </Grid.Col>
-        <Grid.Col span={12}>
-          <LineBottom>
-            <CustomText style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
-              INVOICE
-            </CustomText>
-          </LineBottom>
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <CustomTextInput
-            label='Num. Ref. paid'
-            placeholder='Can be empty'
-            readOnly={state === statePage.VIEW} 
-            showLabel={true}
-            value={form.getValues().invoice.ref_num_paid ?? undefined as unknown as string}
-            onChange={(data => form.setFieldValue('invoice.ref_num_paid', data))}
-            errorText={form.errors?.invoice ? String(form.errors?.invoice) : undefined}
-            isError={!!form.errors?.invoice}
-          />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <CustomTextInput
-            label='Public id'
-            readOnly={state !== statePage.EDIT} 
-            showLabel={true}
-            value={form.getValues().invoice.public_id ?? ''}
-            onChange={(data => form.setFieldValue('invoice.public_id', data))}
-            errorText={form.errors?.invoice ? String(form.errors?.invoice) : undefined}
-            isError={!!form.errors?.invoice}
-          />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <CustomDateInput
-            label='Creation Date'
-            showLabel={true}
-            readOnly={state === statePage.VIEW} 
-            value={form.getValues().invoice.creation_date ?? new Date()} 
-            onChange={changeInvoiceCreationDateInput}
-            errorText={form.errors?.invoice ? String(form.errors?.invoice) : undefined}
-            isError={!!form.errors?.invoice}
-          />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <CustomDateInput
-            label='Due date'
-            showLabel={true}
-            readOnly={state === statePage.VIEW} 
-            extprops={{ minDate: form.getValues().invoice.creation_date }}
-            value={form.getValues().invoice.expiration_date ?? new Date()} 
-            onChange={data => form.setFieldValue('invoice.expiration_date', data!)}
-            errorText={form.errors?.invoice ? String(form.errors?.invoice) : undefined}
-            isError={!!form.errors?.invoice}
-          />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <CustomDateInput
-            label='Last change'
-            showLabel={true}
-            readOnly={true}
-            disabled={true} 
-            value={form.getValues().invoice.updated_at ?? new Date()} 
-            onChange={(data => form.setFieldValue('invoice.updated_at', data!))}
-            errorText={form.errors?.updated_at ? String(form.errors?.updated_at) : undefined}
-            isError={!!form.errors?.updated_at}
-          />
-        </Grid.Col>
-        <Grid.Col span={12}>
-          <LineBottom>
-            <CustomText style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
-              INSTTALLMENT
-            </CustomText>
-          </LineBottom>
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <CustomNumberInput
-            label='Mount to pay'
-            readOnly={state !== statePage.EDIT} 
-            showLabel={true}
-            value={form.getValues().installment.mount_pay}
-            onChange={(data => form.setFieldValue('installment.mount_pay', data))}
-            // errorText={form.errors?.installment ? String(form.errors?.installment) : undefined}
-            // isError={!!form.errors?.installment}
-          />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <CustomNumberInput
-            label='Installment number'
-            readOnly={state === statePage.VIEW} 
-            showLabel={true}
-            value={form.getValues().installment.installment_num}
-            onChange={(data => form.setFieldValue('installment.installment_num', data))}
-            errorText={form.errors?.installment ? String(form.errors?.installment) : undefined}
-            isError={!!form.errors?.installment}
-            max={form.getValues().project.total_installment ?? 0}
-          />
-          <CustomText>
-            Total installment fot this project: {form.getValues().project.total_installment ?? 0}
-          </CustomText>
         </Grid.Col>
       </Grid>
       <Space h='xl' />
       <Grid style={{ border: `1px ${TEXT_COLOR_GRAY_2} solid`, borderRadius: '.3rem', padding: '.3rem' }}>  
         <Grid.Col span={12}>
           <LineBottom>
-            <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <CustomText style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
-                PROJECT DESCRIPTION
+                INSTALLMENTS
+              </CustomText>
+              <CustomText style={{ fontSize: '1rem' }}>
+               Total installments: {numberToUSD(form.getValues().invoices.reduce((acc, curr) => acc + curr.mount_pay, 0))}
+              </CustomText>
+              <Button
+                style={ state === statePage.VIEW ? { display: 'none' } : {}}
+                disabled={!invoice.creation_date ||
+                  !invoice.expiration_date ||
+                  !invoice.mount_pay ||
+                  form.getValues().invoices.length >= form.getValues().project.total_installment
+                }
+                onClick={addInvoice}
+              >
+                Add
+              </Button>
+            </Box>
+          </LineBottom>
+        </Grid.Col>
+        <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
+          <CustomTextInput
+            label='Num. Ref. paid'
+            placeholder='Can be empty'
+            readOnly={state === statePage.VIEW} 
+            showLabel={true}
+            value={invoice.ref_num_paid ?? undefined as unknown as string}
+            onChange={(ref_num_paid => setInvoice(prev => ({ ...prev, ref_num_paid })))}
+            errorText={form.errors?.invoices ? String(form.errors?.invoices) : undefined}
+            isError={!!form.errors?.invoices}
+          />
+        </Grid.Col>
+        <Grid.Col span={6} style={{ display: state === statePage.EDIT ? 'block' : 'none' }}>
+          <CustomTextInput
+            label='Public id'
+            readOnly={state !== statePage.EDIT} 
+            showLabel={true}
+            value={invoice.public_id ?? ''}
+            onChange={(public_id => setInvoice(prev => ({ ...prev, public_id })))}
+            errorText={form.errors?.invoices ? String(form.errors?.invoices) : undefined}
+            isError={!!form.errors?.invoices}
+          />
+        </Grid.Col>
+        <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
+          <CustomDateInput
+            label='Creation Date'
+            showLabel={true}
+            readOnly={state === statePage.VIEW} 
+            value={invoice.creation_date ?? new Date()} 
+            onChange={changeInvoiceCreationDateInput}
+            errorText={form.errors?.invoices ? String(form.errors?.invoices) : undefined}
+            isError={!!form.errors?.invoices}
+          />
+        </Grid.Col>
+        <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
+          <CustomDateInput
+            label='Due date'
+            showLabel={true}
+            readOnly={state === statePage.VIEW} 
+            extprops={{ minDate: invoice.creation_date }}
+            value={invoice.expiration_date ?? new Date()} 
+            onChange={data => setInvoice(prev => ({ ...prev, expiration_date: data! }))}
+            errorText={form.errors?.invoices ? String(form.errors?.invoices) : undefined}
+            isError={!!form.errors?.invoices}
+          />
+        </Grid.Col>
+        <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
+          <CustomNumberInput
+            label='Mount to pay'
+            showLabel={true}
+            value={invoice.mount_pay}
+            onChange={mount_pay => setInvoice(prev => ({ ...prev, mount_pay }))}
+            errorText={form.errors?.invoices ? String(form.errors?.invoices) : undefined}
+            isError={!!form.errors?.invoices}
+          />
+        </Grid.Col>
+        <Grid.Col span={12}>
+          <Table stickyHeader stickyHeaderOffset={60} styles={{
+            tbody: { color: TEXT_COLOR, fontSize: '1.3rem' },
+            thead: { backgroundColor: 'transparent', fontSize: '1.5rem', color: TEXT_COLOR }
+          }}>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th style={state === statePage.VIEW ? { display: 'none' } : {}} />
+                <Table.Th>Id</Table.Th>
+                <Table.Th>Mount to pay</Table.Th>
+                <Table.Th>Num. ref. paid</Table.Th>
+                <Table.Th>Creation date</Table.Th>
+                <Table.Th>Due date</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{form.getValues().invoices.map((element, index) => {
+              return <Table.Tr key={index}>
+                <Table.Td style={ state === statePage.VIEW ? { display: 'none' } : {}}>
+                  <CustomTooltip label='Delete row'>
+                    <Button color='red' variant='subtle' onClick={() => deleteInvoiceRow(element)}>
+                      <IconTrash/>
+                    </Button>
+                  </CustomTooltip>
+                </Table.Td>
+                <Table.Td>
+                    {element.public_id}
+                </Table.Td>
+                <Table.Td>
+                    {numberToUSD(element.mount_pay)}
+                </Table.Td>
+                <Table.Td>
+                    {element.ref_num_paid}
+                </Table.Td>
+                <Table.Td>
+                     {formatDateToDDMMYYYY(element.creation_date)}
+                </Table.Td>
+                <Table.Td>
+                    {formatDateToDDMMYYYY(element.expiration_date)}
+                </Table.Td>
+              </Table.Tr>
+            })}</Table.Tbody>
+          </Table>
+        </Grid.Col>
+      </Grid>
+      <Space h='xl' />
+      <Grid style={{ border: `1px ${TEXT_COLOR_GRAY_2} solid`, borderRadius: '.3rem', padding: '.3rem' }}>  
+        <Grid.Col span={12}>
+          <LineBottom>
+            <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <CustomText style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
+                INVOICE DESCRIPTION
+              </CustomText>
+              <CustomText style={{ fontSize: '1rem' }}>
+                Total description: {numberToUSD(form.getValues().projectDescriptions.reduce((acc, curr) => acc + curr.unitary_price, 0))}
               </CustomText>
               <Button
                 style={ state === statePage.VIEW ? { display: 'none' } : {}}
@@ -543,7 +599,7 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
               >
                 Add
               </Button>
-            </Box>
+            </Box>  
           </LineBottom>
         </Grid.Col>
         <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>

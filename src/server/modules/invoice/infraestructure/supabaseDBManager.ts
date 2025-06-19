@@ -10,18 +10,18 @@ const getInvoice = async (invoiceIds?: invoiceId[]): Promise<adapterResponseI<Ar
 
   if (invoiceIds && invoiceIds.length > 0) {
     const projectsIds: number[] = []
-    const installmentsIds: number[] = []
+    const installmentsNums: number[] = []
     const publicIds: string[] = []
 
     invoiceIds.forEach(invoiceId => {
       projectsIds.push(invoiceId.project_id)
-      installmentsIds.push(invoiceId.installment_id)
+      installmentsNums.push(invoiceId.installment_num)
       if (invoiceId.public_id) publicIds.push(invoiceId.public_id)
     })
     
     query.in(invoiceTableKeys.PUBLIC_ID, publicIds)
     query.in(invoiceTableKeys.PROJECT_ID, projectsIds)
-    query.in(invoiceTableKeys.INSTALLMENT_ID, installmentsIds)
+    query.in(invoiceTableKeys.INSTALLMENT_NUM, installmentsNums)
   }
 
   const { data, error } = await query
@@ -35,8 +35,8 @@ const getInvoice = async (invoiceIds?: invoiceId[]): Promise<adapterResponseI<Ar
 
   let dataFiltered = data
   if (invoiceIds && invoiceIds.length > 0) {
-    const allowedIds = new Set(invoiceIds.map(id => auxiliaryId(id.project_id.toString(), id.installment_id.toString())))
-    dataFiltered = data.filter(el => allowedIds.has(auxiliaryId(el.project_id.toString(), el.installment_id.toString())))
+    const allowedIds = new Set(invoiceIds.map(id => auxiliaryId(id.project_id.toString(), id.installment_num.toString())))
+    dataFiltered = data.filter(el => allowedIds.has(auxiliaryId(el.project_id.toString(), el.installment_num.toString())))
   }
   return adapterResponse({ message: `Get invoices succesfully`, hasError: false, payload: dataFiltered });;
 }
@@ -45,7 +45,7 @@ const updateInvoice = async (invoice: updateBaseI<invoiceModel, invoiceId>): Pro
   const query = supabaseClient.from(tableNames.INVOICE)
     .update(invoice.newData)
     .eq(invoiceTableKeys.PROJECT_ID, invoice.currentId.project_id)
-    .eq(invoiceTableKeys.INSTALLMENT_ID, invoice.currentId.installment_id)
+    .eq(invoiceTableKeys.INSTALLMENT_NUM, invoice.currentId.installment_num)
     .select()
 
   const { data, error } = await query
@@ -80,7 +80,7 @@ const deleteInvoice = async (invoiceId: invoiceId[]): Promise<adapterResponseI<A
   for(const id of invoiceId) {
     const query = supabaseClient.from(tableNames.INVOICE)
     .delete()
-    .eq(invoiceTableKeys.INSTALLMENT_ID, id.installment_id)
+    .eq(invoiceTableKeys.INSTALLMENT_NUM, id.installment_num)
     .eq(invoiceTableKeys.PROJECT_ID, id.project_id)
     .select()
     
@@ -110,7 +110,7 @@ const anulateInvoice = async (props: anulateProps<invoiceId>): Promise<adapterRe
       [invoiceTableKeys.UPDATED_AT]: props.update_at,
     })
     .eq(invoiceTableKeys.PROJECT_ID, id.project_id)
-    .eq(invoiceTableKeys.INSTALLMENT_ID, id.installment_id)
+    .eq(invoiceTableKeys.INSTALLMENT_NUM, id.installment_num)
     .select()
 
     const { data, error } = await query.overrideTypes<Array<invoiceModel>>();
@@ -128,7 +128,7 @@ const anulateInvoice = async (props: anulateProps<invoiceId>): Promise<adapterRe
 const getLastInvoice = async (): Promise<adapterResponseI<Array<invoiceModel>>> => {
   const query = supabaseClient.from(tableNames.INVOICE)
     .select()
-    .order('created_at', { ascending: false })
+    .order(invoiceTableKeys.PUBLIC_ID, { ascending: false })
     .limit(1);
     
   const { data, error } = await query
