@@ -36,6 +36,7 @@ export interface mountInvoiceI {
   currentInstallment: number;
   totalInstallment: number;
   paidMount: number;
+  mount: number
   pendingMount: number;
 }
 

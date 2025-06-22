@@ -10,8 +10,3 @@ export interface productI {
   value: string,
   libData: libDataI[]
 }
-
-export interface serviceI {
-  name: string
-  products: productI[]
-}

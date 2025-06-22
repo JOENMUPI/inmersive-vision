@@ -239,7 +239,7 @@ export const generatePdf = async (allData: generatePdfI[]): Promise<string> => {
       color: whiteColor,
     })
   
-    page.drawText('Date issued: ' + formatDateToDDMMYYYY(data.pdfData.dateCreation), {
+    page.drawText(`${numberToUSD(0)} of ${numberToUSD(data.pdfData.descriptions.reduce((acc, val) => acc + val.amount, 0))}`, {
       x: marginRight - 80,
       y: heightCursor - fontSizeBase,
       size: fontSizeCaption,
@@ -339,7 +339,7 @@ export const generatePdf = async (allData: generatePdfI[]): Promise<string> => {
       color: blueColor,
     })
   
-    page.drawText(numberToUSD(data.pdfData.descriptions.reduce((acc, val) => acc + val.amount, 0)), {
+    page.drawText(numberToUSD(data.mountInvoice.mount), {
       x: mountPositionX,
       y: heightCursor - (heightLineGrid + fontSizeText) / 2,
       size: fontSizeText,

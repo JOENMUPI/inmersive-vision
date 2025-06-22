@@ -49,7 +49,7 @@ const INIT_VALUES: completeInvoiceI = {
     soft_deleted: false,
   },
   project: {
-    public_id: 'Generated automatically',
+    public_id: 'Budget',
     total_installment: 0,
     id: 1, // dont touch is for validation pass, then the logic on server update this value
     created_at: new Date(),
@@ -63,8 +63,8 @@ const INIT_VALUES: completeInvoiceI = {
 const INIT_PROJECT_DESCRIPTION: projectDescriptionModel = {
   description: '',
   element_num: 1,
-  invoice_public_id: 'Generated automatically',
-  project_id: 0,
+  invoice_public_id: 'Budget', // dont touch is for validation pass, then the logic on server update this value
+  project_id: 1, // dont touch is for validation pass, then the logic on server update this value
   unitary_price: 0,
   id: 1, // dont touch is for validation pass, then the logic on server update this value
   created_at: new Date(),
@@ -78,7 +78,7 @@ const INIT_INVOICE: invoiceModel = {
   method_payment_id: 1, // dont touch is for validation pass, then the logic on server update this value
   creation_date: new Date(),
   expiration_date: new Date(),
-  public_id: 'budget',
+  public_id: 'Budget',
   mount_pay: 0,
   project_id: 1, // dont touch is for validation pass, then the logic on server update this value
   created_at: new Date(),
@@ -86,11 +86,15 @@ const INIT_INVOICE: invoiceModel = {
   soft_deleted: false,
 }  
 
-export default function CompleteInvoicePage({ initialState }: { initialState: statePage }) {
+export default function CompleteInvoicePage({ initialState, totalMount }: { initialState: statePage , totalMount?: number }) {
   const [state, setState] = useState<statePage>(initialState)
-  const [projectDescription, setProjectDescription] = useState<projectDescriptionModel>(INIT_PROJECT_DESCRIPTION)
   const [invoice, setInvoice] = useState<invoiceModel>(INIT_INVOICE)
   const { sendF } = useFetch()
+  const [projectDescription, setProjectDescription] = useState<projectDescriptionModel>({
+    ...INIT_PROJECT_DESCRIPTION,
+    unitary_price: totalMount ?? 0
+  })
+  
   const form = useForm({
     mode: 'controlled',
     initialValues: INIT_VALUES,
@@ -124,7 +128,7 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
       })
   
       const responseServer = await sendF<completeInvoiceI[], completeInvoiceI[]>({
-        endpoint: INVOICE_COMPLETE_URL_SERVER + '?public_id=' + id,
+        endpoint: INVOICE_COMPLETE_URL_SERVER + '?project_public_id=' + id,
         method: fetchMethod.GET
       })
 
@@ -212,11 +216,11 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
         zelle: _form.methodPayment.zelle,
       }
     
-      const mount = _form.projectDescriptions.map((el) => el.unitary_price * el.element_num).reduce((acc, val) => acc + val)
       const mountInvoice: mountInvoiceI = {
-        currentInstallment: 1,
-        paidMount: invoice.ref_num_paid ? mount : 0,
-        pendingMount: mount,
+        currentInstallment: invoice.installment_num,
+        paidMount: invoice.ref_num_paid ? invoice.mount_pay : 0,
+        pendingMount: invoice.ref_num_paid ? 0 : invoice.mount_pay,
+        mount: invoice.mount_pay,
         totalInstallment: _form.project.total_installment    
       }
       
@@ -361,7 +365,6 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
     setInvoice(prev => ({ ...prev, creation_date: data! })) 
   }
 
-
   const addProjectDescription = () => {
     const newProjectDescription: projectDescriptionModel[] = [
       ...form.getValues().projectDescriptions,
@@ -373,12 +376,11 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
   }
 
   const addInvoice = () => {
-    const newInvoice: invoiceModel[] = [...form.getValues().invoices, invoice]
+    const newInvoice: invoiceModel[] = [...form.getValues().invoices, {...invoice, installment_num: form.getValues().invoices.length + 1 }]
     
     form.setFieldValue('invoices', newInvoice)
     setInvoice(INIT_INVOICE)
   }
-
 
   const deleteInvoiceRow = (element: invoiceModel) => {
     const newInvoice = form.getValues().invoices.filter(el => el !== element) 
@@ -445,7 +447,7 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
         </Grid.Col>
         <Grid.Col span={6}>
           <CustomNumberInput  
-            label='Total installment'
+            label='N. installments'
             showLabel={true}
             readOnly={state === statePage.VIEW}
             disabled={form.getValues().invoices.length > 0}
@@ -454,6 +456,84 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
             errorText={form.errors?.project ? String(form.errors?.project) : undefined}
             isError={!!form.errors?.project}
           />
+        </Grid.Col>
+        <Grid.Col span={6} style={{ display:'flex', alignItems: 'end' }}>
+          <CustomText style={{ fontSize: '1rem' }}>
+            {numberToUSD(form.getValues().invoices.reduce((acc, curr) => acc + curr.mount_pay, 0))}
+            of {numberToUSD(form.getValues().projectDescriptions.reduce((acc, curr) => acc + curr.unitary_price, 0))}
+          </CustomText>
+        </Grid.Col>
+      </Grid>
+      <Space h='xl' />
+      <Grid style={{ border: `1px ${TEXT_COLOR_GRAY_2} solid`, borderRadius: '.3rem', padding: '.3rem' }}>  
+        <Grid.Col span={12}>
+          <LineBottom>
+            <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <CustomText style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
+                INVOICE DESCRIPTION
+              </CustomText>
+              <Button
+                style={ state === statePage.VIEW ? { display: 'none' } : {}}
+                disabled={!projectDescription.description || !form.getValues().project.id}
+                onClick={addProjectDescription}
+              >
+                Add
+              </Button>
+            </Box>  
+          </LineBottom>
+        </Grid.Col>
+        <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
+          <CustomTextInput
+            label='Service description'
+            readOnly={state === statePage.VIEW} 
+            showLabel={true}
+            value={projectDescription.description}
+            onChange={description => setProjectDescription(prev => ({ ...prev, description }))}
+            errorText={form.errors?.projectDescriptions ? String(form.errors?.projectDescriptions) : undefined}
+            isError={!!form.errors?.projectDescriptions}
+          />
+        </Grid.Col>
+        <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
+          <CustomNumberInput
+            label='Total project cost'
+            readOnly={state === statePage.VIEW} 
+            showLabel={true}
+            value={projectDescription.unitary_price}
+            onChange={unitary_price => setProjectDescription(prev => ({ ...prev, unitary_price }))}
+            errorText={form.errors?.projectDescriptions ? String(form.errors?.projectDescriptions) : undefined}
+            isError={!!form.errors?.projectDescriptions}
+          />
+        </Grid.Col>
+        <Grid.Col span={12}>
+          <Table stickyHeader stickyHeaderOffset={60} styles={{
+            tbody: { color: TEXT_COLOR, fontSize: '1.3rem' },
+            thead: { backgroundColor: 'transparent', fontSize: '1.5rem', color: TEXT_COLOR }
+          }}>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th style={ state === statePage.VIEW ? { display: 'none' } : {}} />
+                <Table.Th>Serie Description</Table.Th>
+                <Table.Th>Cost</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{form.getValues().projectDescriptions.map((element, index) => {
+              return <Table.Tr key={index}>
+                <Table.Td style={ state === statePage.VIEW ? { display: 'none' } : {}}>
+                  <CustomTooltip label='Delete row'>
+                    <Button color='red' variant='subtle' onClick={() => deleteProjectDesciptionRow(element)}>
+                      <IconTrash/>
+                    </Button>
+                  </CustomTooltip>
+                </Table.Td>
+                <Table.Td>
+                    {element.description}
+                </Table.Td>
+                <Table.Td>
+                    {numberToUSD(element.unitary_price)}
+                </Table.Td>
+              </Table.Tr>
+            })}</Table.Tbody>
+          </Table>
         </Grid.Col>
       </Grid>
       <Space h='xl' />
@@ -464,10 +544,8 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
               <CustomText style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
                 INSTALLMENTS
               </CustomText>
-              <CustomText style={{ fontSize: '1rem' }}>
-               Total installments: {numberToUSD(form.getValues().invoices.reduce((acc, curr) => acc + curr.mount_pay, 0))}
-              </CustomText>
               <Button
+                variant='transparent'
                 style={ state === statePage.VIEW ? { display: 'none' } : {}}
                 disabled={!invoice.creation_date ||
                   !invoice.expiration_date ||
@@ -476,14 +554,14 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
                 }
                 onClick={addInvoice}
               >
-                Add
+                Add item
               </Button>
             </Box>
           </LineBottom>
         </Grid.Col>
         <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
           <CustomTextInput
-            label='Num. Ref. paid'
+            label='Ref. Number'
             placeholder='Can be empty'
             readOnly={state === statePage.VIEW} 
             showLabel={true}
@@ -529,7 +607,7 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
         </Grid.Col>
         <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
           <CustomNumberInput
-            label='Mount to pay'
+            label='Partial payment'
             showLabel={true}
             value={invoice.mount_pay}
             onChange={mount_pay => setInvoice(prev => ({ ...prev, mount_pay }))}
@@ -546,8 +624,8 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
               <Table.Tr>
                 <Table.Th style={state === statePage.VIEW ? { display: 'none' } : {}} />
                 <Table.Th>Id</Table.Th>
-                <Table.Th>Mount to pay</Table.Th>
-                <Table.Th>Num. ref. paid</Table.Th>
+                <Table.Th>Partial payment</Table.Th>
+                <Table.Th>Ref. Number</Table.Th>
                 <Table.Th>Creation date</Table.Th>
                 <Table.Th>Due date</Table.Th>
               </Table.Tr>
@@ -575,81 +653,6 @@ export default function CompleteInvoicePage({ initialState }: { initialState: st
                 </Table.Td>
                 <Table.Td>
                     {formatDateToDDMMYYYY(element.expiration_date)}
-                </Table.Td>
-              </Table.Tr>
-            })}</Table.Tbody>
-          </Table>
-        </Grid.Col>
-      </Grid>
-      <Space h='xl' />
-      <Grid style={{ border: `1px ${TEXT_COLOR_GRAY_2} solid`, borderRadius: '.3rem', padding: '.3rem' }}>  
-        <Grid.Col span={12}>
-          <LineBottom>
-            <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <CustomText style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
-                INVOICE DESCRIPTION
-              </CustomText>
-              <CustomText style={{ fontSize: '1rem' }}>
-                Total description: {numberToUSD(form.getValues().projectDescriptions.reduce((acc, curr) => acc + curr.unitary_price, 0))}
-              </CustomText>
-              <Button
-                style={ state === statePage.VIEW ? { display: 'none' } : {}}
-                disabled={!projectDescription.description || !form.getValues().project.id}
-                onClick={addProjectDescription}
-              >
-                Add
-              </Button>
-            </Box>  
-          </LineBottom>
-        </Grid.Col>
-        <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
-          <CustomTextInput
-            label='Description'
-            readOnly={state === statePage.VIEW} 
-            showLabel={true}
-            value={projectDescription.description}
-            onChange={description => setProjectDescription(prev => ({ ...prev, description }))}
-            errorText={form.errors?.projectDescriptions ? String(form.errors?.projectDescriptions) : undefined}
-            isError={!!form.errors?.projectDescriptions}
-          />
-        </Grid.Col>
-        <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
-          <CustomNumberInput
-            label='Price'
-            readOnly={state === statePage.VIEW} 
-            showLabel={true}
-            value={projectDescription.unitary_price}
-            onChange={unitary_price => setProjectDescription(prev => ({ ...prev, unitary_price }))}
-            errorText={form.errors?.projectDescriptions ? String(form.errors?.projectDescriptions) : undefined}
-            isError={!!form.errors?.projectDescriptions}
-          />
-        </Grid.Col>
-        <Grid.Col span={12}>
-          <Table stickyHeader stickyHeaderOffset={60} styles={{
-            tbody: { color: TEXT_COLOR, fontSize: '1.3rem' },
-            thead: { backgroundColor: 'transparent', fontSize: '1.5rem', color: TEXT_COLOR }
-          }}>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th style={ state === statePage.VIEW ? { display: 'none' } : {}} />
-                <Table.Th>Description</Table.Th>
-                <Table.Th>Price</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>{form.getValues().projectDescriptions.map((element, index) => {
-              return <Table.Tr key={index}>
-                <Table.Td style={ state === statePage.VIEW ? { display: 'none' } : {}}>
-                  <CustomTooltip label='Delete row'>
-                    <Button color='red' variant='subtle' onClick={() => deleteProjectDesciptionRow(element)}>
-                      <IconTrash/>
-                    </Button>
-                  </CustomTooltip>
-                </Table.Td>
-                <Table.Td>
-                    {element.description}
-                </Table.Td>
-                <Table.Td>
-                    {numberToUSD(element.unitary_price)}
                 </Table.Td>
               </Table.Tr>
             })}</Table.Tbody>
