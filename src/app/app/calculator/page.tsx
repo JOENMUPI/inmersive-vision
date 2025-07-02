@@ -327,21 +327,21 @@ const CONFIG_DATA: productI[] = [
   //     { fts: 13500, price: 1.24 },
   //     { fts: 13750, price: 1.25 }
   //   ]
-  }, {
-    title: 'Landscape Modeling',
-    value: 'landscapeModeling',
-    placeholder: 'Total Feets',
-    instruction: "Insert number of square feet'.",
-    libData: [
-        { fts: 25000, price: 0.053 },
-        { fts: 50000, price: 0.0265 },
-        { fts: 75000, price: 0.02 },
-        { fts: 100000, price: 0.002 },
-        { fts: 250000, price: 0.0018 },
-        { fts: 350000, price: 0.002 },
-        { fts: 450000, price: 0.006 },
-        { fts: 550000, price: 0.01 },
-      ]
+  // }, {
+  //   title: 'Landscape Modeling',
+  //   value: 'landscapeModeling',
+  //   placeholder: 'Total Feets',
+  //   instruction: "Insert number of square feet'.",
+  //   libData: [
+  //       { fts: 25000, price: 0.053 },
+  //       { fts: 50000, price: 0.0265 },
+  //       { fts: 75000, price: 0.02 },
+  //       { fts: 100000, price: 0.002 },
+  //       { fts: 250000, price: 0.0018 },
+  //       { fts: 350000, price: 0.002 },
+  //       { fts: 450000, price: 0.006 },
+  //       { fts: 550000, price: 0.01 },
+  //     ]
   }, {
     title: 'Small Landscape Modeling',
     value: 'landscapeModelingSmall',
