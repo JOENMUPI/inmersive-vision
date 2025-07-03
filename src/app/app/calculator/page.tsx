@@ -447,7 +447,7 @@ export default function CalculatorPage() {
             <CustomNumberInput  
               label={CONFIG_DATA[form.getValues().productId].placeholder}
               showLabel={true}
-              value={form.getValues().mount}
+              //value={form.getValues().mount}
               errorText={form.errors?.mount ? String(form.errors?.mount) : undefined}
               isError={!!form.errors?.mount}
               onChange={(data => {
@@ -477,7 +477,7 @@ export default function CalculatorPage() {
           <Grid.Col span={6} style={{ display: 'flex', alignItems: 'end', justifyContent: 'end' }}>
             <Box style={{ display: 'flex', gap: '.5rem' }}>
               <CustomText style={{ fontWeight: 'bold', fontSize: INSTRUCTION_FONT_SIZE }}>
-                Total car: 
+                Total cart: 
               </CustomText>
               <CustomText style={{ fontSize: INSTRUCTION_FONT_SIZE }}>
                 {numberToUSD(totalCar)}
@@ -494,7 +494,7 @@ export default function CalculatorPage() {
             <Table.Tr>
               <Table.Th />
               <Table.Th>Product</Table.Th>
-              <Table.Th>Mount</Table.Th>
+              <Table.Th>Amount</Table.Th>
               <Table.Th>Result</Table.Th>
             </Table.Tr>
           </Table.Thead>

@@ -33,11 +33,12 @@ export interface customSelectI extends CustomInputI<string | null> {
   data: selectData[]
 }
 
-interface CustomNumberInputI extends CustomInputI<number> {
+interface CustomNumberInputI extends Omit<CustomInputI<number>, 'value'> {
   prefix?: string,
   suffix?: string,
   min?: number,
   max?: number,
+  value?: number,
   allowDecimal?: boolean,
   thousandSeparator?: string,
   decimalScale?: number,
