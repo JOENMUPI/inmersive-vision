@@ -15,7 +15,7 @@ import { Notifications } from '@mantine/notifications';
 import { Analytics } from "@vercel/analytics/react"
 
 export const metadata: Metadata = {
-  title: "Imersive Vision",
+  title: "Immersive Vision",
   description: "LandingPage for Imersive Vision",
   icons: '/favicon.ico',
 };
