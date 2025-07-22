@@ -51,7 +51,6 @@ export default function Page5({ data }: { data: data5I }) {
             width: '100%',
             height: '100%',
             display: 'flex',
-            backgroundColor: '#0a0a0a',
             flexDirection: 'column',
             alignItems: 'center',
             gap: '1rem',
@@ -60,6 +59,7 @@ export default function Page5({ data }: { data: data5I }) {
             paddingRight: '7vw',
             paddingBottom: '9vh',
             background: `linear-gradient(180deg, ${PRIMARY_COLOR_RGB(.2)}, rgba(19, 19, 19, 0) 10%)`,
+            backgroundColor: '#0a0a0a',
           }}>
             <CustomText style={{
               fontWeight: '200',

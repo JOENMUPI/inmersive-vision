@@ -77,7 +77,7 @@ export default function Page8({ data }: { data: data8I }) {
   return (
     <Container id={PAGE_TEMPLPATE_7_ID} style={{
       minWidth:'100%',
-      height: '150vh',
+      height: '100vh',
       padding: 0,
     }}>
       <Box style={{
