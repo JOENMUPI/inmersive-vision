@@ -21,7 +21,6 @@ export default function Page1({ data }: { data: data1I }) {
         <Container id={PAGE_TEMPLPATE_1_ID} style={{
           minWidth:'100%',
           height: '100vh',
-          backgroundColor: '#0a0a0a',
           padding: 0,
         }}>
           <HeaderTemplateMenu />
