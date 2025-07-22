@@ -85,7 +85,7 @@ export const configErna: dataAllI = {
     subTitle: 'Space | Units',
     units: [ 
       {
-        title: 'UNIT 790',
+        title: 'Floor plan',
         img: imgErnaPlano.src,
         units: [
           {

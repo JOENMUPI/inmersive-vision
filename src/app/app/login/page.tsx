@@ -113,7 +113,8 @@ export default function LoginPage() {
               <Box style={{ display: 'flex', width: '100%', justifyContent: 'center', height:'20%', gap: '.8rem' }}>
                 <Image
                   src={logoImg.src}
-                  style={{ width: '100%', height: isXS ? '40%' : '60%' }}
+                  fit='contain'
+                  style={{ width: '20vw', height: isXS ? '40%' : '60%'  }}
                   alt='logo img inmersive vision'
                 />
               </Box>
