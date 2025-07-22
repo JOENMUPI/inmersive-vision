@@ -242,7 +242,7 @@ export default function ClientPage({ initialState }: { initialState: statePage }
             isError={!!form.errors?.email}
           />
         </Grid.Col>
-        <Grid.Col span={6}>
+        {/* <Grid.Col span={6}>
           <CustomDateInput
             label='Last change'
             showLabel={true}
@@ -253,7 +253,7 @@ export default function ClientPage({ initialState }: { initialState: statePage }
             errorText={form.errors?.updated_at ? String(form.errors?.updated_at) : undefined}
             isError={!!form.errors?.updated_at}
           />
-        </Grid.Col>
+        </Grid.Col> */}
       </Grid>
     </Container>
   )
