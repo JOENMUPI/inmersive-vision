@@ -1,9 +1,8 @@
 'use client';
 import { Box, Image } from '@mantine/core';
-import { ScrollDirection, useScrollTracker } from '@/hooks/scrollTracker';
 import logoComppany from '@/../public/page6/LOGO_IMVI.webp';
 import { TextSelect } from '@/components/TextSelect';
-import { PAGE_1_ID, PAGE_3_ID, PAGE_4_ID, PAGE_5_ID } from '@/utils/consts';
+import { PAGE_TEMPLPATE_1_ID, PAGE_TEMPLPATE_2_ID, PAGE_TEMPLPATE_4_ID, PAGE_TEMPLPATE_5_ID, PAGE_TEMPLPATE_6_ID, PAGE_TEMPLPATE_8_ID } from '@/utils/consts';
 import { useEffect, useState } from 'react';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
 
@@ -14,31 +13,29 @@ interface linksProps {
 
 const links: linksProps[] = [
   {
-    label: 'Home',
-    idPoint: PAGE_1_ID,
+    label: 'Description',
+    idPoint: PAGE_TEMPLPATE_2_ID,
   }, {
-    label: 'Services',
-    idPoint: PAGE_3_ID,
+    label: 'Gallery',
+    idPoint: PAGE_TEMPLPATE_4_ID,
   }, {
-    label: 'Projects',
-    idPoint: PAGE_4_ID,
+    label: 'Space',
+    idPoint: PAGE_TEMPLPATE_5_ID,
   }, {
-    label: 'About Us',
-    idPoint: PAGE_5_ID,
+    label: 'Experience',
+    idPoint: PAGE_TEMPLPATE_6_ID,
+  }, {
+    label: 'Contact',
+    idPoint: PAGE_TEMPLPATE_8_ID,
   },
 ];
 
-const noShowheaderlist = [
-  'tours-contact',
-  'app',
-  'template'
-]
+const noShowheaderlist: string[] = []
 
-export function HeaderMenu() {
-  const { scrollDirection } = useScrollTracker();
+export function HeaderTemplateMenu() {
   const { getByBreakPoint } = useBreakPointHandler();
-  const [activeSection, setActiveSection] = useState<string>(PAGE_1_ID)
-  const sections: string[] = [PAGE_1_ID, PAGE_3_ID, PAGE_4_ID, PAGE_5_ID]
+  const [activeSection, setActiveSection] = useState<string>(PAGE_TEMPLPATE_1_ID)
+  const sections: string[] = [PAGE_TEMPLPATE_2_ID, PAGE_TEMPLPATE_4_ID, PAGE_TEMPLPATE_5_ID, PAGE_TEMPLPATE_6_ID, PAGE_TEMPLPATE_8_ID]
   const [endpoint, setEndpoint] = useState<string>()
 
   useEffect(() => {
@@ -71,24 +68,23 @@ export function HeaderMenu() {
 
   if (endpoint && noShowheaderlist.includes(endpoint)) return null
   return (<header style={{
-      opacity: scrollDirection === ScrollDirection.DOWN ? 0 : 1,
-      transition: 'all .2s ease',
       width: '100%',
-      height: '15vh',
-      zIndex: 1000,
+      height: '20vh',
       top: -10,
       backgroundColor: '#131313',
       display: 'flex',
+      flexDirection: 'column',
       justifyContent: getByBreakPoint<string>('center', 'center', 'space-between', 'space-between', 'space-between'),
       alignItems: 'center',
-      position: 'fixed',
-      padding:'0 7vw 0 11vw',
-      background: `linear-gradient(180deg, rgba(19, 19, 19, 0.8), rgba(19, 19, 19, 0))`,
+      zIndex: 1000,
+      position: 'absolute',
+      padding:'5vh 11vw 2vh 11vw',
+      background: `linear-gradient(180deg, rgba(19, 19, 19, 1), rgba(19, 19, 19, 0))`,
     }}>
       <Image
         alt='Company logo'
         src={logoComppany.src}
-        style={{ display: getByBreakPoint<string>('none', 'none', 'block', 'block', 'block'), height:'20%' }}
+        style={{ display: getByBreakPoint<string>('none', 'none', 'block', 'block', 'block'), width: 'auto', height: '5vh' }}
       />
       <Box style={{
         display: 'flex',

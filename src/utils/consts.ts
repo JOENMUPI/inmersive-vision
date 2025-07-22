@@ -16,6 +16,17 @@ export const PAGE_4_ID = 'page-4'
 export const PAGE_5_ID = 'page-5'
 export const PAGE_6_ID = 'page-6'
 
+export const PAGE_TEMPLPATE_1_ID = 'page-1'
+export const PAGE_TEMPLPATE_2_ID = 'page-2'
+export const PAGE_TEMPLPATE_3_ID = 'page-3'
+export const PAGE_TEMPLPATE_4_ID = 'page-4'
+export const PAGE_TEMPLPATE_5_ID = 'page-5'
+export const PAGE_TEMPLPATE_6_ID = 'page-6'
+export const PAGE_TEMPLPATE_7_ID = 'page-7'
+export const PAGE_TEMPLPATE_8_ID = 'page-8'
+export const PAGE_TEMPLPATE_9_ID = 'page-9'
+export const PAGE_TEMPLPATE_10_ID = 'page-10'
+
 export const BASE_URL_SERVER = process.env.NEXT_PUBLIC_SERVER_URL
 const USER_URL_SERVER = BASE_URL_SERVER + '/user'
 const INVOICE_URL_SERVER = BASE_URL_SERVER + '/invoice'
