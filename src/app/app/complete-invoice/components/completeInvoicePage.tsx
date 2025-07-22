@@ -600,7 +600,7 @@ export default function CompleteInvoicePage({ initialState, totalMount }: { init
             readOnly={state === statePage.VIEW} 
             extprops={{ minDate: invoice.creation_date }}
             value={invoice.expiration_date ?? new Date()} 
-            onChange={data => setInvoice(prev => ({ ...prev, expiration_date: data! }))}
+            onChange={data => setInvoice(prev => ({ ...prev, expiration_date: new Date(data!) }))}
             errorText={form.errors?.invoices ? String(form.errors?.invoices) : undefined}
             isError={!!form.errors?.invoices}
           />
