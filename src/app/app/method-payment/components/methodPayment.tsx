@@ -1,5 +1,5 @@
 'use client'
-import { CustomNumberInput, CustomTextInput } from '@/components/customInput';
+import { CustomDateInput, CustomNumberInput, CustomTextInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
 import { useFetch } from '@/hooks/useFetch';
 import { methodPaymentModel } from '@/server/utilities/interfaces';
@@ -267,7 +267,7 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
             isError={!!form.errors?.public_id}
           />
         </Grid.Col>
-        {/* <Grid.Col span={6}>
+        <Grid.Col span={6}>
           <CustomDateInput
             label='Last change'
             showLabel={true}
@@ -278,7 +278,7 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
             errorText={form.errors?.updated_at ? String(form.errors?.updated_at) : undefined}
             isError={!!form.errors?.updated_at}
           />
-        </Grid.Col> */}
+        </Grid.Col>
       </Grid>
     </Container>
   )

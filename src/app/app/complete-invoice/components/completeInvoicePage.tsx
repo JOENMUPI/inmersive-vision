@@ -360,7 +360,7 @@ export default function CompleteInvoicePage({ initialState, totalMount }: { init
   }
 
   const changeInvoiceCreationDateInput = (data: DateValue) => {
-    if (new Date(data!)!.getTime() > invoice.expiration_date.getTime()) setInvoice(prev => ({ ...prev, expiration_date: data! })) 
+    if (data!.getTime() > invoice.expiration_date.getTime()) setInvoice(prev => ({ ...prev, expiration_date: data! })) 
     
     setInvoice(prev => ({ ...prev, creation_date: data! })) 
   }
