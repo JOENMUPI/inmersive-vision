@@ -89,7 +89,7 @@ export function HeaderMenu() {
         alt='Company logo'
         fit='contain'
         src={logoComppany.src}
-        style={{ display: getByBreakPoint<string>('none', 'none', 'block', 'block', 'block'), height:'20%' }}
+        style={{ objectPosition: 'left center', display: getByBreakPoint<string>('none', 'none', 'block', 'block', 'block'), height:'20%' }}
       />
       <Box style={{
         display: 'flex',
