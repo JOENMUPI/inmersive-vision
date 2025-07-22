@@ -21,6 +21,7 @@ export default function Page2({ data }: { data: data2I }) {
         height: '100%',
         display: 'flex',
         gap: '1rem',
+        backgroundColor: '#0a0a0a',
         justifyContent: 'center',
         flexDirection: 'column',
         padding: '15vh 12vw 9vh 12vw',

@@ -174,11 +174,12 @@ export default function Page6() {
           justifyContent: 'space-between',
           height:'12.5%'
         }}>
-            <Image
-              src={logoImg.src}
-              style={{ width: '20%', height: '20%', display: isXS ? 'none' : 'block' }}
-              alt='logo img inmersive vision'
-            />
+          <Image
+            src={logoImg.src}
+            fit='contain'
+            style={{ objectPosition: 'left center', width: '20%', height: '20%', display: isXS ? 'none' : 'block' }}
+            alt='logo img inmersive vision'
+          />
           <Box style={{
             width: isXS ? '100%' : '80%',
             height: '100%',

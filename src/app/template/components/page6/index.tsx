@@ -19,6 +19,7 @@ export default function Page6({ data }: { data: data6I }) {
         height: '100%',
         display: 'flex',
         gap: '2rem',
+        backgroundColor: '#0a0a0a',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',

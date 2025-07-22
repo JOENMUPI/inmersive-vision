@@ -15,6 +15,7 @@ export default function Page10() {
         width: '100%',
         height: '100%',
         display: 'flex',
+        backgroundColor: '#0a0a0a',
         justifyContent: 'center',
         background: `linear-gradient(0deg, ${PRIMARY_COLOR_RGB(.3)}, rgba(19, 19, 19, 0) 80%)`,
         padding: '15vh 0 0 0',

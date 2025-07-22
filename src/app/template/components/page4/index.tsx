@@ -12,6 +12,7 @@ export default function Page4({ data }: { data: data4I }) {
       minWidth:'100%',
       height: isXS ? '850vh' : '410vh',
       padding: 0,
+      backgroundColor: '#0a0a0a',
       }}>
       <Grid gutter={{ base: 0 }}>
         <Grid.Col span={{ base: 12, xs: 6 }}>

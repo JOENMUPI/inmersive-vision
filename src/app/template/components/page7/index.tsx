@@ -37,6 +37,7 @@ export default function Page7({ data }: { data: data7I }) {
           <Box style={{
             width: '100%',
             height: '100%',
+            backgroundColor: '#0a0a0a',
             padding: '10vh 12vw 0 12vw  '
           }}>
             <CustomText style={{ fontSize:'1rem', fontWeight: 600 }}>

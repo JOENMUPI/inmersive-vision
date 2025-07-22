@@ -28,6 +28,7 @@ export default function Page3({ data }: { data: data3I }) {
         minHeight: '100vh',
         position: 'absolute',
         width: '100%',
+        backgroundColor: '#0a0a0a',
         zIndex: -1,
         background: `linear-gradient(90deg, ${BG_COLOR}, rgba(19, 19, 19, 0))`,
       }}/>

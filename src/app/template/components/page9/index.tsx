@@ -26,6 +26,7 @@ export default function Page9({ data }: { data: data9I[] }) {
         height: '100%',
         display: 'flex',
         gap: '2rem',
+        backgroundColor: '#0a0a0a',
         alignItems: 'center',
         paddingTop: '10vh',
         flexDirection: 'column',

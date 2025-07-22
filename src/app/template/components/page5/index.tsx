@@ -51,6 +51,7 @@ export default function Page5({ data }: { data: data5I }) {
             width: '100%',
             height: '100%',
             display: 'flex',
+            backgroundColor: '#0a0a0a',
             flexDirection: 'column',
             alignItems: 'center',
             gap: '1rem',
