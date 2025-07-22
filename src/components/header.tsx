@@ -87,6 +87,7 @@ export function HeaderMenu() {
     }}>
       <Image
         alt='Company logo'
+        fit='contain'
         src={logoComppany.src}
         style={{ display: getByBreakPoint<string>('none', 'none', 'block', 'block', 'block'), height:'20%' }}
       />
