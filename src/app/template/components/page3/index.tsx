@@ -2,7 +2,7 @@
 import { BackgroundImage, Box, Container } from '@mantine/core';
 import { CustomText } from '@/components/customText';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
-import { BG_COLOR, PAGE_TEMPLPATE_3_ID, PRIMARY_COLOR_RGB, TEXT_COLOR_GRAY } from '@/utils/consts';
+import { BG_COLOR, PAGE_TEMPLPATE_3_ID, TEXT_COLOR_GRAY } from '@/utils/consts';
 import { data3I } from '@/app/template/utils/interfaces';
 
 export default function Page3({ data }: { data: data3I }) {

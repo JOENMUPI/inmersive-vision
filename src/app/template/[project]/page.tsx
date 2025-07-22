@@ -1,14 +1,14 @@
   'use client';
-import Page1 from '@/app/template/components/page1/page';
-import Page2 from '@/app/template/components/page2/page';
-import Page3 from '@/app/template/components/page3/page';
-import Page4 from '@/app/template/components/page4/page';
-import Page5 from '@/app/template/components/page5/page';
-import Page6 from '@/app/template/components/page6/page';
-import Page7 from '@/app/template/components/page7/page'; 
-import Page8 from '@/app/template/components/page8/page';
-import Page9 from '@/app/template/components/page9/page';
-import Page10 from '@/app/template/components/page10/page';
+import Page1 from '@/app/template/components/page1';
+import Page2 from '@/app/template/components/page2';
+import Page3 from '@/app/template/components/page3';
+import Page4 from '@/app/template/components/page4';
+import Page5 from '@/app/template/components/page5';
+import Page6 from '@/app/template/components/page6';
+import Page7 from '@/app/template/components/page7'; 
+import Page8 from '@/app/template/components/page8';
+import Page9 from '@/app/template/components/page9';
+import Page10 from '@/app/template/components/page10';
 import { configMap } from '@/app/template/config/configMap'
 import { useEffect, useState } from 'react';
 
