@@ -9,7 +9,7 @@ import { data7I } from '@/app/template/utils/interfaces';
 export default function Page7({ data }: { data: data7I }) {
   const [sectionSelected, setSectionSelected] = useState<number>(0)
   const [isVisible, setIsVisible] = useState<boolean>(true)
-  const { isXS } = useBreakPointHandler()
+  const { isXS, getByBreakPoint } = useBreakPointHandler()
 
   const changeFaq = (index: number) => {
     if (index === sectionSelected) return;
@@ -44,12 +44,12 @@ export default function Page7({ data }: { data: data7I }) {
               F A Q S
             </CustomText>
             <Grid gutter='xl'>
-              <Grid.Col h='40vh' span={{ base: 12, xs: 8 }}>
-                <CustomText style={{ fontSize: '5rem', fontWeight: 600, color: 'white' }}>
+              <Grid.Col h={isXS ? '10vh' : '40vh'} span={{ base: 12, xs: 8 }}>
+                <CustomText style={{ fontSize: getByBreakPoint<string>('2rem', '2rem','3.5rem','4rem', '5rem'), fontWeight: 600, color: 'white' }}>
                   {data.title}
                 </CustomText>
               </Grid.Col>
-              <Grid.Col h='30vh' span={{ base: 12, xs: 4 }} style={{ display: 'flex', alignItems: 'end' }}>
+              <Grid.Col h={isXS ? '10vh' : '30vh'} span={{ base: 12, xs: 4 }} style={{ display: 'flex', alignItems: 'end' }}>
                 <CustomText style={{ fontSize: '1rem', lineHeight: '2rem', fontWeight: 200, color: TEXT_COLOR_GRAY }}>
                   {data.description}
                 </CustomText>
@@ -62,7 +62,7 @@ export default function Page7({ data }: { data: data7I }) {
                     onClick={() => changeFaq(index)}
                     style={{
                       transition:'all .2s ease',
-                      fontSize: '1.5rem',
+                      fontSize: getByBreakPoint<string>('1rem', '1.1rem','1.2rem','1.3rem', '1.5rem'),
                       color:'white',
                       borderRadius: '.7rem',
                       height: '5rem',

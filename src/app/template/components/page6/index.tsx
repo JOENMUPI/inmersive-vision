@@ -6,7 +6,7 @@ import { CustomText } from '@/components/customText';
 import { data6I } from '@/app/template/utils/interfaces';
 
 export default function Page6({ data }: { data: data6I }) {
-  const { isXS } = useBreakPointHandler()
+  const { isXS, getByBreakPoint } = useBreakPointHandler()
 
   return (
     <Container id={PAGE_TEMPLPATE_6_ID} style={{
@@ -24,7 +24,7 @@ export default function Page6({ data }: { data: data6I }) {
         justifyContent: 'center',
         flexDirection: 'column',
       }}>
-        <CustomText style={{ fontSize: '3rem', textAlign: 'center', color: TEXT_COLOR_GRAY }}>
+        <CustomText style={{ fontSize: getByBreakPoint<string>('2rem', '2.3rem', '2.5rem', '2.7rem', '3rem'), textAlign: 'center', color: TEXT_COLOR_GRAY }}>
           {data.title}
         </CustomText>
         <iframe

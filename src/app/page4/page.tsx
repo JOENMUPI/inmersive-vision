@@ -384,11 +384,11 @@ export default function Page4() {
                 {data_base.title}
               </CustomText>
               <CustomText style={{
-                  fontSize: '1.5rem',
-                  height: '20%',
-                  marginTop: '40%',
-                  opacity: data.services[serviceDataIndex].projects[projectDataIndex].subtitle && !previewMode ? 1 : 0
-                }}>
+                fontSize: '1.5rem',
+                height: '20%',
+                marginTop: '40%',
+                opacity: data.services[serviceDataIndex].projects[projectDataIndex].subtitle && !previewMode ? 1 : 0
+              }}>
                 {data.services[serviceDataIndex].projects[projectDataIndex].subtitle}
               </CustomText>
             </Box>
