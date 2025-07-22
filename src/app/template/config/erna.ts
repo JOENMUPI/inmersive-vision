@@ -1,20 +1,20 @@
-import imgErnaPlano from '@/../public/template/erna/1 plano/Floor plans erna both.png';
-import imgErna1 from '@/../public/template/erna/16 Imagenes/1.png';
-import imgErna2 from '@/../public/template/erna/16 Imagenes/2.png';
-import imgErna3 from '@/../public/template/erna/16 Imagenes/3.png';
-import imgErna4 from '@/../public/template/erna/16 Imagenes/4.png';
-import imgErna5 from '@/../public/template/erna/16 Imagenes/5.png';
-import imgErna6 from '@/../public/template/erna/16 Imagenes/6.png';
-import imgErna7 from '@/../public/template/erna/16 Imagenes/7.png';
-import imgErna8 from '@/../public/template/erna/16 Imagenes/8.png';
-import imgErna9 from '@/../public/template/erna/16 Imagenes/9.jpg';
-import imgErna10 from '@/../public/template/erna/16 Imagenes/10.png';
-import imgErna11 from '@/../public/template/erna/16 Imagenes/11.png';
-import imgErna12 from '@/../public/template/erna/16 Imagenes/12PRO.png';
-import imgErna13 from '@/../public/template/erna/16 Imagenes/13PRO.png';
-import imgErna14 from '@/../public/template/erna/16 Imagenes/14PRO.png';
-import imgErna15 from '@/../public/template/erna/16 Imagenes/15PRO.png';
-import imgErna16 from '@/../public/template/erna/16 Imagenes/16PRO.png';
+import imgErnaPlano from '@/../public/template/erna/1_plano/Floor_plans_erna_both.png';
+import imgErna1 from '@/../public/template/erna/16_Imagenes/1.png';
+import imgErna2 from '@/../public/template/erna/16_Imagenes/2.png';
+import imgErna3 from '@/../public/template/erna/16_Imagenes/3.png';
+import imgErna4 from '@/../public/template/erna/16_Imagenes/4.png';
+import imgErna5 from '@/../public/template/erna/16_Imagenes/5.png';
+import imgErna6 from '@/../public/template/erna/16_Imagenes/6.png';
+import imgErna7 from '@/../public/template/erna/16_Imagenes/7.png';
+import imgErna8 from '@/../public/template/erna/16_Imagenes/8.png';
+import imgErna9 from '@/../public/template/erna/16_Imagenes/9.jpg';
+import imgErna10 from '@/../public/template/erna/16_Imagenes/10.png';
+import imgErna11 from '@/../public/template/erna/16_Imagenes/11.png';
+import imgErna12 from '@/../public/template/erna/16_Imagenes/12PRO.png';
+import imgErna13 from '@/../public/template/erna/16_Imagenes/13PRO.png';
+import imgErna14 from '@/../public/template/erna/16_Imagenes/14PRO.png';
+import imgErna15 from '@/../public/template/erna/16_Imagenes/15PRO.png';
+import imgErna16 from '@/../public/template/erna/16_Imagenes/16PRO.png';
 import { dataAllI } from "@/app/template/utils/interfaces";
 
 export const configErna: dataAllI = {
