@@ -3,7 +3,7 @@ import { CustomInputTextArea, CustomPhoneInput, CustomSelectInput, CustomTextInp
 import { CustomText } from '@/components/customText';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
 import { useFetch } from '@/hooks/useFetch';
-import { FORM_URL_SERVER, PAGE_TEMPLPATE_7_ID, TEXT_COLOR_GRAY_2 } from '@/utils/consts';
+import { FORM_URL_SERVER, PAGE_TEMPLPATE_7_ID, TEXT_COLOR_GRAY, TEXT_COLOR_GRAY_2 } from '@/utils/consts';
 import { fetchMethod } from '@/utils/enums';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
 import { checkEmail, checkPhone } from '@/utils/validations';
@@ -174,7 +174,12 @@ export default function Page8({ data }: { data: data8I }) {
                 errorText={form.errors?.message ? String(form.errors?.message) : undefined}
                 isError={!!form.errors?.message}
               />
-              <Checkbox value={termSelection ? 1 : 0} onClick={() => setTermSelection(prev => !prev)} label={data.terms} />
+              <Checkbox
+                value={termSelection ? 1 : 0}
+                onClick={() => setTermSelection(prev => !prev)}
+                styles={{ label: { color: TEXT_COLOR_GRAY }}}
+                label={data.terms}
+              />
               <Button color={TEXT_COLOR_GRAY_2} disabled={!termSelection} onClick={sendForm}>
                 Send Message
               </Button>

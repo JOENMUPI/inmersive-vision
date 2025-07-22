@@ -126,20 +126,23 @@ export default function Page5({ data }: { data: data5I }) {
                 </Grid.Col>
               </Grid>
             </Box>
-            <Box
-              style={{
-                width: '100%',
-                height: '25%',
-                display: 'flex',
-                alignItems: isXS ? 'start' : 'end',
-              }}>
-              <NavBar
-               prevFn={prevImg}
-               nextFn={nextImg}
-               length={data.units.length}
-               position={dataIndex}
-              />
-            </Box>
+            {data.units.length < 2
+              ? null
+              : <Box
+                style={{
+                  width: '100%',
+                  height: '25%',
+                  display: 'flex',
+                  alignItems: isXS ? 'start' : 'end',
+                }}> 
+                <NavBar
+                prevFn={prevImg}
+                nextFn={nextImg}
+                length={data.units.length}
+                position={dataIndex}
+                />
+              </Box>
+            }
           </Box>
         </Container>
       )}

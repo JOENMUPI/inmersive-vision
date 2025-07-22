@@ -24,7 +24,7 @@ export default function Page6({ data }: { data: data6I }) {
         justifyContent: 'center',
         flexDirection: 'column',
       }}>
-        <CustomText style={{ fontSize:'3rem', textAlign: 'center', color: TEXT_COLOR_GRAY }}>
+        <CustomText style={{ fontSize: '3rem', textAlign: 'center', color: TEXT_COLOR_GRAY }}>
           {data.title}
         </CustomText>
         <iframe
