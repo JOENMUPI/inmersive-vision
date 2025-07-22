@@ -1,5 +1,5 @@
 'use client'
-import { CustomNumberInput, CustomTextInput, CustomDateInput, CustomPhoneInput } from '@/components/customInput';
+import { CustomNumberInput, CustomTextInput, CustomPhoneInput } from '@/components/customInput';
 import { CustomText } from '@/components/customText';
 import { useFetch } from '@/hooks/useFetch';
 import { clientModel } from '@/server/utilities/interfaces';
@@ -245,7 +245,7 @@ export default function ClientPage({ initialState }: { initialState: statePage }
         {/* <Grid.Col span={6}>
           <CustomDateInput
             label='Last change'
-            showLabel={true}
+            showLabel={true}  
             readOnly={true}
             disabled={true} 
             value={form.getValues().updated_at ?? new Date()} 
