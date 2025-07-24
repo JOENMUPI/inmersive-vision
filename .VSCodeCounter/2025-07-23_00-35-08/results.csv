@@ -1,19 +1,34 @@
-"filename", "language", "TypeScript", "CSS", "TypeScript JSX", "comment", "blank", "total"
-"c:\dev\imersive vision\client\src\app\app\calculator\page.tsx", "TypeScript JSX", 0, 0, 19, 0, 3, 22
-"c:\dev\imersive vision\client\src\app\app\client\page.tsx", "TypeScript JSX", 0, 0, 19, 0, 3, 22
-"c:\dev\imersive vision\client\src\app\app\complete-invoice\page.tsx", "TypeScript JSX", 0, 0, 19, 0, 3, 22
-"c:\dev\imersive vision\client\src\app\app\components\shell.tsx", "TypeScript JSX", 0, 0, 98, 0, 6, 104
+"filename", "language", "TypeScript", "PostCSS", "TypeScript JSX", "comment", "blank", "total"
+"c:\dev\imersive vision\client\src\app\app\calculator\page.tsx", "TypeScript JSX", 0, 0, 224, 291, 11, 526
+"c:\dev\imersive vision\client\src\app\app\calculator\utilities\calculate.ts", "TypeScript", 23, 0, 0, 0, 4, 27
+"c:\dev\imersive vision\client\src\app\app\calculator\utilities\interfaces.ts", "TypeScript", 11, 0, 0, 0, 1, 12
+"c:\dev\imersive vision\client\src\app\app\client\[id]\page.tsx", "TypeScript JSX", 0, 0, 14, 0, 3, 17
+"c:\dev\imersive vision\client\src\app\app\client\components\clientListPage.tsx", "TypeScript JSX", 0, 0, 97, 1, 8, 106
+"c:\dev\imersive vision\client\src\app\app\client\components\clientPage.tsx", "TypeScript JSX", 0, 0, 239, 1, 21, 261
+"c:\dev\imersive vision\client\src\app\app\client\list\page.tsx", "TypeScript JSX", 0, 0, 13, 0, 3, 16
+"c:\dev\imersive vision\client\src\app\app\client\page.tsx", "TypeScript JSX", 0, 0, 14, 0, 3, 17
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\[id]\page.tsx", "TypeScript JSX", 0, 0, 14, 0, 3, 17
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\calculator\[amount]\page.tsx", "TypeScript JSX", 0, 0, 17, 0, 3, 20
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\components\completeInvoiceListPage.tsx", "TypeScript JSX", 0, 0, 109, 1, 8, 118
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\components\completeInvoicePage.tsx", "TypeScript JSX", 0, 0, 617, 1, 47, 665
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\list\page.tsx", "TypeScript JSX", 0, 0, 13, 0, 3, 16
+"c:\dev\imersive vision\client\src\app\app\complete-invoice\page.tsx", "TypeScript JSX", 0, 0, 14, 0, 3, 17
+"c:\dev\imersive vision\client\src\app\app\components\shell.tsx", "TypeScript JSX", 0, 0, 181, 0, 12, 193
 "c:\dev\imersive vision\client\src\app\app\components\varAcctions.tsx", "TypeScript JSX", 0, 0, 41, 0, 1, 42
 "c:\dev\imersive vision\client\src\app\app\hooks\useCredentials.tsx", "TypeScript JSX", 0, 0, 13, 0, 3, 16
-"c:\dev\imersive vision\client\src\app\app\login\page.tsx", "TypeScript JSX", 0, 0, 147, 0, 8, 155
-"c:\dev\imersive vision\client\src\app\app\method-payment\page.tsx", "TypeScript JSX", 0, 0, 19, 0, 3, 22
+"c:\dev\imersive vision\client\src\app\app\login\page.tsx", "TypeScript JSX", 0, 0, 152, 0, 8, 160
+"c:\dev\imersive vision\client\src\app\app\method-payment\[id]\page.tsx", "TypeScript JSX", 0, 0, 14, 0, 3, 17
+"c:\dev\imersive vision\client\src\app\app\method-payment\components\methodPayment.tsx", "TypeScript JSX", 0, 0, 264, 1, 21, 286
+"c:\dev\imersive vision\client\src\app\app\method-payment\components\methodPaymentListPage.tsx", "TypeScript JSX", 0, 0, 102, 1, 9, 112
+"c:\dev\imersive vision\client\src\app\app\method-payment\list\page.tsx", "TypeScript JSX", 0, 0, 13, 0, 3, 16
+"c:\dev\imersive vision\client\src\app\app\method-payment\page.tsx", "TypeScript JSX", 0, 0, 14, 0, 3, 17
 "c:\dev\imersive vision\client\src\app\app\page.tsx", "TypeScript JSX", 0, 0, 19, 0, 3, 22
-"c:\dev\imersive vision\client\src\app\app\project\[id]\page.tsx", "TypeScript JSX", 0, 0, 14, 0, 3, 17
-"c:\dev\imersive vision\client\src\app\app\project\components\projectPage.tsx", "TypeScript JSX", 0, 0, 186, 11, 21, 218
-"c:\dev\imersive vision\client\src\app\app\project\page.tsx", "TypeScript JSX", 0, 0, 14, 0, 3, 17
 "c:\dev\imersive vision\client\src\app\app\utilities\cookie.ts", "TypeScript", 4, 0, 0, 0, 1, 5
-"c:\dev\imersive vision\client\src\app\calculator\page.tsx", "TypeScript JSX", 0, 0, 477, 9, 90, 576
-"c:\dev\imersive vision\client\src\app\layout.tsx", "TypeScript JSX", 0, 0, 68, 0, 6, 74
+"c:\dev\imersive vision\client\src\app\app\utilities\generatePDF.ts", "TypeScript", 465, 0, 0, 1, 85, 551
+"c:\dev\imersive vision\client\src\app\app\utilities\generateQr.ts", "TypeScript", 10, 0, 0, 0, 1, 11
+"c:\dev\imersive vision\client\src\app\app\utilities\inputs.ts", "TypeScript", 214, 0, 0, 3, 24, 241
+"c:\dev\imersive vision\client\src\app\app\utilities\interfaces.ts", "TypeScript", 41, 0, 0, 0, 5, 46
+"c:\dev\imersive vision\client\src\app\layout.tsx", "TypeScript JSX", 0, 0, 69, 0, 5, 74
 "c:\dev\imersive vision\client\src\app\page.tsx", "TypeScript JSX", 0, 0, 25, 0, 4, 29
 "c:\dev\imersive vision\client\src\app\page1\components\NavBar.tsx", "TypeScript JSX", 0, 0, 63, 0, 4, 67
 "c:\dev\imersive vision\client\src\app\page1\page.tsx", "TypeScript JSX", 0, 0, 156, 0, 8, 164
@@ -24,17 +39,34 @@
 "c:\dev\imersive vision\client\src\app\page4\components\titelLine.tsx", "TypeScript JSX", 0, 0, 27, 0, 2, 29
 "c:\dev\imersive vision\client\src\app\page4\components\viewFrame.tsx", "TypeScript JSX", 0, 0, 143, 0, 5, 148
 "c:\dev\imersive vision\client\src\app\page4\page.tsx", "TypeScript JSX", 0, 0, 385, 0, 15, 400
-"c:\dev\imersive vision\client\src\app\page4\styles\page.css", "CSS", 0, 11, 0, 0, 0, 11
+"c:\dev\imersive vision\client\src\app\page4\styles\page.css", "PostCSS", 0, 11, 0, 0, 0, 11
 "c:\dev\imersive vision\client\src\app\page5\components\NavBar.tsx", "TypeScript JSX", 0, 0, 38, 0, 4, 42
 "c:\dev\imersive vision\client\src\app\page5\page.tsx", "TypeScript JSX", 0, 0, 316, 8, 14, 338
-"c:\dev\imersive vision\client\src\app\page6\page.tsx", "TypeScript JSX", 0, 0, 193, 0, 9, 202
+"c:\dev\imersive vision\client\src\app\page6\page.tsx", "TypeScript JSX", 0, 0, 194, 0, 9, 203
 "c:\dev\imersive vision\client\src\app\robots.ts", "TypeScript", 10, 0, 0, 0, 2, 12
+"c:\dev\imersive vision\client\src\app\template\[project]\page.tsx", "TypeScript JSX", 0, 0, 36, 0, 4, 40
+"c:\dev\imersive vision\client\src\app\template\components\page10\index.tsx", "TypeScript JSX", 0, 0, 31, 0, 2, 33
+"c:\dev\imersive vision\client\src\app\template\components\page1\components\header.tsx", "TypeScript JSX", 0, 0, 99, 1, 9, 109
+"c:\dev\imersive vision\client\src\app\template\components\page1\index.tsx", "TypeScript JSX", 0, 0, 65, 0, 2, 67
+"c:\dev\imersive vision\client\src\app\template\components\page2\index.tsx", "TypeScript JSX", 0, 0, 45, 0, 3, 48
+"c:\dev\imersive vision\client\src\app\template\components\page3\index.tsx", "TypeScript JSX", 0, 0, 72, 0, 2, 74
+"c:\dev\imersive vision\client\src\app\template\components\page4\index.tsx", "TypeScript JSX", 0, 0, 177, 0, 2, 179
+"c:\dev\imersive vision\client\src\app\template\components\page5\components\NavBar.tsx", "TypeScript JSX", 0, 0, 57, 0, 4, 61
+"c:\dev\imersive vision\client\src\app\template\components\page5\index.tsx", "TypeScript JSX", 0, 0, 146, 0, 5, 151
+"c:\dev\imersive vision\client\src\app\template\components\page6\index.tsx", "TypeScript JSX", 0, 0, 42, 0, 2, 44
+"c:\dev\imersive vision\client\src\app\template\components\page7\index.tsx", "TypeScript JSX", 0, 0, 96, 0, 4, 100
+"c:\dev\imersive vision\client\src\app\template\components\page8\index.tsx", "TypeScript JSX", 0, 0, 184, 0, 8, 192
+"c:\dev\imersive vision\client\src\app\template\components\page9\index.tsx", "TypeScript JSX", 0, 0, 85, 0, 3, 88
+"c:\dev\imersive vision\client\src\app\template\config\avalon-park-wesley-chapel.ts", "TypeScript", 339, 0, 0, 0, 10, 349
+"c:\dev\imersive vision\client\src\app\template\config\configMap.ts", "TypeScript", 6, 0, 0, 0, 2, 8
+"c:\dev\imersive vision\client\src\app\template\config\erna.ts", "TypeScript", 198, 0, 0, 0, 10, 208
+"c:\dev\imersive vision\client\src\app\template\utils\interfaces.ts", "TypeScript", 71, 0, 0, 0, 14, 85
 "c:\dev\imersive vision\client\src\app\tours-contact\[company]\[model]\[categorie]\page.tsx", "TypeScript JSX", 0, 0, 163, 1, 9, 173
 "c:\dev\imersive vision\client\src\components\TextSelect.tsx", "TypeScript JSX", 0, 0, 33, 0, 2, 35
-"c:\dev\imersive vision\client\src\components\customInput.tsx", "TypeScript JSX", 0, 0, 372, 0, 16, 388
+"c:\dev\imersive vision\client\src\components\customInput.tsx", "TypeScript JSX", 0, 0, 458, 0, 19, 477
 "c:\dev\imersive vision\client\src\components\customText.tsx", "TypeScript JSX", 0, 0, 13, 0, 2, 15
 "c:\dev\imersive vision\client\src\components\customTooltip.tsx", "TypeScript JSX", 0, 0, 41, 0, 2, 43
-"c:\dev\imersive vision\client\src\components\header.tsx", "TypeScript JSX", 0, 0, 102, 1, 9, 112
+"c:\dev\imersive vision\client\src\components\header.tsx", "TypeScript JSX", 0, 0, 104, 1, 9, 114
 "c:\dev\imersive vision\client\src\components\lineBotton.tsx", "TypeScript JSX", 0, 0, 23, 0, 1, 24
 "c:\dev\imersive vision\client\src\hooks\breakpointHandler.ts", "TypeScript", 17, 0, 0, 0, 3, 20
 "c:\dev\imersive vision\client\src\hooks\indexList.ts", "TypeScript", 23, 0, 0, 0, 5, 28
@@ -44,10 +76,6 @@
 "c:\dev\imersive vision\client\src\pages\api\client\[id]\index.ts", "TypeScript", 9, 0, 0, 0, 2, 11
 "c:\dev\imersive vision\client\src\pages\api\client\index.ts", "TypeScript", 9, 0, 0, 0, 2, 11
 "c:\dev\imersive vision\client\src\pages\api\form.ts", "TypeScript", 10, 0, 0, 0, 2, 12
-"c:\dev\imersive vision\client\src\pages\api\installment\[id]\anulate.ts", "TypeScript", 8, 0, 0, 0, 2, 10
-"c:\dev\imersive vision\client\src\pages\api\installment\[id]\index.ts", "TypeScript", 9, 0, 0, 0, 2, 11
-"c:\dev\imersive vision\client\src\pages\api\installment\index.ts", "TypeScript", 9, 0, 0, 0, 2, 11
-"c:\dev\imersive vision\client\src\pages\api\invoiceOld.ts", "TypeScript", 8, 0, 0, 0, 2, 10
 "c:\dev\imersive vision\client\src\pages\api\invoice\[project_id]\[installment_id]\anulate.ts", "TypeScript", 8, 0, 0, 0, 2, 10
 "c:\dev\imersive vision\client\src\pages\api\invoice\[project_id]\[installment_id]\index.ts", "TypeScript", 9, 0, 0, 0, 2, 11
 "c:\dev\imersive vision\client\src\pages\api\invoice\complete\[project_id]\[installment_id]\index.ts", "TypeScript", 8, 0, 0, 1, 2, 11
@@ -77,7 +105,7 @@
 "c:\dev\imersive vision\client\src\server\configs\env.config.ts", "TypeScript", 8, 0, 0, 4, 2, 14
 "c:\dev\imersive vision\client\src\server\configs\mailer.config.ts", "TypeScript", 8, 0, 0, 6, 3, 17
 "c:\dev\imersive vision\client\src\server\configs\supabase.config.ts", "TypeScript", 5, 0, 0, 4, 2, 11
-"c:\dev\imersive vision\client\src\server\modules\client\aplication\client.usecase.ts", "TypeScript", 171, 0, 0, 0, 26, 197
+"c:\dev\imersive vision\client\src\server\modules\client\aplication\client.usecase.ts", "TypeScript", 206, 0, 0, 0, 28, 234
 "c:\dev\imersive vision\client\src\server\modules\client\domain\interfaces.ts", "TypeScript", 14, 0, 0, 0, 3, 17
 "c:\dev\imersive vision\client\src\server\modules\client\infraestructure\client.controller.ts", "TypeScript", 221, 0, 0, 0, 47, 268
 "c:\dev\imersive vision\client\src\server\modules\client\infraestructure\supabaseDBManager.ts", "TypeScript", 83, 0, 0, 0, 18, 101
@@ -87,25 +115,15 @@
 "c:\dev\imersive vision\client\src\server\modules\form\domain\interfaces.ts", "TypeScript", 21, 0, 0, 0, 4, 25
 "c:\dev\imersive vision\client\src\server\modules\form\domain\mials.ts", "TypeScript", 14, 0, 0, 0, 4, 18
 "c:\dev\imersive vision\client\src\server\modules\form\infraestructure\form.controller.ts", "TypeScript", 43, 0, 0, 0, 5, 48
-"c:\dev\imersive vision\client\src\server\modules\installment\aplication\installment.usecase.ts", "TypeScript", 164, 0, 0, 0, 26, 190
-"c:\dev\imersive vision\client\src\server\modules\installment\domain\interfaces.ts", "TypeScript", 14, 0, 0, 0, 3, 17
-"c:\dev\imersive vision\client\src\server\modules\installment\infraestructure\installment.controller.ts", "TypeScript", 218, 0, 0, 0, 47, 265
-"c:\dev\imersive vision\client\src\server\modules\installment\infraestructure\supabaseDBManager.ts", "TypeScript", 83, 0, 0, 0, 18, 101
-"c:\dev\imersive vision\client\src\server\modules\installment\infraestructure\zodValidatorManager.ts", "TypeScript", 57, 0, 0, 0, 18, 75
-"c:\dev\imersive vision\client\src\server\modules\invoiceOLD\aplication\generatePdf.ts", "TypeScript", 462, 0, 0, 1, 86, 549
-"c:\dev\imersive vision\client\src\server\modules\invoiceOLD\aplication\pdf.usecase.ts", "TypeScript", 17, 0, 0, 4, 4, 25
-"c:\dev\imersive vision\client\src\server\modules\invoiceOLD\aplication\utils\generateQr.ts", "TypeScript", 10, 0, 0, 0, 1, 11
-"c:\dev\imersive vision\client\src\server\modules\invoiceOLD\domain\interfaces.ts", "TypeScript", 34, 0, 0, 0, 4, 38
-"c:\dev\imersive vision\client\src\server\modules\invoiceOLD\infraestructure\pdf.controller.ts", "TypeScript", 30, 0, 0, 0, 3, 33
-"c:\dev\imersive vision\client\src\server\modules\invoice\aplication\invoice.usecase.ts", "TypeScript", 189, 0, 0, 0, 30, 219
-"c:\dev\imersive vision\client\src\server\modules\invoice\aplication\invoiceComplete.usecase.ts", "TypeScript", 275, 0, 0, 42, 70, 387
+"c:\dev\imersive vision\client\src\server\modules\invoice\aplication\invoice.usecase.ts", "TypeScript", 195, 0, 0, 0, 32, 227
+"c:\dev\imersive vision\client\src\server\modules\invoice\aplication\invoiceComplete.usecase.ts", "TypeScript", 284, 0, 0, 42, 70, 396
 "c:\dev\imersive vision\client\src\server\modules\invoice\domain\interfaces.ts", "TypeScript", 21, 0, 0, 0, 2, 23
-"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\completeInvoice.controller.ts", "TypeScript", 135, 0, 0, 76, 44, 255
-"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\invoice.controller.ts", "TypeScript", 221, 0, 0, 0, 48, 269
-"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\supabaseDBManager.ts", "TypeScript", 121, 0, 0, 0, 30, 151
-"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\utilities\formatters.ts", "TypeScript", 38, 0, 0, 0, 8, 46
-"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\zodValidatorManager.ts", "TypeScript", 70, 0, 0, 0, 17, 87
-"c:\dev\imersive vision\client\src\server\modules\methodPayment\aplication\methodPayment.usecase.ts", "TypeScript", 179, 0, 0, 0, 26, 205
+"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\completeInvoice.controller.ts", "TypeScript", 122, 0, 0, 76, 41, 239
+"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\invoice.controller.ts", "TypeScript", 223, 0, 0, 0, 48, 271
+"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\supabaseDBManager.ts", "TypeScript", 124, 0, 0, 0, 30, 154
+"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\utilities\formatters.ts", "TypeScript", 49, 0, 0, 0, 10, 59
+"c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\zodValidatorManager.ts", "TypeScript", 71, 0, 0, 0, 17, 88
+"c:\dev\imersive vision\client\src\server\modules\methodPayment\aplication\methodPayment.usecase.ts", "TypeScript", 218, 0, 0, 0, 28, 246
 "c:\dev\imersive vision\client\src\server\modules\methodPayment\domain\interfaces.ts", "TypeScript", 14, 0, 0, 0, 2, 16
 "c:\dev\imersive vision\client\src\server\modules\methodPayment\infraestructure\methodPayment.controller.ts", "TypeScript", 223, 0, 0, 0, 46, 269
 "c:\dev\imersive vision\client\src\server\modules\methodPayment\infraestructure\supabaseDBManager.ts", "TypeScript", 83, 0, 0, 0, 18, 101
@@ -139,16 +157,15 @@
 "c:\dev\imersive vision\client\src\server\utilities\adapters.ts", "TypeScript", 10, 0, 0, 15, 5, 30
 "c:\dev\imersive vision\client\src\server\utilities\cookieManager.ts", "TypeScript", 13, 0, 0, 0, 4, 17
 "c:\dev\imersive vision\client\src\server\utilities\cryptojs.ts", "TypeScript", 28, 0, 0, 0, 9, 37
-"c:\dev\imersive vision\client\src\server\utilities\enums.ts", "TypeScript", 161, 0, 0, 0, 21, 182
-"c:\dev\imersive vision\client\src\server\utilities\formatters.ts", "TypeScript", 570, 0, 0, 0, 140, 710
+"c:\dev\imersive vision\client\src\server\utilities\enums.ts", "TypeScript", 147, 0, 0, 6, 20, 173
+"c:\dev\imersive vision\client\src\server\utilities\formatters.ts", "TypeScript", 532, 0, 0, 0, 130, 662
 "c:\dev\imersive vision\client\src\server\utilities\generators.ts", "TypeScript", 26, 0, 0, 0, 5, 31
-"c:\dev\imersive vision\client\src\server\utilities\interfaces.ts", "TypeScript", 136, 0, 0, 4, 27, 167
+"c:\dev\imersive vision\client\src\server\utilities\interfaces.ts", "TypeScript", 132, 0, 0, 4, 26, 162
 "c:\dev\imersive vision\client\src\server\utilities\supabaseClient.ts", "TypeScript", 3, 0, 0, 0, 2, 5
 "c:\dev\imersive vision\client\src\server\utilities\validations.ts", "TypeScript", 30, 0, 0, 0, 6, 36
-"c:\dev\imersive vision\client\src\styles\globals.css", "CSS", 0, 52, 0, 0, 12, 64
-"c:\dev\imersive vision\client\src\utils\consts.ts", "TypeScript", 28, 0, 0, 0, 2, 30
+"c:\dev\imersive vision\client\src\styles\globals.css", "PostCSS", 0, 52, 0, 0, 12, 64
+"c:\dev\imersive vision\client\src\utils\consts.ts", "TypeScript", 47, 0, 0, 0, 4, 51
 "c:\dev\imersive vision\client\src\utils\enums.ts", "TypeScript", 11, 0, 0, 0, 2, 13
-"c:\dev\imersive vision\client\src\utils\formater.ts", "TypeScript", 0, 0, 0, 0, 1, 1
 "c:\dev\imersive vision\client\src\utils\notifications.tsx", "TypeScript JSX", 0, 0, 38, 0, 3, 41
-"c:\dev\imersive vision\client\src\utils\validations.ts", "TypeScript", 12, 0, 0, 0, 3, 15
-"Total", "-", 7770, 63, 3782, 193, 1929, 13737
+"c:\dev\imersive vision\client\src\utils\validations.ts", "TypeScript", 18, 0, 0, 0, 5, 23
+"Total", "-", 8087, 63, 6120, 476, 1947, 16693

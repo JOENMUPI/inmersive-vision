@@ -1,38 +1,49 @@
-Date : 2025-05-09 16:25:11
+Date : 2025-07-23 00:35:08
 Directory : c:\dev\imersive vision\client\src
-Total : 152 files,  11615 codes, 193 comments, 1929 blanks, all 13737 lines
+Total : 169 files,  14270 codes, 476 comments, 1947 blanks, all 16693 lines
 
 Languages
 +----------------+------------+------------+------------+------------+------------+
 | language       | files      | code       | comment    | blank      | total      |
 +----------------+------------+------------+------------+------------+------------+
-| TypeScript     |        115 |      7,770 |        162 |      1,633 |      9,565 |
-| TypeScript JSX |         35 |      3,782 |         31 |        284 |      4,097 |
-| CSS            |          2 |         63 |          0 |         12 |         75 |
+| TypeScript     |        110 |      8,087 |        167 |      1,567 |      9,821 |
+| TypeScript JSX |         57 |      6,120 |        309 |        368 |      6,797 |
+| PostCSS        |          2 |         63 |          0 |         12 |         75 |
 +----------------+------------+------------+------------+------------+------------+
 
 Directories
 +----------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                                                                 | files      | code       | comment    | blank      | total      |
 +----------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| .                                                                                                                    |        152 |     11,615 |        193 |      1,929 |     13,737 |
-| app                                                                                                                  |         31 |      3,185 |         30 |        252 |      3,467 |
-| app (Files)                                                                                                          |          3 |        103 |          0 |         12 |        115 |
-| app\app                                                                                                              |         13 |        612 |         11 |         61 |        684 |
+| .                                                                                                                    |        169 |     14,270 |        476 |      1,947 |     16,693 |
+| app                                                                                                                  |         63 |      6,813 |        312 |        489 |      7,614 |
+| app (Files)                                                                                                          |          3 |        104 |          0 |         11 |        115 |
+| app\app                                                                                                              |         29 |      2,966 |        301 |        303 |      3,570 |
 | app\app (Files)                                                                                                      |          1 |         19 |          0 |          3 |         22 |
-| app\app\calculator                                                                                                   |          1 |         19 |          0 |          3 |         22 |
-| app\app\client                                                                                                       |          1 |         19 |          0 |          3 |         22 |
-| app\app\complete-invoice                                                                                             |          1 |         19 |          0 |          3 |         22 |
-| app\app\components                                                                                                   |          2 |        139 |          0 |          7 |        146 |
+| app\app\calculator                                                                                                   |          3 |        258 |        291 |         16 |        565 |
+| app\app\calculator (Files)                                                                                           |          1 |        224 |        291 |         11 |        526 |
+| app\app\calculator\utilities                                                                                         |          2 |         34 |          0 |          5 |         39 |
+| app\app\client                                                                                                       |          5 |        377 |          2 |         38 |        417 |
+| app\app\client (Files)                                                                                               |          1 |         14 |          0 |          3 |         17 |
+| app\app\client\[id]                                                                                                  |          1 |         14 |          0 |          3 |         17 |
+| app\app\client\components                                                                                            |          2 |        336 |          2 |         29 |        367 |
+| app\app\client\list                                                                                                  |          1 |         13 |          0 |          3 |         16 |
+| app\app\complete-invoice                                                                                             |          6 |        784 |          2 |         67 |        853 |
+| app\app\complete-invoice (Files)                                                                                     |          1 |         14 |          0 |          3 |         17 |
+| app\app\complete-invoice\[id]                                                                                        |          1 |         14 |          0 |          3 |         17 |
+| app\app\complete-invoice\calculator                                                                                  |          1 |         17 |          0 |          3 |         20 |
+| app\app\complete-invoice\calculator\[amount]                                                                         |          1 |         17 |          0 |          3 |         20 |
+| app\app\complete-invoice\components                                                                                  |          2 |        726 |          2 |         55 |        783 |
+| app\app\complete-invoice\list                                                                                        |          1 |         13 |          0 |          3 |         16 |
+| app\app\components                                                                                                   |          2 |        222 |          0 |         13 |        235 |
 | app\app\hooks                                                                                                        |          1 |         13 |          0 |          3 |         16 |
-| app\app\login                                                                                                        |          1 |        147 |          0 |          8 |        155 |
-| app\app\method-payment                                                                                               |          1 |         19 |          0 |          3 |         22 |
-| app\app\project                                                                                                      |          3 |        214 |         11 |         27 |        252 |
-| app\app\project (Files)                                                                                              |          1 |         14 |          0 |          3 |         17 |
-| app\app\project\[id]                                                                                                 |          1 |         14 |          0 |          3 |         17 |
-| app\app\project\components                                                                                           |          1 |        186 |         11 |         21 |        218 |
-| app\app\utilities                                                                                                    |          1 |          4 |          0 |          1 |          5 |
-| app\calculator                                                                                                       |          1 |        477 |          9 |         90 |        576 |
+| app\app\login                                                                                                        |          1 |        152 |          0 |          8 |        160 |
+| app\app\method-payment                                                                                               |          5 |        407 |          2 |         39 |        448 |
+| app\app\method-payment (Files)                                                                                       |          1 |         14 |          0 |          3 |         17 |
+| app\app\method-payment\[id]                                                                                          |          1 |         14 |          0 |          3 |         17 |
+| app\app\method-payment\components                                                                                    |          2 |        366 |          2 |         30 |        398 |
+| app\app\method-payment\list                                                                                          |          1 |         13 |          0 |          3 |         16 |
+| app\app\utilities                                                                                                    |          5 |        734 |          4 |        116 |        854 |
 | app\page1                                                                                                            |          2 |        219 |          0 |         12 |        231 |
 | app\page1 (Files)                                                                                                    |          1 |        156 |          0 |          8 |        164 |
 | app\page1\components                                                                                                 |          1 |         63 |          0 |          4 |         67 |
@@ -47,22 +58,38 @@ Directories
 | app\page5                                                                                                            |          2 |        354 |          8 |         18 |        380 |
 | app\page5 (Files)                                                                                                    |          1 |        316 |          8 |         14 |        338 |
 | app\page5\components                                                                                                 |          1 |         38 |          0 |          4 |         42 |
-| app\page6                                                                                                            |          1 |        193 |          0 |          9 |        202 |
+| app\page6                                                                                                            |          1 |        194 |          0 |          9 |        203 |
+| app\template                                                                                                         |         17 |      1,749 |          1 |         86 |      1,836 |
+| app\template\[project]                                                                                               |          1 |         36 |          0 |          4 |         40 |
+| app\template\components                                                                                              |         12 |      1,099 |          1 |         46 |      1,146 |
+| app\template\components\page1                                                                                        |          2 |        164 |          1 |         11 |        176 |
+| app\template\components\page1 (Files)                                                                                |          1 |         65 |          0 |          2 |         67 |
+| app\template\components\page10                                                                                       |          1 |         31 |          0 |          2 |         33 |
+| app\template\components\page1\components                                                                             |          1 |         99 |          1 |          9 |        109 |
+| app\template\components\page2                                                                                        |          1 |         45 |          0 |          3 |         48 |
+| app\template\components\page3                                                                                        |          1 |         72 |          0 |          2 |         74 |
+| app\template\components\page4                                                                                        |          1 |        177 |          0 |          2 |        179 |
+| app\template\components\page5                                                                                        |          2 |        203 |          0 |          9 |        212 |
+| app\template\components\page5 (Files)                                                                                |          1 |        146 |          0 |          5 |        151 |
+| app\template\components\page5\components                                                                             |          1 |         57 |          0 |          4 |         61 |
+| app\template\components\page6                                                                                        |          1 |         42 |          0 |          2 |         44 |
+| app\template\components\page7                                                                                        |          1 |         96 |          0 |          4 |        100 |
+| app\template\components\page8                                                                                        |          1 |        184 |          0 |          8 |        192 |
+| app\template\components\page9                                                                                        |          1 |         85 |          0 |          3 |         88 |
+| app\template\config                                                                                                  |          3 |        543 |          0 |         22 |        565 |
+| app\template\utils                                                                                                   |          1 |         71 |          0 |         14 |         85 |
 | app\tours-contact                                                                                                    |          1 |        163 |          1 |          9 |        173 |
 | app\tours-contact\[company]                                                                                          |          1 |        163 |          1 |          9 |        173 |
 | app\tours-contact\[company]\[model]                                                                                  |          1 |        163 |          1 |          9 |        173 |
 | app\tours-contact\[company]\[model]\[categorie]                                                                      |          1 |        163 |          1 |          9 |        173 |
-| components                                                                                                           |          6 |        584 |          1 |         32 |        617 |
+| components                                                                                                           |          6 |        672 |          1 |         35 |        708 |
 | hooks                                                                                                                |          4 |         97 |          0 |         27 |        124 |
-| pages                                                                                                                |         34 |        304 |          1 |         68 |        373 |
-| pages\api                                                                                                            |         34 |        304 |          1 |         68 |        373 |
-| pages\api (Files)                                                                                                    |          3 |         26 |          0 |          6 |         32 |
+| pages                                                                                                                |         30 |        270 |          1 |         60 |        331 |
+| pages\api                                                                                                            |         30 |        270 |          1 |         60 |        331 |
+| pages\api (Files)                                                                                                    |          2 |         18 |          0 |          4 |         22 |
 | pages\api\client                                                                                                     |          3 |         26 |          0 |          6 |         32 |
 | pages\api\client (Files)                                                                                             |          1 |          9 |          0 |          2 |         11 |
 | pages\api\client\[id]                                                                                                |          2 |         17 |          0 |          4 |         21 |
-| pages\api\installment                                                                                                |          3 |         26 |          0 |          6 |         32 |
-| pages\api\installment (Files)                                                                                        |          1 |          9 |          0 |          2 |         11 |
-| pages\api\installment\[id]                                                                                           |          2 |         17 |          0 |          4 |         21 |
 | pages\api\invoice                                                                                                    |          5 |         43 |          1 |         10 |         54 |
 | pages\api\invoice (Files)                                                                                            |          1 |          9 |          0 |          2 |         11 |
 | pages\api\invoice\[project_id]                                                                                       |          2 |         17 |          0 |          4 |         21 |
@@ -90,35 +117,25 @@ Directories
 | pages\api\user-permission\[user_id]                                                                                  |          2 |         21 |          0 |          4 |         25 |
 | pages\api\user-permission\[user_id]\[permission_id]                                                                  |          2 |         21 |          0 |          4 |         25 |
 | pages\api\user\[id]                                                                                                  |          2 |         17 |          0 |          4 |         21 |
-| server                                                                                                               |         71 |      7,304 |        161 |      1,527 |      8,992 |
+| server                                                                                                               |         61 |      6,252 |        162 |      1,310 |      7,724 |
 | server\configs                                                                                                       |          3 |         21 |         14 |          7 |         42 |
-| server\modules                                                                                                       |         58 |      6,285 |        128 |      1,297 |      7,710 |
-| server\modules\client                                                                                                |          5 |        547 |          0 |        112 |        659 |
-| server\modules\client\aplication                                                                                     |          1 |        171 |          0 |         26 |        197 |
+| server\modules                                                                                                       |         48 |      5,289 |        123 |      1,092 |      6,504 |
+| server\modules\client                                                                                                |          5 |        582 |          0 |        114 |        696 |
+| server\modules\client\aplication                                                                                     |          1 |        206 |          0 |         28 |        234 |
 | server\modules\client\domain                                                                                         |          1 |         14 |          0 |          3 |         17 |
 | server\modules\client\infraestructure                                                                                |          3 |        362 |          0 |         83 |        445 |
 | server\modules\form                                                                                                  |          5 |        148 |          5 |         26 |        179 |
 | server\modules\form\aplication                                                                                       |          1 |         62 |          5 |         12 |         79 |
 | server\modules\form\domain                                                                                           |          3 |         43 |          0 |          9 |         52 |
 | server\modules\form\infraestructure                                                                                  |          1 |         43 |          0 |          5 |         48 |
-| server\modules\installment                                                                                           |          5 |        536 |          0 |        112 |        648 |
-| server\modules\installment\aplication                                                                                |          1 |        164 |          0 |         26 |        190 |
-| server\modules\installment\domain                                                                                    |          1 |         14 |          0 |          3 |         17 |
-| server\modules\installment\infraestructure                                                                           |          3 |        358 |          0 |         83 |        441 |
-| server\modules\invoice                                                                                               |          8 |      1,070 |        118 |        249 |      1,437 |
-| server\modules\invoiceOLD                                                                                            |          5 |        553 |          5 |         98 |        656 |
-| server\modules\invoiceOLD\aplication                                                                                 |          3 |        489 |          5 |         91 |        585 |
-| server\modules\invoiceOLD\aplication (Files)                                                                         |          2 |        479 |          5 |         90 |        574 |
-| server\modules\invoiceOLD\aplication\utils                                                                           |          1 |         10 |          0 |          1 |         11 |
-| server\modules\invoiceOLD\domain                                                                                     |          1 |         34 |          0 |          4 |         38 |
-| server\modules\invoiceOLD\infraestructure                                                                            |          1 |         30 |          0 |          3 |         33 |
-| server\modules\invoice\aplication                                                                                    |          2 |        464 |         42 |        100 |        606 |
+| server\modules\invoice                                                                                               |          8 |      1,089 |        118 |        250 |      1,457 |
+| server\modules\invoice\aplication                                                                                    |          2 |        479 |         42 |        102 |        623 |
 | server\modules\invoice\domain                                                                                        |          1 |         21 |          0 |          2 |         23 |
-| server\modules\invoice\infraestructure                                                                               |          5 |        585 |         76 |        147 |        808 |
-| server\modules\invoice\infraestructure (Files)                                                                       |          4 |        547 |         76 |        139 |        762 |
-| server\modules\invoice\infraestructure\utilities                                                                     |          1 |         38 |          0 |          8 |         46 |
-| server\modules\methodPayment                                                                                         |          5 |        559 |          0 |        108 |        667 |
-| server\modules\methodPayment\aplication                                                                              |          1 |        179 |          0 |         26 |        205 |
+| server\modules\invoice\infraestructure                                                                               |          5 |        589 |         76 |        146 |        811 |
+| server\modules\invoice\infraestructure (Files)                                                                       |          4 |        540 |         76 |        136 |        752 |
+| server\modules\invoice\infraestructure\utilities                                                                     |          1 |         49 |          0 |         10 |         59 |
+| server\modules\methodPayment                                                                                         |          5 |        598 |          0 |        110 |        708 |
+| server\modules\methodPayment\aplication                                                                              |          1 |        218 |          0 |         28 |        246 |
 | server\modules\methodPayment\domain                                                                                  |          1 |         14 |          0 |          2 |         16 |
 | server\modules\methodPayment\infraestructure                                                                         |          3 |        366 |          0 |         80 |        446 |
 | server\modules\permission                                                                                            |          5 |        506 |          0 |        106 |        612 |
@@ -141,30 +158,45 @@ Directories
 | server\modules\user\aplication                                                                                       |          1 |        228 |          0 |         43 |        271 |
 | server\modules\user\domain                                                                                           |          1 |         13 |          0 |          2 |         15 |
 | server\modules\user\infraestructure                                                                                  |          3 |        408 |          0 |         89 |        497 |
-| server\utilities                                                                                                     |         10 |        998 |         19 |        223 |      1,240 |
+| server\utilities                                                                                                     |         10 |        942 |         25 |        211 |      1,178 |
 | styles                                                                                                               |          1 |         52 |          0 |         12 |         64 |
-| utils                                                                                                                |          5 |         89 |          0 |         11 |        100 |
+| utils                                                                                                                |          4 |        114 |          0 |         14 |        128 |
 +----------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 
 Files
 +----------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
 | filename                                                                                                             | language       | code       | comment    | blank      | total      |
 +----------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
-| c:\dev\imersive vision\client\src\app\app\calculator\page.tsx                                                        | TypeScript JSX |         19 |          0 |          3 |         22 |
-| c:\dev\imersive vision\client\src\app\app\client\page.tsx                                                            | TypeScript JSX |         19 |          0 |          3 |         22 |
-| c:\dev\imersive vision\client\src\app\app\complete-invoice\page.tsx                                                  | TypeScript JSX |         19 |          0 |          3 |         22 |
-| c:\dev\imersive vision\client\src\app\app\components\shell.tsx                                                       | TypeScript JSX |         98 |          0 |          6 |        104 |
+| c:\dev\imersive vision\client\src\app\app\calculator\page.tsx                                                        | TypeScript JSX |        224 |        291 |         11 |        526 |
+| c:\dev\imersive vision\client\src\app\app\calculator\utilities\calculate.ts                                          | TypeScript     |         23 |          0 |          4 |         27 |
+| c:\dev\imersive vision\client\src\app\app\calculator\utilities\interfaces.ts                                         | TypeScript     |         11 |          0 |          1 |         12 |
+| c:\dev\imersive vision\client\src\app\app\client\[id]\page.tsx                                                       | TypeScript JSX |         14 |          0 |          3 |         17 |
+| c:\dev\imersive vision\client\src\app\app\client\components\clientListPage.tsx                                       | TypeScript JSX |         97 |          1 |          8 |        106 |
+| c:\dev\imersive vision\client\src\app\app\client\components\clientPage.tsx                                           | TypeScript JSX |        239 |          1 |         21 |        261 |
+| c:\dev\imersive vision\client\src\app\app\client\list\page.tsx                                                       | TypeScript JSX |         13 |          0 |          3 |         16 |
+| c:\dev\imersive vision\client\src\app\app\client\page.tsx                                                            | TypeScript JSX |         14 |          0 |          3 |         17 |
+| c:\dev\imersive vision\client\src\app\app\complete-invoice\[id]\page.tsx                                             | TypeScript JSX |         14 |          0 |          3 |         17 |
+| c:\dev\imersive vision\client\src\app\app\complete-invoice\calculator\[amount]\page.tsx                              | TypeScript JSX |         17 |          0 |          3 |         20 |
+| c:\dev\imersive vision\client\src\app\app\complete-invoice\components\completeInvoiceListPage.tsx                    | TypeScript JSX |        109 |          1 |          8 |        118 |
+| c:\dev\imersive vision\client\src\app\app\complete-invoice\components\completeInvoicePage.tsx                        | TypeScript JSX |        617 |          1 |         47 |        665 |
+| c:\dev\imersive vision\client\src\app\app\complete-invoice\list\page.tsx                                             | TypeScript JSX |         13 |          0 |          3 |         16 |
+| c:\dev\imersive vision\client\src\app\app\complete-invoice\page.tsx                                                  | TypeScript JSX |         14 |          0 |          3 |         17 |
+| c:\dev\imersive vision\client\src\app\app\components\shell.tsx                                                       | TypeScript JSX |        181 |          0 |         12 |        193 |
 | c:\dev\imersive vision\client\src\app\app\components\varAcctions.tsx                                                 | TypeScript JSX |         41 |          0 |          1 |         42 |
 | c:\dev\imersive vision\client\src\app\app\hooks\useCredentials.tsx                                                   | TypeScript JSX |         13 |          0 |          3 |         16 |
-| c:\dev\imersive vision\client\src\app\app\login\page.tsx                                                             | TypeScript JSX |        147 |          0 |          8 |        155 |
-| c:\dev\imersive vision\client\src\app\app\method-payment\page.tsx                                                    | TypeScript JSX |         19 |          0 |          3 |         22 |
+| c:\dev\imersive vision\client\src\app\app\login\page.tsx                                                             | TypeScript JSX |        152 |          0 |          8 |        160 |
+| c:\dev\imersive vision\client\src\app\app\method-payment\[id]\page.tsx                                               | TypeScript JSX |         14 |          0 |          3 |         17 |
+| c:\dev\imersive vision\client\src\app\app\method-payment\components\methodPayment.tsx                                | TypeScript JSX |        264 |          1 |         21 |        286 |
+| c:\dev\imersive vision\client\src\app\app\method-payment\components\methodPaymentListPage.tsx                        | TypeScript JSX |        102 |          1 |          9 |        112 |
+| c:\dev\imersive vision\client\src\app\app\method-payment\list\page.tsx                                               | TypeScript JSX |         13 |          0 |          3 |         16 |
+| c:\dev\imersive vision\client\src\app\app\method-payment\page.tsx                                                    | TypeScript JSX |         14 |          0 |          3 |         17 |
 | c:\dev\imersive vision\client\src\app\app\page.tsx                                                                   | TypeScript JSX |         19 |          0 |          3 |         22 |
-| c:\dev\imersive vision\client\src\app\app\project\[id]\page.tsx                                                      | TypeScript JSX |         14 |          0 |          3 |         17 |
-| c:\dev\imersive vision\client\src\app\app\project\components\projectPage.tsx                                         | TypeScript JSX |        186 |         11 |         21 |        218 |
-| c:\dev\imersive vision\client\src\app\app\project\page.tsx                                                           | TypeScript JSX |         14 |          0 |          3 |         17 |
 | c:\dev\imersive vision\client\src\app\app\utilities\cookie.ts                                                        | TypeScript     |          4 |          0 |          1 |          5 |
-| c:\dev\imersive vision\client\src\app\calculator\page.tsx                                                            | TypeScript JSX |        477 |          9 |         90 |        576 |
-| c:\dev\imersive vision\client\src\app\layout.tsx                                                                     | TypeScript JSX |         68 |          0 |          6 |         74 |
+| c:\dev\imersive vision\client\src\app\app\utilities\generatePDF.ts                                                   | TypeScript     |        465 |          1 |         85 |        551 |
+| c:\dev\imersive vision\client\src\app\app\utilities\generateQr.ts                                                    | TypeScript     |         10 |          0 |          1 |         11 |
+| c:\dev\imersive vision\client\src\app\app\utilities\inputs.ts                                                        | TypeScript     |        214 |          3 |         24 |        241 |
+| c:\dev\imersive vision\client\src\app\app\utilities\interfaces.ts                                                    | TypeScript     |         41 |          0 |          5 |         46 |
+| c:\dev\imersive vision\client\src\app\layout.tsx                                                                     | TypeScript JSX |         69 |          0 |          5 |         74 |
 | c:\dev\imersive vision\client\src\app\page.tsx                                                                       | TypeScript JSX |         25 |          0 |          4 |         29 |
 | c:\dev\imersive vision\client\src\app\page1\components\NavBar.tsx                                                    | TypeScript JSX |         63 |          0 |          4 |         67 |
 | c:\dev\imersive vision\client\src\app\page1\page.tsx                                                                 | TypeScript JSX |        156 |          0 |          8 |        164 |
@@ -175,17 +207,34 @@ Files
 | c:\dev\imersive vision\client\src\app\page4\components\titelLine.tsx                                                 | TypeScript JSX |         27 |          0 |          2 |         29 |
 | c:\dev\imersive vision\client\src\app\page4\components\viewFrame.tsx                                                 | TypeScript JSX |        143 |          0 |          5 |        148 |
 | c:\dev\imersive vision\client\src\app\page4\page.tsx                                                                 | TypeScript JSX |        385 |          0 |         15 |        400 |
-| c:\dev\imersive vision\client\src\app\page4\styles\page.css                                                          | CSS            |         11 |          0 |          0 |         11 |
+| c:\dev\imersive vision\client\src\app\page4\styles\page.css                                                          | PostCSS        |         11 |          0 |          0 |         11 |
 | c:\dev\imersive vision\client\src\app\page5\components\NavBar.tsx                                                    | TypeScript JSX |         38 |          0 |          4 |         42 |
 | c:\dev\imersive vision\client\src\app\page5\page.tsx                                                                 | TypeScript JSX |        316 |          8 |         14 |        338 |
-| c:\dev\imersive vision\client\src\app\page6\page.tsx                                                                 | TypeScript JSX |        193 |          0 |          9 |        202 |
+| c:\dev\imersive vision\client\src\app\page6\page.tsx                                                                 | TypeScript JSX |        194 |          0 |          9 |        203 |
 | c:\dev\imersive vision\client\src\app\robots.ts                                                                      | TypeScript     |         10 |          0 |          2 |         12 |
+| c:\dev\imersive vision\client\src\app\template\[project]\page.tsx                                                    | TypeScript JSX |         36 |          0 |          4 |         40 |
+| c:\dev\imersive vision\client\src\app\template\components\page10\index.tsx                                           | TypeScript JSX |         31 |          0 |          2 |         33 |
+| c:\dev\imersive vision\client\src\app\template\components\page1\components\header.tsx                                | TypeScript JSX |         99 |          1 |          9 |        109 |
+| c:\dev\imersive vision\client\src\app\template\components\page1\index.tsx                                            | TypeScript JSX |         65 |          0 |          2 |         67 |
+| c:\dev\imersive vision\client\src\app\template\components\page2\index.tsx                                            | TypeScript JSX |         45 |          0 |          3 |         48 |
+| c:\dev\imersive vision\client\src\app\template\components\page3\index.tsx                                            | TypeScript JSX |         72 |          0 |          2 |         74 |
+| c:\dev\imersive vision\client\src\app\template\components\page4\index.tsx                                            | TypeScript JSX |        177 |          0 |          2 |        179 |
+| c:\dev\imersive vision\client\src\app\template\components\page5\components\NavBar.tsx                                | TypeScript JSX |         57 |          0 |          4 |         61 |
+| c:\dev\imersive vision\client\src\app\template\components\page5\index.tsx                                            | TypeScript JSX |        146 |          0 |          5 |        151 |
+| c:\dev\imersive vision\client\src\app\template\components\page6\index.tsx                                            | TypeScript JSX |         42 |          0 |          2 |         44 |
+| c:\dev\imersive vision\client\src\app\template\components\page7\index.tsx                                            | TypeScript JSX |         96 |          0 |          4 |        100 |
+| c:\dev\imersive vision\client\src\app\template\components\page8\index.tsx                                            | TypeScript JSX |        184 |          0 |          8 |        192 |
+| c:\dev\imersive vision\client\src\app\template\components\page9\index.tsx                                            | TypeScript JSX |         85 |          0 |          3 |         88 |
+| c:\dev\imersive vision\client\src\app\template\config\avalon-park-wesley-chapel.ts                                   | TypeScript     |        339 |          0 |         10 |        349 |
+| c:\dev\imersive vision\client\src\app\template\config\configMap.ts                                                   | TypeScript     |          6 |          0 |          2 |          8 |
+| c:\dev\imersive vision\client\src\app\template\config\erna.ts                                                        | TypeScript     |        198 |          0 |         10 |        208 |
+| c:\dev\imersive vision\client\src\app\template\utils\interfaces.ts                                                   | TypeScript     |         71 |          0 |         14 |         85 |
 | c:\dev\imersive vision\client\src\app\tours-contact\[company]\[model]\[categorie]\page.tsx                           | TypeScript JSX |        163 |          1 |          9 |        173 |
 | c:\dev\imersive vision\client\src\components\TextSelect.tsx                                                          | TypeScript JSX |         33 |          0 |          2 |         35 |
-| c:\dev\imersive vision\client\src\components\customInput.tsx                                                         | TypeScript JSX |        372 |          0 |         16 |        388 |
+| c:\dev\imersive vision\client\src\components\customInput.tsx                                                         | TypeScript JSX |        458 |          0 |         19 |        477 |
 | c:\dev\imersive vision\client\src\components\customText.tsx                                                          | TypeScript JSX |         13 |          0 |          2 |         15 |
 | c:\dev\imersive vision\client\src\components\customTooltip.tsx                                                       | TypeScript JSX |         41 |          0 |          2 |         43 |
-| c:\dev\imersive vision\client\src\components\header.tsx                                                              | TypeScript JSX |        102 |          1 |          9 |        112 |
+| c:\dev\imersive vision\client\src\components\header.tsx                                                              | TypeScript JSX |        104 |          1 |          9 |        114 |
 | c:\dev\imersive vision\client\src\components\lineBotton.tsx                                                          | TypeScript JSX |         23 |          0 |          1 |         24 |
 | c:\dev\imersive vision\client\src\hooks\breakpointHandler.ts                                                         | TypeScript     |         17 |          0 |          3 |         20 |
 | c:\dev\imersive vision\client\src\hooks\indexList.ts                                                                 | TypeScript     |         23 |          0 |          5 |         28 |
@@ -195,10 +244,6 @@ Files
 | c:\dev\imersive vision\client\src\pages\api\client\[id]\index.ts                                                     | TypeScript     |          9 |          0 |          2 |         11 |
 | c:\dev\imersive vision\client\src\pages\api\client\index.ts                                                          | TypeScript     |          9 |          0 |          2 |         11 |
 | c:\dev\imersive vision\client\src\pages\api\form.ts                                                                  | TypeScript     |         10 |          0 |          2 |         12 |
-| c:\dev\imersive vision\client\src\pages\api\installment\[id]\anulate.ts                                              | TypeScript     |          8 |          0 |          2 |         10 |
-| c:\dev\imersive vision\client\src\pages\api\installment\[id]\index.ts                                                | TypeScript     |          9 |          0 |          2 |         11 |
-| c:\dev\imersive vision\client\src\pages\api\installment\index.ts                                                     | TypeScript     |          9 |          0 |          2 |         11 |
-| c:\dev\imersive vision\client\src\pages\api\invoiceOld.ts                                                            | TypeScript     |          8 |          0 |          2 |         10 |
 | c:\dev\imersive vision\client\src\pages\api\invoice\[project_id]\[installment_id]\anulate.ts                         | TypeScript     |          8 |          0 |          2 |         10 |
 | c:\dev\imersive vision\client\src\pages\api\invoice\[project_id]\[installment_id]\index.ts                           | TypeScript     |          9 |          0 |          2 |         11 |
 | c:\dev\imersive vision\client\src\pages\api\invoice\complete\[project_id]\[installment_id]\index.ts                  | TypeScript     |          8 |          1 |          2 |         11 |
@@ -228,7 +273,7 @@ Files
 | c:\dev\imersive vision\client\src\server\configs\env.config.ts                                                       | TypeScript     |          8 |          4 |          2 |         14 |
 | c:\dev\imersive vision\client\src\server\configs\mailer.config.ts                                                    | TypeScript     |          8 |          6 |          3 |         17 |
 | c:\dev\imersive vision\client\src\server\configs\supabase.config.ts                                                  | TypeScript     |          5 |          4 |          2 |         11 |
-| c:\dev\imersive vision\client\src\server\modules\client\aplication\client.usecase.ts                                 | TypeScript     |        171 |          0 |         26 |        197 |
+| c:\dev\imersive vision\client\src\server\modules\client\aplication\client.usecase.ts                                 | TypeScript     |        206 |          0 |         28 |        234 |
 | c:\dev\imersive vision\client\src\server\modules\client\domain\interfaces.ts                                         | TypeScript     |         14 |          0 |          3 |         17 |
 | c:\dev\imersive vision\client\src\server\modules\client\infraestructure\client.controller.ts                         | TypeScript     |        221 |          0 |         47 |        268 |
 | c:\dev\imersive vision\client\src\server\modules\client\infraestructure\supabaseDBManager.ts                         | TypeScript     |         83 |          0 |         18 |        101 |
@@ -238,25 +283,15 @@ Files
 | c:\dev\imersive vision\client\src\server\modules\form\domain\interfaces.ts                                           | TypeScript     |         21 |          0 |          4 |         25 |
 | c:\dev\imersive vision\client\src\server\modules\form\domain\mials.ts                                                | TypeScript     |         14 |          0 |          4 |         18 |
 | c:\dev\imersive vision\client\src\server\modules\form\infraestructure\form.controller.ts                             | TypeScript     |         43 |          0 |          5 |         48 |
-| c:\dev\imersive vision\client\src\server\modules\installment\aplication\installment.usecase.ts                       | TypeScript     |        164 |          0 |         26 |        190 |
-| c:\dev\imersive vision\client\src\server\modules\installment\domain\interfaces.ts                                    | TypeScript     |         14 |          0 |          3 |         17 |
-| c:\dev\imersive vision\client\src\server\modules\installment\infraestructure\installment.controller.ts               | TypeScript     |        218 |          0 |         47 |        265 |
-| c:\dev\imersive vision\client\src\server\modules\installment\infraestructure\supabaseDBManager.ts                    | TypeScript     |         83 |          0 |         18 |        101 |
-| c:\dev\imersive vision\client\src\server\modules\installment\infraestructure\zodValidatorManager.ts                  | TypeScript     |         57 |          0 |         18 |         75 |
-| c:\dev\imersive vision\client\src\server\modules\invoiceOLD\aplication\generatePdf.ts                                | TypeScript     |        462 |          1 |         86 |        549 |
-| c:\dev\imersive vision\client\src\server\modules\invoiceOLD\aplication\pdf.usecase.ts                                | TypeScript     |         17 |          4 |          4 |         25 |
-| c:\dev\imersive vision\client\src\server\modules\invoiceOLD\aplication\utils\generateQr.ts                           | TypeScript     |         10 |          0 |          1 |         11 |
-| c:\dev\imersive vision\client\src\server\modules\invoiceOLD\domain\interfaces.ts                                     | TypeScript     |         34 |          0 |          4 |         38 |
-| c:\dev\imersive vision\client\src\server\modules\invoiceOLD\infraestructure\pdf.controller.ts                        | TypeScript     |         30 |          0 |          3 |         33 |
-| c:\dev\imersive vision\client\src\server\modules\invoice\aplication\invoice.usecase.ts                               | TypeScript     |        189 |          0 |         30 |        219 |
-| c:\dev\imersive vision\client\src\server\modules\invoice\aplication\invoiceComplete.usecase.ts                       | TypeScript     |        275 |         42 |         70 |        387 |
+| c:\dev\imersive vision\client\src\server\modules\invoice\aplication\invoice.usecase.ts                               | TypeScript     |        195 |          0 |         32 |        227 |
+| c:\dev\imersive vision\client\src\server\modules\invoice\aplication\invoiceComplete.usecase.ts                       | TypeScript     |        284 |         42 |         70 |        396 |
 | c:\dev\imersive vision\client\src\server\modules\invoice\domain\interfaces.ts                                        | TypeScript     |         21 |          0 |          2 |         23 |
-| c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\completeInvoice.controller.ts               | TypeScript     |        135 |         76 |         44 |        255 |
-| c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\invoice.controller.ts                       | TypeScript     |        221 |          0 |         48 |        269 |
-| c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\supabaseDBManager.ts                        | TypeScript     |        121 |          0 |         30 |        151 |
-| c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\utilities\formatters.ts                     | TypeScript     |         38 |          0 |          8 |         46 |
-| c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\zodValidatorManager.ts                      | TypeScript     |         70 |          0 |         17 |         87 |
-| c:\dev\imersive vision\client\src\server\modules\methodPayment\aplication\methodPayment.usecase.ts                   | TypeScript     |        179 |          0 |         26 |        205 |
+| c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\completeInvoice.controller.ts               | TypeScript     |        122 |         76 |         41 |        239 |
+| c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\invoice.controller.ts                       | TypeScript     |        223 |          0 |         48 |        271 |
+| c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\supabaseDBManager.ts                        | TypeScript     |        124 |          0 |         30 |        154 |
+| c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\utilities\formatters.ts                     | TypeScript     |         49 |          0 |         10 |         59 |
+| c:\dev\imersive vision\client\src\server\modules\invoice\infraestructure\zodValidatorManager.ts                      | TypeScript     |         71 |          0 |         17 |         88 |
+| c:\dev\imersive vision\client\src\server\modules\methodPayment\aplication\methodPayment.usecase.ts                   | TypeScript     |        218 |          0 |         28 |        246 |
 | c:\dev\imersive vision\client\src\server\modules\methodPayment\domain\interfaces.ts                                  | TypeScript     |         14 |          0 |          2 |         16 |
 | c:\dev\imersive vision\client\src\server\modules\methodPayment\infraestructure\methodPayment.controller.ts           | TypeScript     |        223 |          0 |         46 |        269 |
 | c:\dev\imersive vision\client\src\server\modules\methodPayment\infraestructure\supabaseDBManager.ts                  | TypeScript     |         83 |          0 |         18 |        101 |
@@ -290,17 +325,16 @@ Files
 | c:\dev\imersive vision\client\src\server\utilities\adapters.ts                                                       | TypeScript     |         10 |         15 |          5 |         30 |
 | c:\dev\imersive vision\client\src\server\utilities\cookieManager.ts                                                  | TypeScript     |         13 |          0 |          4 |         17 |
 | c:\dev\imersive vision\client\src\server\utilities\cryptojs.ts                                                       | TypeScript     |         28 |          0 |          9 |         37 |
-| c:\dev\imersive vision\client\src\server\utilities\enums.ts                                                          | TypeScript     |        161 |          0 |         21 |        182 |
-| c:\dev\imersive vision\client\src\server\utilities\formatters.ts                                                     | TypeScript     |        570 |          0 |        140 |        710 |
+| c:\dev\imersive vision\client\src\server\utilities\enums.ts                                                          | TypeScript     |        147 |          6 |         20 |        173 |
+| c:\dev\imersive vision\client\src\server\utilities\formatters.ts                                                     | TypeScript     |        532 |          0 |        130 |        662 |
 | c:\dev\imersive vision\client\src\server\utilities\generators.ts                                                     | TypeScript     |         26 |          0 |          5 |         31 |
-| c:\dev\imersive vision\client\src\server\utilities\interfaces.ts                                                     | TypeScript     |        136 |          4 |         27 |        167 |
+| c:\dev\imersive vision\client\src\server\utilities\interfaces.ts                                                     | TypeScript     |        132 |          4 |         26 |        162 |
 | c:\dev\imersive vision\client\src\server\utilities\supabaseClient.ts                                                 | TypeScript     |          3 |          0 |          2 |          5 |
 | c:\dev\imersive vision\client\src\server\utilities\validations.ts                                                    | TypeScript     |         30 |          0 |          6 |         36 |
-| c:\dev\imersive vision\client\src\styles\globals.css                                                                 | CSS            |         52 |          0 |         12 |         64 |
-| c:\dev\imersive vision\client\src\utils\consts.ts                                                                    | TypeScript     |         28 |          0 |          2 |         30 |
+| c:\dev\imersive vision\client\src\styles\globals.css                                                                 | PostCSS        |         52 |          0 |         12 |         64 |
+| c:\dev\imersive vision\client\src\utils\consts.ts                                                                    | TypeScript     |         47 |          0 |          4 |         51 |
 | c:\dev\imersive vision\client\src\utils\enums.ts                                                                     | TypeScript     |         11 |          0 |          2 |         13 |
-| c:\dev\imersive vision\client\src\utils\formater.ts                                                                  | TypeScript     |          0 |          0 |          1 |          1 |
 | c:\dev\imersive vision\client\src\utils\notifications.tsx                                                            | TypeScript JSX |         38 |          0 |          3 |         41 |
-| c:\dev\imersive vision\client\src\utils\validations.ts                                                               | TypeScript     |         12 |          0 |          3 |         15 |
-| Total                                                                                                                |                |     11,615 |        193 |      1,929 |     13,737 |
+| c:\dev\imersive vision\client\src\utils\validations.ts                                                               | TypeScript     |         18 |          0 |          5 |         23 |
+| Total                                                                                                                |                |     14,270 |        476 |      1,947 |     16,693 |
 +----------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+

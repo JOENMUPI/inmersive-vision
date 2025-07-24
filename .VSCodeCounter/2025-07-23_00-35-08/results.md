@@ -1,41 +1,52 @@
 # Summary
 
-Date : 2025-05-09 16:25:11
+Date : 2025-07-23 00:35:08
 
 Directory c:\\dev\\imersive vision\\client\\src
 
-Total : 152 files,  11615 codes, 193 comments, 1929 blanks, all 13737 lines
+Total : 169 files,  14270 codes, 476 comments, 1947 blanks, all 16693 lines
 
 Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
 
 ## Languages
 | language | files | code | comment | blank | total |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| TypeScript | 115 | 7,770 | 162 | 1,633 | 9,565 |
-| TypeScript JSX | 35 | 3,782 | 31 | 284 | 4,097 |
-| CSS | 2 | 63 | 0 | 12 | 75 |
+| TypeScript | 110 | 8,087 | 167 | 1,567 | 9,821 |
+| TypeScript JSX | 57 | 6,120 | 309 | 368 | 6,797 |
+| PostCSS | 2 | 63 | 0 | 12 | 75 |
 
 ## Directories
 | path | files | code | comment | blank | total |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| . | 152 | 11,615 | 193 | 1,929 | 13,737 |
-| app | 31 | 3,185 | 30 | 252 | 3,467 |
-| app (Files) | 3 | 103 | 0 | 12 | 115 |
-| app\\app | 13 | 612 | 11 | 61 | 684 |
+| . | 169 | 14,270 | 476 | 1,947 | 16,693 |
+| app | 63 | 6,813 | 312 | 489 | 7,614 |
+| app (Files) | 3 | 104 | 0 | 11 | 115 |
+| app\\app | 29 | 2,966 | 301 | 303 | 3,570 |
 | app\\app (Files) | 1 | 19 | 0 | 3 | 22 |
-| app\\app\\calculator | 1 | 19 | 0 | 3 | 22 |
-| app\\app\\client | 1 | 19 | 0 | 3 | 22 |
-| app\\app\\complete-invoice | 1 | 19 | 0 | 3 | 22 |
-| app\\app\\components | 2 | 139 | 0 | 7 | 146 |
+| app\\app\\calculator | 3 | 258 | 291 | 16 | 565 |
+| app\\app\\calculator (Files) | 1 | 224 | 291 | 11 | 526 |
+| app\\app\\calculator\\utilities | 2 | 34 | 0 | 5 | 39 |
+| app\\app\\client | 5 | 377 | 2 | 38 | 417 |
+| app\\app\\client (Files) | 1 | 14 | 0 | 3 | 17 |
+| app\\app\\client\\[id] | 1 | 14 | 0 | 3 | 17 |
+| app\\app\\client\\components | 2 | 336 | 2 | 29 | 367 |
+| app\\app\\client\\list | 1 | 13 | 0 | 3 | 16 |
+| app\\app\\complete-invoice | 6 | 784 | 2 | 67 | 853 |
+| app\\app\\complete-invoice (Files) | 1 | 14 | 0 | 3 | 17 |
+| app\\app\\complete-invoice\\[id] | 1 | 14 | 0 | 3 | 17 |
+| app\\app\\complete-invoice\\calculator | 1 | 17 | 0 | 3 | 20 |
+| app\\app\\complete-invoice\\calculator\\[amount] | 1 | 17 | 0 | 3 | 20 |
+| app\\app\\complete-invoice\\components | 2 | 726 | 2 | 55 | 783 |
+| app\\app\\complete-invoice\\list | 1 | 13 | 0 | 3 | 16 |
+| app\\app\\components | 2 | 222 | 0 | 13 | 235 |
 | app\\app\\hooks | 1 | 13 | 0 | 3 | 16 |
-| app\\app\\login | 1 | 147 | 0 | 8 | 155 |
-| app\\app\\method-payment | 1 | 19 | 0 | 3 | 22 |
-| app\\app\\project | 3 | 214 | 11 | 27 | 252 |
-| app\\app\\project (Files) | 1 | 14 | 0 | 3 | 17 |
-| app\\app\\project\\[id] | 1 | 14 | 0 | 3 | 17 |
-| app\\app\\project\\components | 1 | 186 | 11 | 21 | 218 |
-| app\\app\\utilities | 1 | 4 | 0 | 1 | 5 |
-| app\\calculator | 1 | 477 | 9 | 90 | 576 |
+| app\\app\\login | 1 | 152 | 0 | 8 | 160 |
+| app\\app\\method-payment | 5 | 407 | 2 | 39 | 448 |
+| app\\app\\method-payment (Files) | 1 | 14 | 0 | 3 | 17 |
+| app\\app\\method-payment\\[id] | 1 | 14 | 0 | 3 | 17 |
+| app\\app\\method-payment\\components | 2 | 366 | 2 | 30 | 398 |
+| app\\app\\method-payment\\list | 1 | 13 | 0 | 3 | 16 |
+| app\\app\\utilities | 5 | 734 | 4 | 116 | 854 |
 | app\\page1 | 2 | 219 | 0 | 12 | 231 |
 | app\\page1 (Files) | 1 | 156 | 0 | 8 | 164 |
 | app\\page1\\components | 1 | 63 | 0 | 4 | 67 |
@@ -50,22 +61,38 @@ Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-
 | app\\page5 | 2 | 354 | 8 | 18 | 380 |
 | app\\page5 (Files) | 1 | 316 | 8 | 14 | 338 |
 | app\\page5\\components | 1 | 38 | 0 | 4 | 42 |
-| app\\page6 | 1 | 193 | 0 | 9 | 202 |
+| app\\page6 | 1 | 194 | 0 | 9 | 203 |
+| app\\template | 17 | 1,749 | 1 | 86 | 1,836 |
+| app\\template\\[project] | 1 | 36 | 0 | 4 | 40 |
+| app\\template\\components | 12 | 1,099 | 1 | 46 | 1,146 |
+| app\\template\\components\\page1 | 2 | 164 | 1 | 11 | 176 |
+| app\\template\\components\\page1 (Files) | 1 | 65 | 0 | 2 | 67 |
+| app\\template\\components\\page10 | 1 | 31 | 0 | 2 | 33 |
+| app\\template\\components\\page1\\components | 1 | 99 | 1 | 9 | 109 |
+| app\\template\\components\\page2 | 1 | 45 | 0 | 3 | 48 |
+| app\\template\\components\\page3 | 1 | 72 | 0 | 2 | 74 |
+| app\\template\\components\\page4 | 1 | 177 | 0 | 2 | 179 |
+| app\\template\\components\\page5 | 2 | 203 | 0 | 9 | 212 |
+| app\\template\\components\\page5 (Files) | 1 | 146 | 0 | 5 | 151 |
+| app\\template\\components\\page5\\components | 1 | 57 | 0 | 4 | 61 |
+| app\\template\\components\\page6 | 1 | 42 | 0 | 2 | 44 |
+| app\\template\\components\\page7 | 1 | 96 | 0 | 4 | 100 |
+| app\\template\\components\\page8 | 1 | 184 | 0 | 8 | 192 |
+| app\\template\\components\\page9 | 1 | 85 | 0 | 3 | 88 |
+| app\\template\\config | 3 | 543 | 0 | 22 | 565 |
+| app\\template\\utils | 1 | 71 | 0 | 14 | 85 |
 | app\\tours-contact | 1 | 163 | 1 | 9 | 173 |
 | app\\tours-contact\\[company] | 1 | 163 | 1 | 9 | 173 |
 | app\\tours-contact\\[company]\\[model] | 1 | 163 | 1 | 9 | 173 |
 | app\\tours-contact\\[company]\\[model]\\[categorie] | 1 | 163 | 1 | 9 | 173 |
-| components | 6 | 584 | 1 | 32 | 617 |
+| components | 6 | 672 | 1 | 35 | 708 |
 | hooks | 4 | 97 | 0 | 27 | 124 |
-| pages | 34 | 304 | 1 | 68 | 373 |
-| pages\\api | 34 | 304 | 1 | 68 | 373 |
-| pages\\api (Files) | 3 | 26 | 0 | 6 | 32 |
+| pages | 30 | 270 | 1 | 60 | 331 |
+| pages\\api | 30 | 270 | 1 | 60 | 331 |
+| pages\\api (Files) | 2 | 18 | 0 | 4 | 22 |
 | pages\\api\\client | 3 | 26 | 0 | 6 | 32 |
 | pages\\api\\client (Files) | 1 | 9 | 0 | 2 | 11 |
 | pages\\api\\client\\[id] | 2 | 17 | 0 | 4 | 21 |
-| pages\\api\\installment | 3 | 26 | 0 | 6 | 32 |
-| pages\\api\\installment (Files) | 1 | 9 | 0 | 2 | 11 |
-| pages\\api\\installment\\[id] | 2 | 17 | 0 | 4 | 21 |
 | pages\\api\\invoice | 5 | 43 | 1 | 10 | 54 |
 | pages\\api\\invoice (Files) | 1 | 9 | 0 | 2 | 11 |
 | pages\\api\\invoice\\[project_id] | 2 | 17 | 0 | 4 | 21 |
@@ -93,35 +120,25 @@ Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-
 | pages\\api\\user-permission\\[user_id] | 2 | 21 | 0 | 4 | 25 |
 | pages\\api\\user-permission\\[user_id]\\[permission_id] | 2 | 21 | 0 | 4 | 25 |
 | pages\\api\\user\\[id] | 2 | 17 | 0 | 4 | 21 |
-| server | 71 | 7,304 | 161 | 1,527 | 8,992 |
+| server | 61 | 6,252 | 162 | 1,310 | 7,724 |
 | server\\configs | 3 | 21 | 14 | 7 | 42 |
-| server\\modules | 58 | 6,285 | 128 | 1,297 | 7,710 |
-| server\\modules\\client | 5 | 547 | 0 | 112 | 659 |
-| server\\modules\\client\\aplication | 1 | 171 | 0 | 26 | 197 |
+| server\\modules | 48 | 5,289 | 123 | 1,092 | 6,504 |
+| server\\modules\\client | 5 | 582 | 0 | 114 | 696 |
+| server\\modules\\client\\aplication | 1 | 206 | 0 | 28 | 234 |
 | server\\modules\\client\\domain | 1 | 14 | 0 | 3 | 17 |
 | server\\modules\\client\\infraestructure | 3 | 362 | 0 | 83 | 445 |
 | server\\modules\\form | 5 | 148 | 5 | 26 | 179 |
 | server\\modules\\form\\aplication | 1 | 62 | 5 | 12 | 79 |
 | server\\modules\\form\\domain | 3 | 43 | 0 | 9 | 52 |
 | server\\modules\\form\\infraestructure | 1 | 43 | 0 | 5 | 48 |
-| server\\modules\\installment | 5 | 536 | 0 | 112 | 648 |
-| server\\modules\\installment\\aplication | 1 | 164 | 0 | 26 | 190 |
-| server\\modules\\installment\\domain | 1 | 14 | 0 | 3 | 17 |
-| server\\modules\\installment\\infraestructure | 3 | 358 | 0 | 83 | 441 |
-| server\\modules\\invoice | 8 | 1,070 | 118 | 249 | 1,437 |
-| server\\modules\\invoiceOLD | 5 | 553 | 5 | 98 | 656 |
-| server\\modules\\invoiceOLD\\aplication | 3 | 489 | 5 | 91 | 585 |
-| server\\modules\\invoiceOLD\\aplication (Files) | 2 | 479 | 5 | 90 | 574 |
-| server\\modules\\invoiceOLD\\aplication\\utils | 1 | 10 | 0 | 1 | 11 |
-| server\\modules\\invoiceOLD\\domain | 1 | 34 | 0 | 4 | 38 |
-| server\\modules\\invoiceOLD\\infraestructure | 1 | 30 | 0 | 3 | 33 |
-| server\\modules\\invoice\\aplication | 2 | 464 | 42 | 100 | 606 |
+| server\\modules\\invoice | 8 | 1,089 | 118 | 250 | 1,457 |
+| server\\modules\\invoice\\aplication | 2 | 479 | 42 | 102 | 623 |
 | server\\modules\\invoice\\domain | 1 | 21 | 0 | 2 | 23 |
-| server\\modules\\invoice\\infraestructure | 5 | 585 | 76 | 147 | 808 |
-| server\\modules\\invoice\\infraestructure (Files) | 4 | 547 | 76 | 139 | 762 |
-| server\\modules\\invoice\\infraestructure\\utilities | 1 | 38 | 0 | 8 | 46 |
-| server\\modules\\methodPayment | 5 | 559 | 0 | 108 | 667 |
-| server\\modules\\methodPayment\\aplication | 1 | 179 | 0 | 26 | 205 |
+| server\\modules\\invoice\\infraestructure | 5 | 589 | 76 | 146 | 811 |
+| server\\modules\\invoice\\infraestructure (Files) | 4 | 540 | 76 | 136 | 752 |
+| server\\modules\\invoice\\infraestructure\\utilities | 1 | 49 | 0 | 10 | 59 |
+| server\\modules\\methodPayment | 5 | 598 | 0 | 110 | 708 |
+| server\\modules\\methodPayment\\aplication | 1 | 218 | 0 | 28 | 246 |
 | server\\modules\\methodPayment\\domain | 1 | 14 | 0 | 2 | 16 |
 | server\\modules\\methodPayment\\infraestructure | 3 | 366 | 0 | 80 | 446 |
 | server\\modules\\permission | 5 | 506 | 0 | 106 | 612 |
@@ -144,8 +161,8 @@ Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-
 | server\\modules\\user\\aplication | 1 | 228 | 0 | 43 | 271 |
 | server\\modules\\user\\domain | 1 | 13 | 0 | 2 | 15 |
 | server\\modules\\user\\infraestructure | 3 | 408 | 0 | 89 | 497 |
-| server\\utilities | 10 | 998 | 19 | 223 | 1,240 |
+| server\\utilities | 10 | 942 | 25 | 211 | 1,178 |
 | styles | 1 | 52 | 0 | 12 | 64 |
-| utils | 5 | 89 | 0 | 11 | 100 |
+| utils | 4 | 114 | 0 | 14 | 128 |
 
 Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
