@@ -34,9 +34,14 @@ interface wrapperI {
 
 const config: wrapperI[] = [
   {
-    label: 'Calculator',
-    href: CALCULATOR_URL_CLIENT,
-    links: []
+    label: 'Calculators',
+    links: [{
+      href: CALCULATOR_URL_CLIENT,
+      title: 'Calculator base'
+    },{
+      href: CALCULATOR_URL_CLIENT + '/specialized',
+      title: 'Calculator specialized'
+    }]
   }, {
     label: 'Payment method',
     links: [{
