@@ -17,15 +17,18 @@ import { CONFIG_DATA_CALCULATOR } from '@/app/app/calculator/utilities/config';
 interface calculatorFormI {
   mount: number,
   productId: number,
+  num360: number,
   result: number
 }
 
 const INIT_VALUES: calculatorFormI = {
   mount: 0,
   productId: 0,
+  num360: 1,
   result: 0,
 }
 
+const PRODUCT_ID_360: number = 1
 const INSTRUCTION_FONT_SIZE: string = '1.3rem'
 
 export default function CalculatorPage() {
@@ -37,7 +40,8 @@ export default function CalculatorPage() {
     validate: {
       mount: (val) => (checkNumber(val) ? null : 'mount not valid'), 
       productId: (val) => (checkNumber(val) ? null : 'Product id not valid'),
-      result: (val) => (checkNumber(val) ? null : 'Result not valid')
+      result: (val) => (checkNumber(val) ? null : 'Result not valid'),
+      num360: (val) => (checkNumber(val) ? null : 'Number of 360 not valid'),
     },
   })
 
@@ -86,6 +90,23 @@ export default function CalculatorPage() {
               )}
             />
           </Grid.Col>
+          <Grid.Col span={6}>
+            <CustomNumberInput  
+              label='Number of 360'
+              showLabel={true}
+              value={form.values.num360}
+              errorText={form.errors?.num360 ? String(form.errors?.num360) : undefined}
+              isError={!!form.errors?.num360}
+              onChange={data => {
+                form.setFieldValue('num360', data)
+                form.setFieldValue(
+                  'result',
+                  calculate(data, CONFIG_DATA_CALCULATOR[PRODUCT_ID_360].libData) +
+                  calculate(form.getValues().mount, CONFIG_DATA_CALCULATOR[form.getValues().productId].libData)
+                )
+              }}
+            />  
+          </Grid.Col>
           <Grid.Col span={12}>
             <Box style={{ display: 'flex', gap: '.5rem' }}>
               <CustomText style={{ fontWeight: 'bold', fontSize: INSTRUCTION_FONT_SIZE }}>
@@ -107,12 +128,21 @@ export default function CalculatorPage() {
                 form.setFieldValue('mount', data)
                 form.setFieldValue(
                   'result',
+                  calculate(form.values.num360, CONFIG_DATA_CALCULATOR[PRODUCT_ID_360].libData) +
                   calculate(data, CONFIG_DATA_CALCULATOR[form.getValues().productId].libData)
                 )
               })}
             />
           </Grid.Col>
-          <Grid.Col span={6} style={{ display: 'flex', alignItems: 'end' }}>
+          <Grid.Col span={6} style={{ display: 'flex', alignItems: 'end', justifyContent: 'space-between' }}>
+            <Box style={{ display: 'flex', gap: '.5rem' }}>
+              <CustomText style={{ fontWeight: 'bold', fontSize: INSTRUCTION_FONT_SIZE }}>
+                Total per 360: 
+              </CustomText>
+              <CustomText style={{ fontSize: INSTRUCTION_FONT_SIZE }}>
+                {numberToUSD(form.getValues().result / form.values.num360)}
+              </CustomText>
+            </Box>
             <Box style={{ display: 'flex', gap: '.5rem' }}>
               <CustomText style={{ fontWeight: 'bold', fontSize: INSTRUCTION_FONT_SIZE }}>
                 Result: 
@@ -148,6 +178,7 @@ export default function CalculatorPage() {
               <Table.Th />
               <Table.Th>Product</Table.Th>
               <Table.Th>Amount</Table.Th>
+              <Table.Th>Num 360</Table.Th>
               <Table.Th>Result</Table.Th>
             </Table.Tr>
           </Table.Thead>
@@ -165,6 +196,9 @@ export default function CalculatorPage() {
               </Table.Td>
               <Table.Td>
                   {element.mount}
+              </Table.Td>
+              <Table.Td>
+                  {element.num360}
               </Table.Td>
               <Table.Td>
                   {numberToUSD(element.result)}
