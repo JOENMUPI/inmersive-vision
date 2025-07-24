@@ -344,5 +344,11 @@ export const CONFIG_DATA_CALCULATOR: productI[] = [
       { fts: 27923, price: 0.11384 },
       { fts: 30000, price: 0.11353 } 
     ]
+  }, {
+    title: 'Custom tour virtual experience',
+    value: 'customTtourVirtualExperience',
+    placeholder: 'Total Feets',
+    instruction: "Insert number of square feet'.",
+    libData: [{ fts: 1, price: 9500 }]
   }
 ]
