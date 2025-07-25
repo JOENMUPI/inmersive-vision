@@ -7,3 +7,8 @@ export enum companyFormList {
   BUNKER_HOMES = 'alex@bunkerhomesinc.com',
   TEST = 'ositosmaduritos2@gmail.com',
 }
+
+export type templateFormKeys = keyof typeof templateFormList;
+export enum templateFormList {
+  TEST = 'ositosmaduritos2@gmail.com',
+}

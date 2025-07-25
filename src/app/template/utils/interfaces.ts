@@ -1,4 +1,5 @@
 import { selectData } from "@/components/customInput"
+import { templateFormKeys } from "@/server/modules/form/domain/enums"
 
 export interface data9I {
   title: string,
@@ -11,6 +12,7 @@ export interface data8I {
   call: string,
   companyName: string,
   terms: string
+  templateId: templateFormKeys,
   beds: selectData[],
   purchase: selectData[],
 }

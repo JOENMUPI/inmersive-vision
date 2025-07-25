@@ -3,7 +3,7 @@ import { CustomInputTextArea, CustomPhoneInput, CustomSelectInput, CustomTextInp
 import { CustomText } from '@/components/customText';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
 import { useFetch } from '@/hooks/useFetch';
-import { FORM_URL_SERVER, PAGE_TEMPLPATE_7_ID, TEXT_COLOR_GRAY, TEXT_COLOR_GRAY_2 } from '@/utils/consts';
+import { PAGE_TEMPLPATE_7_ID, TEMPLATE_CONTACT_URL_SERVER, TEXT_COLOR_GRAY, TEXT_COLOR_GRAY_2 } from '@/utils/consts';
 import { fetchMethod } from '@/utils/enums';
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications';
 import { checkEmail, checkPhone } from '@/utils/validations';
@@ -16,6 +16,7 @@ interface formI {
   name: string,
   email: string,
   phone: string,
+  template: string,
   numberOfBeds?: string
   reasonPurchase?: string
   message: string
@@ -25,6 +26,7 @@ const INIT_FORM_VALUES: formI = {
   name: '',
   email: '',
   phone: '',
+  template: '',
   numberOfBeds: '',
   reasonPurchase: '',
   message: ''
@@ -36,13 +38,13 @@ export default function Page8({ data }: { data: data8I }) {
   const { sendF } = useFetch()
   const form = useForm({
     mode: 'controlled',
-    initialValues: INIT_FORM_VALUES,
+    initialValues: { ...INIT_FORM_VALUES, template: data.templateId },
     validate: {
       name: (val) => (val ? null : 'Name is empty'),
       phone: (val) => (val ? checkPhone(val) ? null: 'Invalid phone' : null),
       email: (val) => (checkEmail(val) ? null : 'Invalid email'),
       message: (val) => (val ? null : 'Message is empty'),
-      numberOfBeds: (val) => (data.beds.length === 0 ? null : val ? null : 'Nummber of beds is empty'),
+      numberOfBeds: (val) => (data.beds.length === 0 ? null : val ? null : 'Number of beds is empty'),
       reasonPurchase: (val) => (data.purchase.length === 0 ? null : val ? null : 'Reason of purchase is empty'),
     },
   });
@@ -63,7 +65,7 @@ export default function Page8({ data }: { data: data8I }) {
       loading: true
     })
     
-    const responseServer = await sendF({ endpoint: FORM_URL_SERVER, body: form.values, method: fetchMethod.POST })
+    const responseServer = await sendF({ endpoint: TEMPLATE_CONTACT_URL_SERVER, body: form.values, method: fetchMethod.POST })
     
     if (!responseServer.hasError) form.reset()
     notifyUpdateBase({

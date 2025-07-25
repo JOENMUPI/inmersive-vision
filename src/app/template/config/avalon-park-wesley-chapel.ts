@@ -22,6 +22,7 @@ import imgAvalon14 from '@/../public/template/avalon/16_Imagenes/14.jpg';
 import imgAvalon15 from '@/../public/template/avalon/16_Imagenes/15.jpg';
 import imgAvalon16 from '@/../public/template/avalon/16_Imagenes/16.jpg';
 import { dataAllI } from "@/app/template/utils/interfaces";
+import { templateFormList } from '@/server/modules/form/domain/enums';
 
 export const configAvalonPark: dataAllI = {
   data1: {
@@ -341,6 +342,7 @@ export const configAvalonPark: dataAllI = {
     companyName: 'Immersive Vision',
     terms: "I agree to be contacted via call, email, and text. To opt-out, you can reply 'stop' at any time or click the unsubscribe link in the emails. Message and data rates may apply. For more information see our Terms of Service and Privacy Policy. Data will not be sold or shared for marketing or promotional purposes.",
     beds: [],
+    templateId: templateFormList.TEST,
     purchase: [],
   },
 

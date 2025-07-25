@@ -39,6 +39,7 @@ export const LOGIN_URL_SERVER = USER_URL_SERVER + '/login'
 export const LOGOUT_URL_SERVER = USER_URL_SERVER + '/logout'
 export const FORM_URL_SERVER = BASE_URL_SERVER + '/form'
 export const TOURS_CONTACT_URL_SERVER = BASE_URL_SERVER + '/tours-contact'
+export const TEMPLATE_CONTACT_URL_SERVER = BASE_URL_SERVER + '/template-contact'
 
 export const BASE_URL_CLIENT = '/app'
 export const CALCULATOR_URL_CLIENT = BASE_URL_CLIENT + '/calculator'

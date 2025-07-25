@@ -16,6 +16,7 @@ import imgErna14 from '@/../public/template/erna/16_imagenes/14PRO.png';
 import imgErna15 from '@/../public/template/erna/16_imagenes/15PRO.png';
 import imgErna16 from '@/../public/template/erna/16_imagenes/16PRO.png';
 import { dataAllI } from "@/app/template/utils/interfaces";
+import { templateFormList } from '@/server/modules/form/domain/enums';
 
 export const configErna: dataAllI = {
   data1: {
@@ -198,6 +199,7 @@ export const configErna: dataAllI = {
     title: 'Contact Form',
     call: 'Making a diference is our mission this is',
     companyName: 'Immersive Vision',
+    templateId: templateFormList.TEST,
     terms: "I agree to be contacted via call, email, and text. To opt-out, you can reply 'stop' at any time or click the unsubscribe link in the emails. Message and data rates may apply. For more information see our Terms of Service and Privacy Policy. Data will not be sold or shared for marketing or promotional purposes.",
     beds: [],
     purchase: [],

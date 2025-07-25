@@ -1,10 +1,10 @@
 import nodemailer from 'nodemailer'
 import { mailerConfig } from "@/server/configs/mailer.config"
-import { formDataI, formToursDataI, mailI } from "@/server/modules/form/domain/interfaces"
+import { formDataI, formTemplatesDataI, formToursDataI, mailI } from "@/server/modules/form/domain/interfaces"
 import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { envConfig } from '@/server/configs/env.config'
-import { createMailFormHtml, createMailToursHtml } from '@/server/modules/form/domain/mials'
-import { companyFormList } from '@/server/modules/form/domain/enums'
+import { createMailFormHtml, createMailTemplatesHtml, createMailToursHtml } from '@/server/modules/form/domain/mials'
+import { companyFormList, templateFormList } from '@/server/modules/form/domain/enums'
 import { adapterResponseHttpI } from '@/server/utilities/interfaces'
 
 const mailer = nodemailer.createTransport(mailerConfig)
@@ -60,6 +60,45 @@ export const FormToursUseCase = async (form: formToursDataI): Promise<adapterRes
     from: `"${form.name}" <${envConfig.MAILER_USER}>`,
     to: envConfig.MAILER_USER,
     subject: 'Formulario de peticion de tour',
+    html: mailHtml
+  }
+
+  try {
+    await Promise.all([
+      mailer.sendMail(companyMail),
+      mailer.sendMail(meMail),
+    ])
+    return adapterResponseHttp({ statusHttp: 200, message: 'Message sent successfully' })
+  } catch (err) {
+    console.error(err)
+    return err instanceof Error
+      ? adapterResponseHttp({ statusHttp: 500, message: 'Unexpected error, please try again later: ' + err.message })
+      : adapterResponseHttp({ statusHttp: 500, message: 'Unexpected error, please try again later: Unexpected error' })
+  }
+}
+
+export const FormTemplatesUseCase = async (form: formTemplatesDataI): Promise<adapterResponseHttpI<string>> => {
+  const { email, message, name, phone, template } = form
+  
+  if (!message) return adapterResponseHttp({ message: 'Message is required', statusHttp: 400 })
+  if (!email) return adapterResponseHttp({ message: 'Email is required', statusHttp: 400 })
+  if (!phone) return adapterResponseHttp({ message: 'Phone is required', statusHttp: 400 })
+  if (!name) return adapterResponseHttp({ message: 'Name is required', statusHttp: 400 })
+  if (!template) return adapterResponseHttp({ message: 'Template id is required', statusHttp: 400 })
+
+  const mailHtml: string = createMailTemplatesHtml(form)
+
+  const companyMail: mailI = {
+    from: `"${form.name}" <${envConfig.MAILER_USER}>`,
+    to: templateFormList[form.template],
+    subject: 'Formulario de peticion de template',
+    html: mailHtml
+  }
+
+  const meMail: mailI = {
+    from: `"${form.name}" <${envConfig.MAILER_USER}>`,
+    to: envConfig.MAILER_USER,
+    subject: 'Formulario de peticion de tempalte',
     html: mailHtml
   }
 
