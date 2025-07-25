@@ -24,7 +24,7 @@ interface calculatorFormI {
 const INIT_VALUES: calculatorFormI = {
   mount: 0,
   productId: 0,
-  num360: 0,
+  num360: 1,
   result: 0,
 }
 
