@@ -92,7 +92,7 @@ export default function CalculatorPage() {
           </Grid.Col>
           <Grid.Col span={6}>
             <CustomNumberInput  
-              label='Number of 360'
+              label='Core Tours'
               showLabel={true}
               value={form.values.num360}
               errorText={form.errors?.num360 ? String(form.errors?.num360) : undefined}
@@ -137,7 +137,7 @@ export default function CalculatorPage() {
           <Grid.Col span={6} style={{ display: 'flex', alignItems: 'end', justifyContent: 'space-between' }}>
             <Box style={{ display: 'flex', gap: '.5rem' }}>
               <CustomText style={{ fontWeight: 'bold', fontSize: INSTRUCTION_FONT_SIZE }}>
-                Total per 360: 
+                Per Project: 
               </CustomText>
               <CustomText style={{ fontSize: INSTRUCTION_FONT_SIZE }}>
                 {numberToUSD(form.getValues().result / form.values.num360)}
@@ -178,7 +178,7 @@ export default function CalculatorPage() {
               <Table.Th />
               <Table.Th>Product</Table.Th>
               <Table.Th>Amount</Table.Th>
-              <Table.Th>Num 360</Table.Th>
+              <Table.Th>Qty. Core Tours</Table.Th>
               <Table.Th>Result</Table.Th>
             </Table.Tr>
           </Table.Thead>
