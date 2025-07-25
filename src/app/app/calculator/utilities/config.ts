@@ -2,7 +2,7 @@ import { productI } from '@/app/app/calculator/utilities/interfaces';
 
 export const CONFIG_DATA_CALCULATOR: productI[] = [
   {
-    title: 'Square footage Custom',
+    title: 'Square footage Model PH1',
     value: 'baseSFTours',
     placeholder: 'Total Square Footage',
     instruction: "Insert number of square feet'.",
@@ -351,7 +351,7 @@ export const CONFIG_DATA_CALCULATOR: productI[] = [
     instruction: "Insert number of square feet'.",
     libData: [{ fts: 1, price: 9500 }]
   }, {
-    title: 'Square footage Serie',
+    title: 'Square footage Model 2',
     value: 'baseSFTours',
     placeholder: 'Total Square Footage',
     instruction: "Insert number of square feet'.",
