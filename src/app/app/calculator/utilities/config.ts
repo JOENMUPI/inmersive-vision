@@ -373,7 +373,7 @@ export const CONFIG_DATA_CALCULATOR: productI[] = [
     placeholder: 'Total Square Footage',
     instruction: "Insert number of square feet'.",
     libData: [
-      { "fts": 1200, "price": 3.2 },
+      { "fts": 1200, "price": 3.4 },
       { "fts": 1500, "price": 2 },
       { "fts": 1750, "price": 2 },
       { "fts": 2000, "price": 2 },
