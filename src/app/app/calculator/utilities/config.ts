@@ -367,5 +367,28 @@ export const CONFIG_DATA_CALCULATOR: productI[] = [
       { "fts": 15300, "price": 1.76 },
       { "fts": 17000, "price": 1.65 },
     ]
+  }, {
+    title: 'Square footage Model 0',
+    value: 'baseSFTours',
+    placeholder: 'Total Square Footage',
+    instruction: "Insert number of square feet'.",
+    libData: [
+      { "fts": 1200, "price": 3.2 },
+      { "fts": 1500, "price": 2 },
+      { "fts": 1750, "price": 2 },
+      { "fts": 2000, "price": 2 },
+      { "fts": 2250, "price": 2 },
+      { "fts": 2500, "price": 2 },
+      { "fts": 2750, "price": 2 },
+      { "fts": 3000, "price": 1 },
+      { "fts": 3250, "price": 1 },
+      { "fts": 3500, "price": 1 },
+      { "fts": 3750, "price": 1 },
+      { "fts": 4000, "price": 1 },
+      { "fts": 4250, "price": 1 },
+      { "fts": 4500, "price": 1 },
+      { "fts": 4750, "price": 1 },
+      { "fts": 5000, "price": 1 }
+    ]
   },
 ]
