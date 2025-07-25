@@ -2,6 +2,29 @@ import { productI } from '@/app/app/calculator/utilities/interfaces';
 
 export const CONFIG_DATA_CALCULATOR: productI[] = [
   {
+    title: 'Square footage Model 0',
+    value: 'baseSFTours',
+    placeholder: 'Total Square Footage',
+    instruction: "Insert number of square feet'.",
+    libData: [
+      { "fts": 1200, "price": 3.4 },
+      { "fts": 1500, "price": 2 },
+      { "fts": 1750, "price": 2 },
+      { "fts": 2000, "price": 2 },
+      { "fts": 2250, "price": 2 },
+      { "fts": 2500, "price": 2 },
+      { "fts": 2750, "price": 2 },
+      { "fts": 3000, "price": 1 },
+      { "fts": 3250, "price": 1 },
+      { "fts": 3500, "price": 1 },
+      { "fts": 3750, "price": 1 },
+      { "fts": 4000, "price": 1 },
+      { "fts": 4250, "price": 1 },
+      { "fts": 4500, "price": 1 },
+      { "fts": 4750, "price": 1 },
+      { "fts": 5000, "price": 1 }
+    ]
+  }, {
     title: 'Square footage Model PH1',
     value: 'baseSFTours',
     placeholder: 'Total Square Footage',
@@ -25,7 +48,24 @@ export const CONFIG_DATA_CALCULATOR: productI[] = [
       { "fts": 5000, "price": 1.2 }
     ]
   }, {
-    title: '360 Service',
+    title: 'Square footage Model 2',
+    value: 'baseSFTours',
+    placeholder: 'Total Square Footage',
+    instruction: "Insert number of square feet'.",
+    libData: [
+      { "fts": 1700, "price": 3.4 },
+      { "fts": 3400, "price": 2.72 },
+      { "fts": 5100, "price": 2.55 },
+      { "fts": 6800, "price": 2.4 },
+      { "fts": 8500, "price": 2.25 },
+      { "fts": 10200, "price": 2.12 },
+      { "fts": 11900, "price": 1.99 },
+      { "fts": 13600, "price": 1.87 },
+      { "fts": 15300, "price": 1.76 },
+      { "fts": 17000, "price": 1.65 },
+    ]
+  }, {
+    title: 'Core Tours',
     value: '360Service',
     placeholder: 'Total Services',
     instruction: "Insert number of Services'.",
@@ -323,6 +363,12 @@ export const CONFIG_DATA_CALCULATOR: productI[] = [
   //       { fts: 550000, price: 0.01 },
   //     ]
   }, {
+    title: 'Custom tour virtual experience',
+    value: 'customTtourVirtualExperience',
+    placeholder: 'Total Feets',
+    instruction: "Insert number of square feet'.",
+    libData: [{ fts: 1, price: 9500 }]
+  }, {
     title: 'Small Landscape Modeling',
     value: 'landscapeModelingSmall',
     placeholder: 'Total Feets',
@@ -343,52 +389,6 @@ export const CONFIG_DATA_CALCULATOR: productI[] = [
       { fts: 25852, price: 0.11384 },
       { fts: 27923, price: 0.11384 },
       { fts: 30000, price: 0.11353 } 
-    ]
-  }, {
-    title: 'Custom tour virtual experience',
-    value: 'customTtourVirtualExperience',
-    placeholder: 'Total Feets',
-    instruction: "Insert number of square feet'.",
-    libData: [{ fts: 1, price: 9500 }]
-  }, {
-    title: 'Square footage Model 2',
-    value: 'baseSFTours',
-    placeholder: 'Total Square Footage',
-    instruction: "Insert number of square feet'.",
-    libData: [
-      { "fts": 1700, "price": 3.4 },
-      { "fts": 3400, "price": 2.72 },
-      { "fts": 5100, "price": 2.55 },
-      { "fts": 6800, "price": 2.4 },
-      { "fts": 8500, "price": 2.25 },
-      { "fts": 10200, "price": 2.12 },
-      { "fts": 11900, "price": 1.99 },
-      { "fts": 13600, "price": 1.87 },
-      { "fts": 15300, "price": 1.76 },
-      { "fts": 17000, "price": 1.65 },
-    ]
-  }, {
-    title: 'Square footage Model 0',
-    value: 'baseSFTours',
-    placeholder: 'Total Square Footage',
-    instruction: "Insert number of square feet'.",
-    libData: [
-      { "fts": 1200, "price": 3.4 },
-      { "fts": 1500, "price": 2 },
-      { "fts": 1750, "price": 2 },
-      { "fts": 2000, "price": 2 },
-      { "fts": 2250, "price": 2 },
-      { "fts": 2500, "price": 2 },
-      { "fts": 2750, "price": 2 },
-      { "fts": 3000, "price": 1 },
-      { "fts": 3250, "price": 1 },
-      { "fts": 3500, "price": 1 },
-      { "fts": 3750, "price": 1 },
-      { "fts": 4000, "price": 1 },
-      { "fts": 4250, "price": 1 },
-      { "fts": 4500, "price": 1 },
-      { "fts": 4750, "price": 1 },
-      { "fts": 5000, "price": 1 }
     ]
   },
 ]

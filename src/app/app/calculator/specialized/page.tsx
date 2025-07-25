@@ -80,7 +80,14 @@ export default function CalculatorPage() {
               label='Product'
               showLabel={true}
               value={String(form.getValues().productId) ?? ''}
-              onChange={(data => form.setFieldValue('productId', Number(data)))}
+              onChange={(data => {
+                form.setFieldValue('productId', Number(data))
+                form.setFieldValue(
+                  'result',
+                  calculate(form.getValues().num360, CONFIG_DATA_CALCULATOR[PRODUCT_ID_360].libData) +
+                  calculate(form.getValues().mount, CONFIG_DATA_CALCULATOR[Number(data)].libData)
+                )
+              })}
               errorText={form.errors?.productId ? String(form.errors?.productId) : undefined}
               isError={!!form.errors?.productId}
               data={CONFIG_DATA_CALCULATOR.map((product, index) => ({
