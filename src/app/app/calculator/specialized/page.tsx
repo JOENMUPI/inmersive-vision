@@ -28,7 +28,7 @@ const INIT_VALUES: calculatorFormI = {
   result: 0,
 }
 
-const PRODUCT_ID_360: number = 1
+const PRODUCT_ID_360: number = 3
 const INSTRUCTION_FONT_SIZE: string = '1.3rem'
 
 export default function CalculatorPage() {
