@@ -51,7 +51,7 @@ export default function CalculatorPage() {
     const newCar = [...car, form.getValues()]
 
     setCar(newCar)
-    form.reset()
+    form.setValues({...INIT_VALUES, productId: form.getValues().productId})
   } 
 
   const deleteRow = (element: calculatorFormI) => {

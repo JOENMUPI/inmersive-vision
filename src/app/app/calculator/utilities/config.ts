@@ -2,9 +2,9 @@ import { productI } from '@/app/app/calculator/utilities/interfaces';
 
 export const CONFIG_DATA_CALCULATOR: productI[] = [
   {
-    title: 'Square footage',
+    title: 'Square footage Custom',
     value: 'baseSFTours',
-    placeholder: 'Total Square Footage Custom',
+    placeholder: 'Total Square Footage',
     instruction: "Insert number of square feet'.",
     libData: [
       { "fts": 1200, "price": 3.4 },
@@ -356,26 +356,16 @@ export const CONFIG_DATA_CALCULATOR: productI[] = [
     placeholder: 'Total Square Footage',
     instruction: "Insert number of square feet'.",
     libData: [
-      { "fts": 1200, "price": 3.4 },
-      { "fts": 1500, "price": 3.3 },
-      { "fts": 1750, "price": 3.2 },
-      { "fts": 2000, "price": 3.1 },
-      { "fts": 2250, "price": 3 },
-      { "fts": 2500, "price": 2.9 },
-      { "fts": 2750, "price": 2.8 },
-      { "fts": 3000, "price": 2.7 },
-      { "fts": 3250, "price": 2.6 },
-      { "fts": 3500, "price": 2.5 },
-      { "fts": 3750, "price": 2 },
-      { "fts": 4000, "price": 1.8 },
-      { "fts": 4250, "price": 1.6 },
-      { "fts": 4500, "price": 1.6 },
-      { "fts": 5000, "price": 1.5 },
-      { "fts": 6800, "price": 1.5 },
-      { "fts": 8500, "price": 1.4 },
-      { "fts": 11900, "price": 1.4 },
-      { "fts": 13600, "price": 1.2 },
-      { "fts": 15300, "price": 1.1 }
+      { "fts": 1700, "price": 3.4 },
+      { "fts": 3400, "price": 3.19 },
+      { "fts": 5100, "price": 3 },
+      { "fts": 6800, "price": 2.82 },
+      { "fts": 8500, "price": 2.65 },
+      { "fts": 10200, "price": 2.5 },
+      { "fts": 11900, "price": 2.35 },
+      { "fts": 13600, "price": 2.2 },
+      { "fts": 15300, "price": 2.1 },
+      { "fts": 17000, "price": 1.9 },
     ]
   },
 ]
