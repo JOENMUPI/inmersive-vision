@@ -21,8 +21,12 @@ export const CONFIG_DATA_CALCULATOR: productI[] = [
       { "fts": 4000, "price": 1.8 },
       { "fts": 4250, "price": 1.6 },
       { "fts": 4500, "price": 1.4 },
-      { "fts": 6500, "price": 1 },
-      { "fts": 7500, "price": 0.6 }
+      { "fts": 5000, "price": 1.2 },
+      { "fts": 5500, "price": 1.3 },
+      { "fts": 6000, "price": 1.2 },
+      { "fts": 6500, "price": 1.1 },
+      { "fts": 7000, "price": 1 },
+      { "fts": 7500, "price": .9 }
     ]
   }, {
     title: '360 Service',
