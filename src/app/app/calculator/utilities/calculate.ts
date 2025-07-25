@@ -9,6 +9,9 @@ import { libDataI } from "@/app/app/calculator/utilities/interfaces"
         total += ftsRest * libData[i].price
         ftsRest = 0
         break
+      } else if (ftsRest < libData[i].fts) {
+        total += ftsRest * libData[i].price
+        ftsRest = 0
       } else if (i === 0) {
         total += libData[i].fts * libData[i].price
         ftsRest -= libData[i].fts
