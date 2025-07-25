@@ -2,9 +2,9 @@ import { productI } from '@/app/app/calculator/utilities/interfaces';
 
 export const CONFIG_DATA_CALCULATOR: productI[] = [
   {
-    title: 'Base SF Tours',
+    title: 'Square footage',
     value: 'baseSFTours',
-    placeholder: 'Total Feets',
+    placeholder: 'Total Square Footage',
     instruction: "Insert number of square feet'.",
     libData: [
       { "fts": 1200, "price": 3.4 },
