@@ -180,6 +180,7 @@ export default function CalculatorPage() {
               <Table.Th>Amount</Table.Th>
               <Table.Th>Qty. Core Tours</Table.Th>
               <Table.Th>Result</Table.Th>
+              <Table.Th>Price Per Project</Table.Th>
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>{car.map((element, index) => {
@@ -202,6 +203,9 @@ export default function CalculatorPage() {
               </Table.Td>
               <Table.Td>
                   {numberToUSD(element.result)}
+              </Table.Td>
+              <Table.Td>
+                  {numberToUSD(element.result / element.num360)}
               </Table.Td>
             </Table.Tr>
           })}</Table.Tbody>
