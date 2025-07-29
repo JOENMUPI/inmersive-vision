@@ -553,12 +553,12 @@ export default function CompleteInvoicePage({ initialState, totalMount }: { init
               <Button
                 variant='transparent'
                 style={ state === statePage.VIEW ? { display: 'none' } : {}}
+                onClick={addInvoice}
                 disabled={!invoice.creation_date ||
                   !invoice.expiration_date ||
                   !invoice.mount_pay ||
                   form.getValues().invoices.length >= form.getValues().project.total_installment
                 }
-                onClick={addInvoice}
               >
                 Add item
               </Button>
