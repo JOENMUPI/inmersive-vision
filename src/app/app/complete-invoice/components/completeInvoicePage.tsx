@@ -2,7 +2,7 @@
 import { CustomDateInput, CustomNumberInput, CustomTextInput } from '@/components/customInput'
 import { CustomText } from '@/components/customText'
 import { useFetch } from '@/hooks/useFetch'
-import { BG_COLOR, INVOICE_COMPLETE_URL_SERVER, TEXT_COLOR, TEXT_COLOR_GRAY_2 } from '@/utils/consts'
+import { BG_COLOR, INVOICE_COMPLETE_URL_SERVER, PRIMARY_COLOR_RGB, TEXT_COLOR, TEXT_COLOR_GRAY_2 } from '@/utils/consts'
 import { fetchMethod, statePage } from '@/utils/enums'
 import { notifyShowBase, notifyUpdateBase } from '@/utils/notifications'
 import { Box, Button, Container, Grid, Group, Space, Table } from '@mantine/core'
@@ -88,7 +88,11 @@ const INIT_INVOICE: invoiceModel = {
 
 export default function CompleteInvoicePage({ initialState, totalMount }: { initialState: statePage , totalMount?: number }) {
   const [state, setState] = useState<statePage>(initialState)
-  const [invoice, setInvoice] = useState<invoiceModel>(INIT_INVOICE)
+  const [partialPaymentPercet, setPartialPaymentPercet] = useState<number>(0)
+  const [invoice, setInvoice] = useState<invoiceModel>({
+    ...INIT_INVOICE,
+    mount_pay: totalMount ?? 0
+  })
   const { sendF } = useFetch()
   const [projectDescription, setProjectDescription] = useState<projectDescriptionModel>({
     ...INIT_PROJECT_DESCRIPTION,
@@ -212,12 +216,12 @@ export default function CompleteInvoicePage({ initialState, totalMount }: { init
         companyName: _form.methodPayment.company_name,
         id: String(_form.methodPayment.id),
         routingNumber: _form.methodPayment.routing_num,
-        urlQr: _form.methodPayment.url_qr,
         zelle: _form.methodPayment.zelle,
       }
     
       const mountInvoice: mountInvoiceI = {
         currentInstallment: invoice.installment_num,
+        urlQr: invoice.url_qr,
         paidMount: invoice.ref_num_paid ? invoice.mount_pay : 0,
         pendingMount: invoice.ref_num_paid ? 0 : invoice.mount_pay,
         mount: invoice.mount_pay,
@@ -373,6 +377,7 @@ export default function CompleteInvoicePage({ initialState, totalMount }: { init
     
     form.setFieldValue('projectDescriptions', newProjectDescription)
     setProjectDescription(INIT_PROJECT_DESCRIPTION)
+    setPartialPaymentPercet(invoice.mount_pay / newProjectDescription.reduce((acc, curr) => acc + curr.unitary_price, 0) * 100)
   }
 
   const addInvoice = () => {
@@ -467,7 +472,7 @@ export default function CompleteInvoicePage({ initialState, totalMount }: { init
       <Space h='xl' />
       <Grid style={{ border: `1px ${TEXT_COLOR_GRAY_2} solid`, borderRadius: '.3rem', padding: '.3rem' }}>  
         <Grid.Col span={12}>
-          <LineBottom>
+          <LineBottom styleLine={{ boxShadow: '0 0 .5rem .4rem ' + PRIMARY_COLOR_RGB(.2) }}>
             <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <CustomText style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
                 INVOICE DESCRIPTION
@@ -495,6 +500,7 @@ export default function CompleteInvoicePage({ initialState, totalMount }: { init
         </Grid.Col>
         <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
           <CustomNumberInput
+            allowDecimal
             label='Total project cost'
             readOnly={state === statePage.VIEW} 
             showLabel={true}
@@ -539,7 +545,7 @@ export default function CompleteInvoicePage({ initialState, totalMount }: { init
       <Space h='xl' />
       <Grid style={{ border: `1px ${TEXT_COLOR_GRAY_2} solid`, borderRadius: '.3rem', padding: '.3rem' }}>  
         <Grid.Col span={12}>
-          <LineBottom>
+          <LineBottom styleLine={{ boxShadow: '0 0 .5rem .4rem ' + PRIMARY_COLOR_RGB(.2) }}>
             <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <CustomText style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
                 INSTALLMENTS
@@ -605,14 +611,47 @@ export default function CompleteInvoicePage({ initialState, totalMount }: { init
             isError={!!form.errors?.invoices}
           />
         </Grid.Col>
-        <Grid.Col span={6} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
+        <Grid.Col span={3} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
           <CustomNumberInput
+            allowDecimal
             label='Partial payment'
             showLabel={true}
             value={invoice.mount_pay}
-            onChange={mount_pay => setInvoice(prev => ({ ...prev, mount_pay }))}
+            onChange={mount_pay => {
+              const totalMount: number = form.getValues().projectDescriptions.reduce((acc, curr) => acc + curr.unitary_price, 0)  
+              setInvoice(prev => ({ ...prev, mount_pay }))
+              setPartialPaymentPercet((mount_pay / totalMount) * 100)
+            }}
             errorText={form.errors?.invoices ? String(form.errors?.invoices) : undefined}
             isError={!!form.errors?.invoices}
+          />
+        </Grid.Col>
+        <Grid.Col span={3} style={ state === statePage.VIEW ? { display: 'none' } : {}}>
+          <CustomNumberInput
+            allowDecimal
+            label='Partial payment on percent'
+            showLabel={true}
+            min={0}
+            max={100}
+            value={partialPaymentPercet}
+            onChange={percent => {
+              const totalMount: number = form.getValues().projectDescriptions.reduce((acc, curr) => acc + curr.unitary_price, 0)  
+              setInvoice(prev => ({ ...prev, mount_pay: totalMount * percent / 100 }))
+              setPartialPaymentPercet(percent)
+            }}
+            errorText={form.errors?.invoices ? String(form.errors?.invoices) : undefined}
+            isError={!!form.errors?.invoices}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <CustomTextInput
+            label='url_qr'
+            readOnly={state === statePage.VIEW} 
+            showLabel={true}
+            value={invoice.url_qr ?? ''}
+            onChange={(url_qr => setInvoice(prev => ({ ...prev, url_qr })))}
+            errorText={form.errors?.public_id ? String(form.errors?.url_qr) : undefined}
+            isError={!!form.errors?.public_id}
           />
         </Grid.Col>
         <Grid.Col span={12}>
@@ -626,6 +665,7 @@ export default function CompleteInvoicePage({ initialState, totalMount }: { init
                 <Table.Th>Id</Table.Th>
                 <Table.Th>Partial payment</Table.Th>
                 <Table.Th>Ref. Number</Table.Th>
+                <Table.Th>Has QR</Table.Th>
                 <Table.Th>Creation date</Table.Th>
                 <Table.Th>Due date</Table.Th>
               </Table.Tr>
@@ -647,6 +687,9 @@ export default function CompleteInvoicePage({ initialState, totalMount }: { init
                 </Table.Td>
                 <Table.Td>
                     {element.ref_num_paid}
+                </Table.Td>
+                <Table.Td>
+                    {!!element.url_qr ? 'Yes' : 'No'}
                 </Table.Td>
                 <Table.Td>
                      {formatDateToDDMMYYYY(element.creation_date)}

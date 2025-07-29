@@ -1,7 +1,7 @@
 import { dbInvoice } from "@/server/modules/invoice/domain/interfaces"
 import { adapterResponseHttp } from "@/server/utilities/adapters"
 import { typePublicId } from "@/server/utilities/enums";
-import { dateToUTC } from "@/server/utilities/formatters"
+import { dateToUTC, hexToString } from "@/server/utilities/formatters"
 import { generatePublicId } from "@/server/utilities/generators";
 import {
   adapterResponseHttpI,
@@ -9,22 +9,27 @@ import {
   invoiceModel,
   updateBaseI,
   validatorManagerI,
-  invoiceId
+  invoiceId,
+  encryptManagerI
 } from "@/server/utilities/interfaces";
 
 export const getInvoiceUseCase = async ({
   invoiceIds,
   dbManager,
-  validatorManager
+  validatorManager,
+  encryptManager
 }:{
   invoiceIds?: invoiceId[],
   dbManager: dbInvoice,
+  encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<invoiceModel, invoiceId>
 }): Promise<adapterResponseHttpI<Array<invoiceModel>>> => {
   if (!dbManager) {
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!validatorManager) {
     return adapterResponseHttp({ message: 'validatorManager is undefined', hasError: true, statusHttp: 500 })
+  } else if (!encryptManager) {
+    return adapterResponseHttp({ message: 'encryptManager is undefined', hasError: true, statusHttp: 500 })
   }
 
   const validator = validatorManager.validateGet(invoiceIds)
@@ -43,6 +48,7 @@ export const getInvoiceUseCase = async ({
       creation_date: invoice.creation_date,
       expiration_date: invoice.expiration_date,
       installment_num: invoice.installment_num,
+      url_qr: invoice.url_qr ? encryptManager.decryptAES(hexToString(invoice.url_qr)) : undefined,
       mount_pay: invoice.mount_pay,
       method_payment_id: invoice.method_payment_id,
       ref_num_paid: invoice.ref_num_paid,
@@ -61,9 +67,11 @@ export const createInvoiceUseCase = async ({
   invoices,
   dbManager,
   validatorManager,
+  encryptManager
 }:{
   invoices: invoiceModel[],
   dbManager: dbInvoice,
+  encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<invoiceModel, invoiceId> 
 }): Promise<adapterResponseHttpI<Array<invoiceModel>>> => {
   if (!invoices) {
@@ -74,6 +82,8 @@ export const createInvoiceUseCase = async ({
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!validatorManager) {
     return adapterResponseHttp({ message: 'validatorManager is undefined', hasError: true, statusHttp: 500 })
+  } else if (!encryptManager) {
+    return adapterResponseHttp({ message: 'encryptManager is undefined', hasError: true, statusHttp: 500 })
   }
 
   const validator = validatorManager.validateInsert(invoices)
@@ -100,6 +110,7 @@ export const createInvoiceUseCase = async ({
       expiration_date: invoice.expiration_date,
       installment_num: invoice.installment_num,
       mount_pay: invoice.mount_pay,
+      url_qr: invoice.url_qr ? encryptManager.encryptAES(invoice.url_qr) : undefined,
       method_payment_id: invoice.method_payment_id,
       project_id: invoice.project_id,
       public_id: publicId.payload!,
@@ -146,10 +157,12 @@ export const deleteInvoiceUseCase = async ({
 export const updateInvoiceUseCase = async ({
   invoice,
   dbManager,
-  validatorManager
+  validatorManager,
+  encryptManager
 }:{
   invoice: updateBaseI<invoiceModel, invoiceId>,
   dbManager: dbInvoice,
+  encryptManager: encryptManagerI,
   validatorManager: validatorManagerI<invoiceModel, invoiceId>
 }): Promise<adapterResponseHttpI<Array<invoiceModel>>> => {
   if (!invoice) {
@@ -162,6 +175,8 @@ export const updateInvoiceUseCase = async ({
     return adapterResponseHttp({ message: 'dbManager is undefined', hasError: true, statusHttp: 500 })
   } else if (!validatorManager) {
     return adapterResponseHttp({ message: 'validatorManager is undefined', hasError: true, statusHttp: 500 })
+  } else if (!encryptManager) {
+    return adapterResponseHttp({ message: 'encryptManager is undefined', hasError: true, statusHttp: 500 })
   }
 
   const validator = validatorManager.validateUpdate([invoice])
@@ -175,6 +190,7 @@ export const updateInvoiceUseCase = async ({
       expiration_date: invoice.newData.expiration_date,
       installment_num: invoice.newData.installment_num,
       mount_pay: invoice.newData.mount_pay,
+      url_qr: invoice.newData.url_qr ? encryptManager.encryptAES(invoice.newData.url_qr) : undefined,
       method_payment_id: invoice.newData.method_payment_id,
       project_id: invoice.newData.project_id,
       public_id: invoice.newData.public_id,

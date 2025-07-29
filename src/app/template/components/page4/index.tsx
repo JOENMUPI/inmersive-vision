@@ -29,13 +29,14 @@ export default function Page4({ data }: { data: data4I }) {
         onClose={() => handleModal({ imgIndex: imgIndexModal, showModal: false })}
         styles={{ body: { padding: 0 }}}
       >
-        <Carousel withIndicators height='70vh'>
+        <Carousel withIndicators height='70vh' initialSlide={imgIndexModal}>
           {data.imgs.map((val, index) => 
-            <Carousel.Slide key={index}>
+            <Carousel.Slide key={index} >
               <Image
                 onClick={() => handleModal({ imgIndex: imgIndexModal, showModal: false })}
                 alt={`Carousel-img-${val}`}
                 src={val}
+                fit='contain'
                 style={{
                   width: '100%',
                   height:  '100%',

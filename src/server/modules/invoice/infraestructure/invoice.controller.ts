@@ -44,6 +44,7 @@ export const createInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
       invoices: invoicesFormatted.payload!,
       dbManager,
       validatorManager,
+      encryptManager
     })
   
     res.status(response.statusHttp).json(adapterResponse({
@@ -91,7 +92,8 @@ export const getInvoice = async (req: NextApiRequest, res: NextApiResponse<adapt
     const response = await getInvoiceUseCase({
       invoiceIds,
       dbManager,
-      validatorManager
+      validatorManager,
+      encryptManager
     })
   
     res.status(response.statusHttp).json(adapterResponse({
@@ -184,7 +186,8 @@ export const updateInvoice = async (req: NextApiRequest, res: NextApiResponse<ad
     const response = await updateInvoiceUseCase({
       invoice: invoiceFormatted.payload!,
       dbManager,
-      validatorManager
+      validatorManager,
+      encryptManager
     })
 
     res.status(response.statusHttp).json(adapterResponse({
@@ -248,11 +251,11 @@ export const errorMethod = (req: NextApiRequest, res: NextApiResponse<adapterRes
 }
 
 const getInvoiceInternal = async (ids?: invoiceId[]): Promise<adapterResponseI<Array<invoiceModel>>> => {
-  return await getInvoiceUseCase({ dbManager, invoiceIds: ids, validatorManager })
+  return await getInvoiceUseCase({ dbManager, invoiceIds: ids, validatorManager, encryptManager })
 }
 
 const createInvoiceInternal = async (invoices: invoiceModel[]): Promise<adapterResponseI<Array<invoiceModel>>> => {
-  return await createInvoiceUseCase({ dbManager, invoices, validatorManager })
+  return await createInvoiceUseCase({ dbManager, invoices, validatorManager, encryptManager })
 }
 
 const deleteInvoiceInternal = async (ids: invoiceId[]): Promise<adapterResponseI<Array<invoiceModel>>> => {
@@ -260,7 +263,7 @@ const deleteInvoiceInternal = async (ids: invoiceId[]): Promise<adapterResponseI
 }
 
 const updateInvoiceInternal = async (invoice: updateBaseI<invoiceModel, invoiceId>): Promise<adapterResponseI<Array<invoiceModel>>> => {
-  return updateInvoiceUseCase({ dbManager, invoice, validatorManager })
+  return updateInvoiceUseCase({ dbManager, invoice, validatorManager, encryptManager })
 }
 
 export const invoiceInternalManager: invoiceInternalManagerI = {

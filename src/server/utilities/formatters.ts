@@ -260,7 +260,7 @@ export const httpToMethodPayment = ({ httpData, optionalFieldObligatory }: httpT
       return adapterResponse({ message: 'MethodPaymentsHttp no has a objent', hasError: true })
     }
 
-    const { bank_name, company_name, routing_num, url_qr, account_num, zelle, created_at, id, soft_deleted, updated_at } = methodPayment
+    const { bank_name, company_name, routing_num, account_num, zelle, created_at, id, soft_deleted, updated_at } = methodPayment
 
     if (!bank_name || !account_num || !company_name || !routing_num || !zelle) {
       return adapterResponse({
@@ -275,7 +275,6 @@ export const httpToMethodPayment = ({ httpData, optionalFieldObligatory }: httpT
       company_name: String(company_name),
       routing_num: String(routing_num),
       zelle: String(zelle),
-      url_qr: url_qr ? String(url_qr) : undefined
     }
 
     if (optionalFieldObligatory) {
@@ -316,7 +315,8 @@ export const httpToInvoice = ({ httpData, optionalFieldObligatory }: httpToDataI
       soft_deleted,
       updated_at,
       installment_num,
-      mount_pay
+      mount_pay,
+      url_qr
     } = invoice
 
     if (!installment_num || !client_id || !creation_date || !expiration_date || !public_id || !project_id || !method_payment_id || !mount_pay) {
@@ -332,6 +332,7 @@ export const httpToInvoice = ({ httpData, optionalFieldObligatory }: httpToDataI
       public_id: String(public_id),
       project_id: Number(project_id),
       client_id: Number(client_id),
+      url_qr: url_qr ? String(url_qr) : undefined,
       method_payment_id: Number(method_payment_id),
       installment_num: Number(installment_num),
       mount_pay: Number(mount_pay)

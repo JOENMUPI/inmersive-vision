@@ -43,7 +43,6 @@ export const getMethodPaymentUseCase = async ({
     return {
       bank_name: encryptManager.decryptAES(hexToString(methodPayment.bank_name)),
       zelle: encryptManager.decryptAES(hexToString(methodPayment.zelle)),
-      url_qr: methodPayment.url_qr ? encryptManager.decryptAES(hexToString(methodPayment.url_qr)) : undefined,
       routing_num: encryptManager.decryptAES(hexToString(methodPayment.routing_num)),
       account_num: encryptManager.decryptAES(hexToString(methodPayment.account_num)),
       company_name: encryptManager.decryptAES(hexToString(methodPayment.company_name)),
@@ -86,7 +85,6 @@ export const createMethodPaymentUseCase = async ({
   const _methodPayments: methodPaymentModel[] = methodPayments.map(methodPayment => ({
     bank_name: encryptManager.encryptAES(methodPayment.bank_name),
     zelle: encryptManager.encryptAES(methodPayment.zelle),
-    url_qr: methodPayment.url_qr ? encryptManager.encryptAES(methodPayment.url_qr) : undefined,
     routing_num: encryptManager.encryptAES(methodPayment.routing_num),
     account_num: encryptManager.encryptAES(methodPayment.account_num),
     company_name: encryptManager.encryptAES(methodPayment.company_name),
@@ -99,7 +97,6 @@ export const createMethodPaymentUseCase = async ({
       return {
         bank_name: encryptManager.decryptAES(hexToString(methodPayment.bank_name)),
         zelle: encryptManager.decryptAES(hexToString(methodPayment.zelle)),
-        url_qr: methodPayment.url_qr ? encryptManager.decryptAES(hexToString(methodPayment.url_qr)) : undefined,
         routing_num: encryptManager.decryptAES(hexToString(methodPayment.routing_num)),
         account_num: encryptManager.decryptAES(hexToString(methodPayment.account_num)),
         company_name: encryptManager.decryptAES(hexToString(methodPayment.company_name)),
@@ -176,7 +173,6 @@ export const updateMethodPaymentUseCase = async ({
     newData: {
       bank_name: encryptManager.encryptAES(methodPayment.newData.bank_name),
       zelle: encryptManager.encryptAES(methodPayment.newData.zelle),
-      url_qr: methodPayment.newData.url_qr ? encryptManager.encryptAES(methodPayment.newData.url_qr) : undefined,
       routing_num: encryptManager.encryptAES(methodPayment.newData.routing_num),
       account_num: encryptManager.encryptAES(methodPayment.newData.account_num),
       company_name: encryptManager.encryptAES(methodPayment.newData.company_name),
@@ -194,7 +190,6 @@ export const updateMethodPaymentUseCase = async ({
       return {
         bank_name: encryptManager.decryptAES(hexToString(methodPayment.bank_name)),
         zelle: encryptManager.decryptAES(hexToString(methodPayment.zelle)),
-        url_qr: methodPayment.url_qr ? encryptManager.decryptAES(hexToString(methodPayment.url_qr)) : undefined,
         routing_num: encryptManager.decryptAES(hexToString(methodPayment.routing_num)),
         account_num: encryptManager.decryptAES(hexToString(methodPayment.account_num)),
         company_name: encryptManager.decryptAES(hexToString(methodPayment.company_name)),

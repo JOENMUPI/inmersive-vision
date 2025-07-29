@@ -301,30 +301,36 @@ export default function Page5() {
                 <Image 
                   src={CompanyLogo360.src}
                   alt='360 Pros'
+                  fit='contain'
                   style={{ transition: 'all .2s ease', width:'20%', height: comanyLogoSize }}
                 />
                 <Image
                   src={CompanyLogoAnaStudio.src}
                   alt='Ana Studio'
+                  fit='contain'
                   style={{ transition: 'all .2s ease', width:'20%', height: comanyLogoSize }}
                 />
                 <Image
                   src={CompanyLogoAvalonPark.src}
+                  fit='contain'
                   alt='Avalon Park'
                   style={{ transition: 'all .2s ease', width:'20%', height: comanyLogoSize }}
                 />
                 <Image
                   src={CompanyLogoFloridaHousePLan.src}
+                  fit='contain'
                   alt='Florida House Plan'
                   style={{ transition: 'all .2s ease', width:'20%', height: comanyLogoSize }}
                 />
                 <Image
                   src={CompanyLogoH2Group.src}
+                  fit='contain'
                   alt='H2 Group'
                   style={{ transition: 'all .2s ease', width:'20%', height: comanyLogoSize }}
                 />
                 <Image 
                   src={CompanyLogoMVI.src}
+                  fit='contain'
                   alt='MVI'
                   style={{ transition: 'all .2s ease', width:'20%', height: comanyLogoSize }}
                 />

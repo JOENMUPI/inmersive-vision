@@ -87,7 +87,6 @@ export default function ListPage() {
             <Table.Th>Account number</Table.Th>
             <Table.Th>Routing number</Table.Th>
             <Table.Th>Zelle</Table.Th>
-            <Table.Th>Url QR</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{data.map(element => {
@@ -102,7 +101,6 @@ export default function ListPage() {
             <Table.Td>{element.account_num}</Table.Td>
             <Table.Td>{element.routing_num}</Table.Td>
             <Table.Td>{element.zelle}</Table.Td>
-            <Table.Td>{element.url_qr}</Table.Td>
           </Table.Tr>
         })}</Table.Tbody>
       </Table>

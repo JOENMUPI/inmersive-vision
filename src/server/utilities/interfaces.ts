@@ -99,8 +99,7 @@ export interface methodPaymentModel extends commonColsModel {
   bank_name: string
   routing_num: string
   account_num: string
-  zelle: string 
-  url_qr?: string 
+  zelle: string  
 }
 
 export interface projectModel extends commonColsModel {
@@ -142,6 +141,7 @@ export interface invoiceModel extends Omit<commonColsModel, 'id'>, invoiceId  {
   expiration_date: Date
   creation_date: Date
   mount_pay: number
+  url_qr?: string
   ref_num_paid?: string
 }
 

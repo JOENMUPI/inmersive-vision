@@ -10,6 +10,7 @@ const objectSchema = z.object({
   [invoiceTableKeys.INSTALLMENT_NUM]: z.number().min(1),
   [invoiceTableKeys.MOUNT_PAY]: z.number().min(1), 
   [invoiceTableKeys.METHOD_PAYMENT_ID]: z.number().min(1),
+  [invoiceTableKeys.URL_QR]: z.string().trim().nonempty().optional(),
   [invoiceTableKeys.PROJECT_ID]: z.number().min(1),
   [invoiceTableKeys.CREATION_DATE]: z.date(),
   [invoiceTableKeys.EXPIRATION_DATE]: z.date(),

@@ -19,7 +19,6 @@ const INIT_VALUES: methodPaymentModel = {
   bank_name: '',
   company_name: '',
   zelle: '',
-  url_qr: undefined
 }
 
 export default function ProjectPage({ initialState }: { initialState: statePage }) {
@@ -253,17 +252,6 @@ export default function ProjectPage({ initialState }: { initialState: statePage 
             value={form.getValues().zelle}
             onChange={(data => form.setFieldValue('zelle', data))}
             errorText={form.errors?.public_id ? String(form.errors?.zelle) : undefined}
-            isError={!!form.errors?.public_id}
-          />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <CustomTextInput
-            label='url_qr'
-            readOnly={state === statePage.VIEW} 
-            showLabel={true}
-            value={form.getValues().url_qr ?? ''}
-            onChange={(data => form.setFieldValue('url_qr', data))}
-            errorText={form.errors?.public_id ? String(form.errors?.url_qr) : undefined}
             isError={!!form.errors?.public_id}
           />
         </Grid.Col>

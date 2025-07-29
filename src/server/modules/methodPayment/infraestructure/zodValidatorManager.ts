@@ -9,7 +9,6 @@ const objectSchema = z.object({
   [methodPaymentTableKeys.ROUTING_NUM]: z.string().trim().nonempty(),
   [methodPaymentTableKeys.ACCOUNT_NUM]: z.string().trim().nonempty(),
   [methodPaymentTableKeys.ZELLE]: z.string().trim().nonempty(),
-  [methodPaymentTableKeys.URL_QR]: z.string().trim().nonempty().optional(),
   [methodPaymentTableKeys.CREATED_AT]: z.date(),
   [methodPaymentTableKeys.ID]: z.number(),
   [methodPaymentTableKeys.SOFT_DELETED]: z.boolean(),

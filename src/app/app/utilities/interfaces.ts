@@ -26,7 +26,6 @@ export interface paymentInfoI {
   id: string
   bankName: string
   companyName: string
-  urlQr?: string;
   accountNumber: string
   routingNumber: string
   zelle: string
@@ -35,6 +34,7 @@ export interface paymentInfoI {
 export interface mountInvoiceI {
   currentInstallment: number;
   totalInstallment: number;
+  urlQr?: string;
   paidMount: number;
   mount: number
   pendingMount: number;

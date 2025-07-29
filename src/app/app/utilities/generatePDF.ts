@@ -34,8 +34,8 @@ export const generatePdf = async (allData: generatePdfI[]): Promise<string> => {
 
   for (const data of allData) {
     let qrImage: PDFImage | undefined = undefined
-    if (data.paymentInfo.urlQr) {
-      const qrImg64 = await generateQR(data.paymentInfo.urlQr)
+    if (data.mountInvoice.urlQr) {
+      const qrImg64 = await generateQR(data.mountInvoice.urlQr)
       const qrbyt = base64ToByteArray(qrImg64.split('base64,')[1])
       qrImage = await pdfDoc.embedPng(qrbyt)  
     }
