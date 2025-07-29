@@ -5,6 +5,7 @@ import { useBreakPointHandler } from '@/hooks/breakpointHandler';
 import { data4I } from '@/app/template/utils/interfaces';
 import { useState } from 'react';
 import { Carousel } from '@mantine/carousel';
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 
 export default function Page4({ data }: { data: data4I }) {
   const { isXS } = useBreakPointHandler()
@@ -34,6 +35,8 @@ export default function Page4({ data }: { data: data4I }) {
           height='90vh'
           styles={{ control: { backgroundColor: 'transparent', color: 'white' } }}
           autoFocus={showModal}
+          nextControlIcon={<IconChevronRight color='white' />}
+          previousControlIcon={<IconChevronLeft color='white' />}
           initialSlide={imgIndexModal}
         >
           {data.imgs.map((val, index) => 
