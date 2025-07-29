@@ -69,12 +69,13 @@ export function HeaderTemplateMenu() {
   if (endpoint && noShowheaderlist.includes(endpoint)) return null
   return (<header style={{
       width: '100%',
-      height: '20vh',
+      height: '30vh',
       top: -10,
       backgroundColor: '#131313',
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: getByBreakPoint<string>('center', 'center', 'space-between', 'space-between', 'space-between'),
+      justifyContent: getByBreakPoint<string>('center', 'center', 'start', 'start', 'start'),
+      gap: '3rem',
       alignItems: 'center',
       zIndex: 1000,
       position: 'absolute',

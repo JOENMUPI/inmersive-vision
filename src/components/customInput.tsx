@@ -464,6 +464,9 @@ export function CustomSelectInput({
           label: {
             color: TEXT_COLOR,
           },
+          options:{ 
+            color: TEXT_COLOR,
+          },
           wrapper: {
             transition: 'all .2s ease',
             borderBottom: `1px solid ${borderColor}`,
