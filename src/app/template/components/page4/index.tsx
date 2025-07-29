@@ -1,6 +1,6 @@
 'use client'
 import { Container, Grid, Image, Modal } from '@mantine/core';
-import { PAGE_TEMPLPATE_4_ID, PRIMARY_COLOR_HEX } from '@/utils/consts';
+import { PAGE_TEMPLPATE_4_ID } from '@/utils/consts';
 import { useBreakPointHandler } from '@/hooks/breakpointHandler';
 import { data4I } from '@/app/template/utils/interfaces';
 import { useState } from 'react';
@@ -32,8 +32,10 @@ export default function Page4({ data }: { data: data4I }) {
         <Carousel
           withIndicators
           height='90vh'
-          styles={{ control: { backgroundColor: PRIMARY_COLOR_HEX } }}
-          autoFocus={showModal} initialSlide={imgIndexModal}>
+          styles={{ control: { backgroundColor: 'transparent', color: 'white' } }}
+          autoFocus={showModal}
+          initialSlide={imgIndexModal}
+        >
           {data.imgs.map((val, index) => 
             <Carousel.Slide key={index} >
               <Image
