@@ -29,7 +29,7 @@ export default function Page4({ data }: { data: data4I }) {
         onClose={() => handleModal({ imgIndex: imgIndexModal, showModal: false })}
         styles={{ body: { padding: 0 }}}
       >
-        <Carousel withIndicators height='70vh' initialSlide={imgIndexModal}>
+        <Carousel withIndicators height='95vh' autoFocus={showModal} initialSlide={imgIndexModal}>
           {data.imgs.map((val, index) => 
             <Carousel.Slide key={index} >
               <Image
