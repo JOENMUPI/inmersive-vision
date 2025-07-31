@@ -35,8 +35,8 @@ export default function Page4({ data }: { data: data4I }) {
           height='90vh'
           styles={{ control: { backgroundColor: 'transparent', color: 'white' } }}
           autoFocus={showModal}
-          nextControlIcon={<IconChevronRight color='white' />}
-          previousControlIcon={<IconChevronLeft color='white' />}
+          nextControlIcon={<IconChevronRight size='30' color='white' />}
+          previousControlIcon={<IconChevronLeft size='30' color='white' />}
           initialSlide={imgIndexModal}
         >
           {data.imgs.map((val, index) => 
